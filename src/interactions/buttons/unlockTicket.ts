@@ -1,0 +1,59 @@
+import {
+  ActionRowBuilder,
+  GuildMember,
+  MessageFlags,
+  ModalBuilder,
+  PermissionFlagsBits,
+  TextInputBuilder,
+  TextInputStyle,
+} from "discord.js";
+import { t } from "../../lang";
+import { ButtonHandler } from "../../types/Interactions";
+import { getUserPermissions } from "../../utils/calculateUserPermissions";
+import { getServerGroupsByIds, getTicket } from "../../utils/bot/getServer";
+import { onError } from "../../utils/onError";
+import { reopenTicket } from "../../utils/tickets/reopen";
+import { lockTicket } from "../../utils/tickets/lock";
+import { unlockTicket } from "../../utils/tickets/unlock";
+
+const button: ButtonHandler = {
+  customId: "unlock",
+  async execute(client, data, interaction) {
+    if (!interaction.guildId) return;
+    await interaction.reply({
+      content: t(data.lang!, "THINK"),
+      flags: [MessageFlags.Ephemeral],
+    });
+
+    const ticketId = interaction.customId.split(":")[1];
+    const ticket = await getTicket(ticketId, interaction.guildId);
+    if (!ticket)
+      return interaction.editReply(
+        (
+          await onError("Tickets", t(data.lang!, "TICKET_NOT_FOUND"), {
+            ticketId: ticketId,
+          })
+        ).discordMsg
+      );
+    const userPermissions = getUserPermissions(
+      interaction.member as GuildMember,
+      await getServerGroupsByIds(ticket.groups, interaction.guildId)
+    );
+
+    if (
+      !userPermissions.tickets.canLock &&
+      !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
+    )
+      return interaction.editReply(
+        (
+          await onError("Tickets", t(data.lang!, "MISSING_PERMISSIONS"), {
+            ticketId: ticketId,
+          })
+        ).discordMsg
+      );
+
+    await unlockTicket(ticketId, data.lang!, interaction);
+  },
+};
+
+export default button;
