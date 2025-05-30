@@ -3,7 +3,7 @@ import { Channel, Guild, GuildMember, User } from "discord.js";
 export function generateBasePlaceholderContext(options: {
   server: Guild;
   user?: User;
-  member?: GuildMember;
+  member?: GuildMember | null;
   channel?: Channel;
 }) {
   const { server, user, member, channel } = options;

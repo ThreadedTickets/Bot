@@ -22,7 +22,10 @@ import { fetchChannelById } from "../../../../bot/fetchMessage";
 import { onError } from "../../../../onError";
 import { Locale } from "../../../../../types/Locale";
 import { t } from "../../../../../lang";
-import { resolvePlaceholders } from "../../../../message/placeholders/resolvePlaceholders";
+import {
+  resolveDiscordMessagePlaceholders,
+  resolvePlaceholders,
+} from "../../../../message/placeholders/resolvePlaceholders";
 import { generateBasePlaceholderContext } from "../../../../message/placeholders/generateBaseContext";
 import {
   getServer,
@@ -42,6 +45,7 @@ import ticketOwnerPermissions from "../../../../../constants/ticketOwnerPermissi
 import everyoneTicketPermissions from "../../../../../constants/everyoneTicketPermissions";
 import botTicketPermissions from "../../../../../constants/botTicketPermissions";
 import { invalidateCache } from "../../../../database/invalidateCache";
+import { getGuildMember } from "../../../../bot/getGuildMember";
 
 registerHook(
   "TicketCreate",
@@ -239,9 +243,20 @@ registerHook(
         });
       }
     }
-    const infoHeader = await ticketChannel.send(startMessage).catch((err) => {
-      logger("Tickets", "Warn", `Failed to send info header: ${err}`);
-    });
+    const infoHeader = await ticketChannel
+      .send(
+        resolveDiscordMessagePlaceholders(startMessage, {
+          ...generateBasePlaceholderContext({
+            server: guild,
+            user: user,
+            member: await getGuildMember(client, guild.id, user.id),
+            channel: ticketChannel,
+          }),
+        })
+      )
+      .catch((err) => {
+        logger("Tickets", "Warn", `Failed to send info header: ${err}`);
+      });
     if (infoHeader)
       infoHeader.pin().catch((err) => {
         logger("Tickets", "Warn", `Failed to pin info header: ${err}`);
