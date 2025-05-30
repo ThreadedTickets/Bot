@@ -1,8 +1,6 @@
-import { Client, GatewayIntentBits, Partials, REST, Routes } from "discord.js";
-import {
-  loadPrefixCommands,
-  handlePrefixMessage,
-} from "./handlers/commandHandler";
+import "dotenv/config";
+import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { loadPrefixCommands } from "./handlers/commandHandler";
 import { deployAppCommands } from "./handlers/interactionCommandHandler";
 import { loadEvents } from "./handlers/eventHandler";
 import { connectToMongooseDatabase } from "./database/connection";
@@ -19,8 +17,15 @@ import { logger } from "./utils/logger";
 import { closeTicket } from "./utils/tickets/close";
 import { Locale } from "./types/Locale";
 import { AsyncQueueManager } from "./utils/bot/QueueManager";
+import { ClusterClient, getInfo } from "discord-hybrid-sharding";
 
-export const client = new Client({
+const shardList = getInfo().SHARD_LIST;
+const totalShards = getInfo().TOTAL_SHARDS;
+
+const discordClient = new Client({
+  shards: shardList,
+  shardCount: totalShards,
+
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
@@ -30,6 +35,8 @@ export const client = new Client({
   ],
   partials: [Partials.Channel],
 });
+export const clusterClient = new ClusterClient(discordClient);
+export const client = clusterClient.client;
 
 loadPrefixCommands();
 deployAppCommands();

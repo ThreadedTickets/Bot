@@ -2,11 +2,11 @@
   "name": "threadedts",
   "version": "1.0.0",
   "description": "",
-  "main": ".build/src/index.js",
+  "main": ".build/src/cluster.js",
   "scripts": {
-    "bot": "node .build/src/index.js",
+    "bot": "node .build/src/cluster.js",
     "start": "rm -rf .build/ && npx tsc && npm run bot",
-    "bot:debug": "rm -rf .build/ && npx tsc && node --trace-warnings .build/src/index.js",
+    "bot:debug": "rm -rf .build/ && npx tsc && node --trace-warnings .build/src/cluster.js",
     "debug": "npm run bot:debug"
   },
   "keywords": [],
@@ -16,6 +16,8 @@
     "ajv": "^8.17.1",
     "axios": "^1.8.4",
     "colorette": "^2.0.20",
+    "discord-cross-hosting": "^2.3.8",
+    "discord-hybrid-sharding": "^2.2.6",
     "discord.js": "^14.14.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
