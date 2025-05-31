@@ -1,6 +1,5 @@
 import { PermissionFlagsBits } from "discord.js";
 import mongoose from "mongoose";
-import { PanelSchema } from "./Panel";
 import Ajv from "ajv";
 const ajv = new Ajv();
 
@@ -154,6 +153,82 @@ export const groupSchema = new mongoose.Schema({
   permissions: { type: PermissionsSchema, default: () => ({}) },
 });
 
+const LogChannelSchema = new mongoose.Schema(
+  {
+    enabled: { type: Boolean, default: true },
+    channel: { type: String, default: null },
+    webhook: { type: String, default: null },
+  },
+  { _id: false }
+);
+
+const LoggingSchema = new mongoose.Schema(
+  {
+    general: { type: LogChannelSchema, default: () => ({}) },
+    tickets: {
+      type: {
+        feedback: { type: LogChannelSchema, default: () => ({}) },
+        open: { type: LogChannelSchema, default: () => ({}) },
+        close: { type: LogChannelSchema, default: () => ({}) },
+        lock: { type: LogChannelSchema, default: () => ({}) },
+        unlock: { type: LogChannelSchema, default: () => ({}) },
+        raise: { type: LogChannelSchema, default: () => ({}) },
+        lower: { type: LogChannelSchema, default: () => ({}) },
+        move: { type: LogChannelSchema, default: () => ({}) },
+        transcripts: { type: LogChannelSchema, default: () => ({}) },
+      },
+
+      default: () => ({}),
+    },
+    applications: {
+      type: {
+        create: { type: LogChannelSchema, default: () => ({}) },
+        approve: { type: LogChannelSchema, default: () => ({}) },
+        reject: { type: LogChannelSchema, default: () => ({}) },
+        delete: { type: LogChannelSchema, default: () => ({}) },
+      },
+      default: () => ({}),
+    },
+  },
+  { _id: false }
+);
+
+const SettingsSchema = new mongoose.Schema(
+  {
+    logging: { type: LoggingSchema, default: () => ({}) },
+    autoResponders: {
+      extraAllowedChannels: { type: [String], default: [] },
+    },
+  },
+  { _id: false }
+);
+
+const schema = new mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      required: true,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    preferredLanguage: {
+      type: String,
+      default: "en",
+    },
+
+    settings: { type: SettingsSchema, default: () => ({}) },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export const GuildSchema = mongoose.model("Guilds", schema);
+export const GroupSchema = mongoose.model("Groups", groupSchema);
+export const MessageSchema = mongoose.model("Messages", messageSchema);
+
 const ajvGroupSchema = {
   type: "object",
   properties: {
@@ -285,79 +360,3 @@ const ajvGroupSchema = {
 };
 
 export const GroupSchemaValidator = ajv.compile(ajvGroupSchema);
-
-const LogChannelSchema = new mongoose.Schema(
-  {
-    enabled: { type: Boolean, default: false },
-    channel: { type: String, default: null },
-    webhook: { type: String, default: null },
-  },
-  { _id: false }
-);
-
-const LoggingSchema = new mongoose.Schema(
-  {
-    general: { type: LogChannelSchema, default: () => ({}) },
-    tickets: {
-      type: {
-        feedback: { type: LogChannelSchema, default: () => ({}) },
-        open: { type: LogChannelSchema, default: () => ({}) },
-        close: { type: LogChannelSchema, default: () => ({}) },
-        lock: { type: LogChannelSchema, default: () => ({}) },
-        unlock: { type: LogChannelSchema, default: () => ({}) },
-        raise: { type: LogChannelSchema, default: () => ({}) },
-        lower: { type: LogChannelSchema, default: () => ({}) },
-        move: { type: LogChannelSchema, default: () => ({}) },
-        transcripts: { type: LogChannelSchema, default: () => ({}) },
-      },
-
-      default: () => ({}),
-    },
-    applications: {
-      type: {
-        create: { type: LogChannelSchema, default: () => ({}) },
-        approve: { type: LogChannelSchema, default: () => ({}) },
-        reject: { type: LogChannelSchema, default: () => ({}) },
-        delete: { type: LogChannelSchema, default: () => ({}) },
-      },
-      default: () => ({}),
-    },
-  },
-  { _id: false }
-);
-
-const SettingsSchema = new mongoose.Schema(
-  {
-    logging: { type: LoggingSchema, default: () => ({}) },
-    autoResponders: {
-      extraAllowedChannels: { type: [String], default: [] },
-    },
-  },
-  { _id: false }
-);
-
-const schema = new mongoose.Schema(
-  {
-    _id: {
-      type: String,
-      required: true,
-    },
-    active: {
-      type: Boolean,
-      default: true,
-    },
-    preferredLanguage: {
-      type: String,
-      default: "en",
-    },
-
-    settings: { type: SettingsSchema, default: () => ({}) },
-  },
-  {
-    timestamps: true,
-  }
-);
-
-export const GuildSchema = mongoose.model("Guilds", schema);
-export const GroupSchema = mongoose.model("Groups", groupSchema);
-export const MessageSchema = mongoose.model("Messages", messageSchema);

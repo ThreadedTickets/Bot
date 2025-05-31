@@ -13,7 +13,6 @@ const client = new Client({
 client.connect();
 
 const manager = new ClusterManager(`${__dirname}/index.js`, {
-  totalShards: "auto", // or 'auto'
   shardsPerClusters: parseInt(process.env["SHARDS_PER_CLUSTER"]!, 10),
   totalClusters: parseInt(process.env["TOTAL_CLUSTERS"]!, 10),
   mode: "process",

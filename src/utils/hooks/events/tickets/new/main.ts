@@ -108,9 +108,9 @@ registerHook(
       );
     }
 
-    const actionRow = new ActionRowBuilder<ButtonBuilder>().setComponents(
-      ...components
-    );
+    const actionRow = new ActionRowBuilder<ButtonBuilder>()
+      .setComponents(...components)
+      .toJSON();
 
     const startMessage = {
       ...(fetchedMessage

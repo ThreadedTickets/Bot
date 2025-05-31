@@ -599,44 +599,6 @@ const ticketTriggerSchemaAjv = {
 };
 export const TicketTriggerSchemaValidator = ajv.compile(ticketTriggerSchemaAjv);
 
-const schema = new mongoose.Schema({
-  _id: { type: String, required: true },
-  name: {
-    type: String,
-    required: true,
-  },
-  server: {
-    type: String,
-    ref: "Guilds",
-    required: true,
-  },
-  componentType: {
-    type: String,
-    required: true,
-    enum: ["select", "button"],
-  },
-  channelId: {
-    type: String,
-    required: false,
-    default: null,
-  },
-  messageId: {
-    type: String,
-    required: false,
-    default: null,
-  },
-  message: {
-    type: String,
-    ref: "Messages",
-    default: null,
-  },
-  triggers: {
-    type: Array,
-    default: [],
-  },
-});
-
-export const PanelSchema = mongoose.model("Panels", schema);
 export const TicketTriggerSchema = mongoose.model(
   "Ticket Triggers",
   ticketTriggerSchema

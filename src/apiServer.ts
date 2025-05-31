@@ -32,6 +32,10 @@ import {
 } from "./database/modals/Panel";
 import { ApplicationCreatorSchema } from "./database/modals/ApplicationCreator";
 import { TicketTriggerCreatorSchema } from "./database/modals/TicketTriggerCreator";
+import { client } from ".";
+import os from "os";
+import { getInfo } from "discord-hybrid-sharding";
+import { formatDuration } from "./utils/formatters/duration";
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
@@ -341,6 +345,36 @@ export function startApi(port: number) {
         message: `Error when saving ticket trigger: ${error.message}`,
       });
     }
+  });
+
+  app.get("/api/health", async (req, res) => {
+    const uptime = process.uptime();
+    const memoryUsageMB = process.memoryUsage().rss / 1024 / 1024;
+
+    // Get CPU usage over 100ms
+    const cpuUsageStart = process.cpuUsage();
+    const timeStart = Date.now();
+    await new Promise((r) => setTimeout(r, 100));
+    const cpuUsageEnd = process.cpuUsage(cpuUsageStart);
+    const elapsedMs = Date.now() - timeStart;
+    const cpuPercent =
+      ((cpuUsageEnd.user + cpuUsageEnd.system) /
+        1000 /
+        elapsedMs /
+        os.cpus().length) *
+      100;
+
+    // Guild count across all shards this cluster handles
+    const guildCount = client.guilds.cache.size;
+
+    res.json({
+      clusterId: getInfo().CLUSTER,
+      shardIds: getInfo().SHARD_LIST,
+      uptime: formatDuration(uptime * 1000),
+      guildCount,
+      ramUsage: memoryUsageMB,
+      cpuUsage: cpuPercent,
+    });
   });
 
   app.listen(port, () => {
