@@ -7,7 +7,8 @@
     "bot": "node .build/src/cluster.js",
     "start": "rm -rf .build/ && npx tsc && npm run bot",
     "bot:debug": "rm -rf .build/ && npx tsc && node --trace-warnings .build/src/cluster.js",
-    "debug": "npm run bot:debug"
+    "debug": "npm run bot:debug",
+    "build": "npm i && npm run start"
   },
   "keywords": [],
   "author": "",
