@@ -91,6 +91,9 @@ export const lang = {
   TICKET_NOT_LOCKED: "This ticket is not locked",
   TICKET_LOCKED_SO_CANNOT_LOCK: "This ticket is already locked",
 
+  APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON:
+    "Want your own application? Add Threaded!",
+
   BLACKLISTED_SERVER: `This server has been blacklisted from using Threaded for: {reason}`,
   BLACKLISTED_USER:
     "You have been blacklisted from using Threaded for: {reason}",

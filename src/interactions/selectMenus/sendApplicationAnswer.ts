@@ -1,3 +1,4 @@
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import colours from "../../constants/colours";
 import { t } from "../../lang";
 import { Application } from "../../types/Application";
@@ -80,6 +81,7 @@ const select: SelectMenuHandler = {
       let baseMessage: {
         content?: string;
         embeds?: any[];
+        components?: any[];
       } = {
         embeds: [
           {
@@ -90,6 +92,16 @@ const select: SelectMenuHandler = {
               "APPLICATION_DEFAULT_MESSAGE_SUBMITTED"
             ),
           },
+        ],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+              .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+              .setStyle(ButtonStyle.Link)
+              .setLabel(
+                t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
+              )
+          ),
         ],
       };
 

@@ -1,3 +1,4 @@
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import colours from "../constants/colours";
 import { t } from "../lang";
 import { Application } from "../types/Application";
@@ -50,6 +51,7 @@ const event: Event<"messageCreate"> = {
       let baseMessage: {
         content?: string;
         embeds?: any[];
+        components?: any[];
       } = {
         embeds: [
           {
@@ -57,6 +59,16 @@ const event: Event<"messageCreate"> = {
             color: parseInt(colours.primary, 16),
             description: t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_CANCELED"),
           },
+        ],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+              .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+              .setStyle(ButtonStyle.Link)
+              .setLabel(
+                t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
+              )
+          ),
         ],
       };
 
