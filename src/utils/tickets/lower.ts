@@ -89,9 +89,9 @@ export async function lowerTicket(
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
-              .setCustomId(`lower:${ticketId}`)
+              .setCustomId(`raise:${ticketId}`)
               .setStyle(ButtonStyle.Primary)
-              .setLabel(t(locale, "TICKET_PIN_MESSAGE_COMPONENTS_LOWER"))
+              .setLabel(t(locale, "TICKET_PIN_MESSAGE_COMPONENTS_RAISE"))
           ),
         ],
       })
