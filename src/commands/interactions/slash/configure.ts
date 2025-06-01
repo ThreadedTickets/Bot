@@ -722,7 +722,7 @@ const command: AppCommand = {
             ).discordMsg
           );
         const name = interaction.options.getString("name", true).trim();
-        if (!new RegExp(/^[0-9a-zA-Z-_ ]{2,32}$/, "g").test(name)) {
+        if (!new RegExp(/^[0-9a-zA-Z-_ ]{2,100}$/, "g").test(name)) {
           const error = (
             await onError(
               "Commands",
@@ -801,7 +801,7 @@ const command: AppCommand = {
           interaction.options.getString("new_name") || message.name
         ).trim();
 
-        if (!new RegExp(/^[0-9a-zA-Z-_ ]{2,32}$/, "g").test(name)) {
+        if (!new RegExp(/^[0-9a-zA-Z-_ ]{2,100}$/, "g").test(name)) {
           const error = (
             await onError(
               "Commands",
