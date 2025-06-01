@@ -29,10 +29,6 @@ const modal: SelectMenuHandler = {
     if (!interaction.guildId) return;
     const [, triggerId, applicationId, ownerId] =
       interaction.customId.split(":");
-    await interaction.reply({
-      content: t(data.lang!, "THINK"),
-      flags: [MessageFlags.Ephemeral],
-    });
 
     const trigger = await getServerTicketTrigger(
       triggerId,
@@ -68,10 +64,10 @@ const modal: SelectMenuHandler = {
           flags: [MessageFlags.Ephemeral],
         });
 
-      return interaction.showModal(modal);
+      return await interaction.showModal(modal);
     }
 
-    await interaction.editReply({
+    await interaction.reply({
       content: t(data.lang!, "TICKET_CREATE_PERFORMING_CHECKS"),
     });
 
