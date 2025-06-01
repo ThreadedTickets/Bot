@@ -353,7 +353,7 @@ const command: AppCommand = {
                 .setDescription("The name of your new message")
                 .setRequired(true)
                 .setMinLength(2)
-                .setMaxLength(32)
+                .setMaxLength(100)
             )
         )
         .addSubcommand((cmd) =>
@@ -373,7 +373,7 @@ const command: AppCommand = {
                 .setDescription("The new name of your message")
                 .setRequired(false)
                 .setMinLength(2)
-                .setMaxLength(32)
+                .setMaxLength(100)
             )
         )
         .addSubcommand((cmd) =>
