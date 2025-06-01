@@ -94,14 +94,16 @@ const select: SelectMenuHandler = {
           },
         ],
         components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-              .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-              .setStyle(ButtonStyle.Link)
-              .setLabel(
-                t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-              )
-          ),
+          new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+              new ButtonBuilder()
+                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                .setStyle(ButtonStyle.Link)
+                .setLabel(
+                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
+                )
+            )
+            .toJSON(),
         ],
       };
 

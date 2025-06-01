@@ -47,7 +47,7 @@ const event: Event<"messageCreate"> = {
 
     const currentQuestion = appJson.questions[appJson.questionNumber];
 
-    if (selection === "cancel") {
+    if (selection.toLocaleLowerCase() === "cancel") {
       let baseMessage: {
         content?: string;
         embeds?: any[];
@@ -61,14 +61,16 @@ const event: Event<"messageCreate"> = {
           },
         ],
         components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-              .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-              .setStyle(ButtonStyle.Link)
-              .setLabel(
-                t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-              )
-          ),
+          new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+              new ButtonBuilder()
+                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                .setStyle(ButtonStyle.Link)
+                .setLabel(
+                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
+                )
+            )
+            .toJSON(),
         ],
       };
 
