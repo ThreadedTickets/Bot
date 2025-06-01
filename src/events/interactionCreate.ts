@@ -95,21 +95,23 @@ const event: Event<"interactionCreate"> = {
         );
 
         // After successful execution, check for announcement
-        const announcement = await viewAnnouncement(interaction.user.id);
-        if (announcement) {
-          await interaction
-            .followUp({
-              ...announcement,
-              flags: [MessageFlags.Ephemeral],
-            })
-            .catch((err) => {
-              logger(
-                "Commands",
-                "Warn",
-                `Error when showing announcement: ${err}`
-              );
-            });
-        }
+        setTimeout(async () => {
+          const announcement = await viewAnnouncement(interaction.user.id);
+          if (announcement) {
+            await interaction
+              .followUp({
+                ...announcement,
+                flags: [MessageFlags.Ephemeral],
+              })
+              .catch((err) => {
+                logger(
+                  "Commands",
+                  "Warn",
+                  `Error when showing announcement: ${err}`
+                );
+              });
+          }
+        }, 3000);
       } catch (err: any) {
         logger(
           "Commands",
