@@ -1,5 +1,6 @@
 import {
   ActionRowBuilder,
+  APIEmbed,
   ChannelSelectMenuBuilder,
   ChannelType,
   GuildMember,
@@ -52,6 +53,51 @@ import {
 } from "../../../database/modals/Panel";
 import { CompletedApplicationSchema } from "../../../database/modals/CompletedApplications";
 import { TicketTriggerCreatorSchema } from "../../../database/modals/TicketTriggerCreator";
+
+function normalizeMessage(raw: any): {
+  content: string;
+  embeds?: {
+    title?: string;
+    description?: string;
+    color?: string;
+    fields?: { name: string; value: string; inline?: boolean }[];
+    author?: { name?: string; url?: string; icon_url?: string };
+    footer?: { text?: string; icon_url?: string };
+    thumbnail?: { url: string };
+    image?: { url: string };
+    timestamp?: boolean | Date;
+  }[];
+  components: any[];
+} {
+  return {
+    content: raw.content ?? "",
+    components: raw.components ?? [],
+    embeds: (raw.embeds ?? []).map((embed: any) => ({
+      title: embed.title ?? null,
+      description: embed.description ?? null,
+      color:
+        embed.color !== undefined
+          ? `${embed.color.toString(16).padStart(6, "0")}`
+          : "000000",
+      fields: Array.isArray(embed.fields) ? embed.fields : [],
+      author: {
+        name: embed.author?.name ?? null,
+        url: embed.author?.url ?? null,
+        icon_url: embed.author?.icon_url ?? null,
+      },
+      footer: {
+        text: embed.footer?.text ?? null,
+        icon_url: embed.footer?.icon_url ?? null,
+      },
+      thumbnail: { url: embed.thumbnail?.url ?? null },
+      image: { url: embed.image?.url ?? null },
+      timestamp:
+        typeof embed.timestamp === "boolean" || embed.timestamp instanceof Date
+          ? embed.timestamp
+          : null,
+    })),
+  };
+}
 
 const command: AppCommand = {
   type: "slash",
@@ -797,9 +843,9 @@ const command: AppCommand = {
           return;
         }
 
-        const name = (
-          interaction.options.getString("new_name") || message.name
-        ).trim();
+        const name = (interaction.options.getString("new_name") || message.name)
+          .replace("[OLD]", "")
+          .trim();
 
         if (!new RegExp(/^[0-9a-zA-Z-_ ]{2,100}$/, "g").test(name)) {
           const error = (
@@ -817,7 +863,7 @@ const command: AppCommand = {
         const document = await MessageCreatorSchema.create({
           guildId: interaction.guildId,
           name: name,
-          existingMessage: message,
+          existingMessage: normalizeMessage(message),
           metadata: {
             link: id,
             roles: interaction.guild?.roles.cache
