@@ -1,5 +1,6 @@
 import {
   GuildMember,
+  InteractionContextType,
   MessageFlags,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -29,6 +30,7 @@ const cmd: AppCommand = {
     .setName("tags")
     .setDescription("Tag configuration base")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((cmd) =>
       cmd
         .setName("view")

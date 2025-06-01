@@ -1,5 +1,6 @@
 import {
   GuildMember,
+  InteractionContextType,
   MessageFlags,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -21,6 +22,7 @@ const cmd: AppCommand = {
     .setName("groups")
     .setDescription("Groups configuration base")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((cmd) =>
       cmd.setName("new").setDescription("Create a new group")
     )

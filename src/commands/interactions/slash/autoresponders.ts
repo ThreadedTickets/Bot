@@ -3,6 +3,7 @@ import {
   ChannelSelectMenuBuilder,
   ChannelType,
   GuildMember,
+  InteractionContextType,
   MessageFlags,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -38,6 +39,7 @@ const cmd: AppCommand = {
     .setName("autoresponders")
     .setDescription("Auto Responder configuration base")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((cmd) =>
       cmd
         .setName("view")

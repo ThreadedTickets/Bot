@@ -1,6 +1,7 @@
 import {
   ChannelType,
   GuildMember,
+  InteractionContextType,
   MessageFlags,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -27,6 +28,7 @@ const cmd: AppCommand = {
     .setName("ticket_triggers")
     .setDescription("Ticket trigger configuration base")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((cmd) =>
       cmd.setName("new").setDescription("Create a new ticket trigger")
     )

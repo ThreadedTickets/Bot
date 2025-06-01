@@ -1,5 +1,6 @@
 import {
   GuildMember,
+  InteractionContextType,
   MessageFlags,
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -28,6 +29,7 @@ const cmd: AppCommand = {
     .setName("applications")
     .setDescription("Application configuration base")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((cmd) =>
       cmd.setName("new").setDescription("Create a new application")
     )
