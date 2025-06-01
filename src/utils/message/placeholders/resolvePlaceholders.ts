@@ -13,7 +13,7 @@ export function resolvePlaceholders(
 ): string {
   return template.replace(/{\s*([^{}]+?)\s*}/g, (_, expression) => {
     let [rawExpr, fallback] = expression.split(/\s*\|\|\s*/);
-    rawExpr = rawExpr.trim();
+    rawExpr = rawExpr.trim() ?? "";
     fallback = fallback?.trim();
 
     // Handle function calls like upper(ticket.owner)
