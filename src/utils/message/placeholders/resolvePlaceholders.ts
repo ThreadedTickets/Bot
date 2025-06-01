@@ -17,7 +17,7 @@ export function resolvePlaceholders(
     fallback = fallback?.trim();
 
     // Handle function calls like upper(ticket.owner)
-    const funcMatch = rawExpr.match(/^(\w+)\(([^)]+)\)$/);
+    const funcMatch = (rawExpr ?? "").match(/^(\w+)\(([^)]+)\)$/);
     if (funcMatch) {
       const [, funcName, argsRaw] = funcMatch;
       const args = argsRaw.split(",").map((arg: string) => {
