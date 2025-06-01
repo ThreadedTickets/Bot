@@ -15,4 +15,8 @@ export const supportedLocales = {
   //   name: "Spanish",
   //   emoji: "🇪🇸",
   // },
+  // hi: {
+  //   name: "Hindi",
+  //   emoji: "🇮🇳",
+  // },
 } as const;

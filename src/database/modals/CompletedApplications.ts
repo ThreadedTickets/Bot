@@ -1,15 +1,18 @@
 import mongoose from "mongoose";
 
-const response = new mongoose.Schema({
-  question: {
-    type: String,
-    required: true,
+const response = new mongoose.Schema(
+  {
+    question: {
+      type: String,
+      required: true,
+    },
+    response: {
+      type: String,
+      required: true,
+    },
   },
-  response: {
-    type: String,
-    required: true,
-  },
-});
+  { _id: false }
+);
 
 const schema = new mongoose.Schema({
   _id: { type: String, required: true },
