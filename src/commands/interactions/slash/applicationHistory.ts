@@ -25,6 +25,7 @@ const command: AppCommand = {
   data: new SlashCommandBuilder()
     .setName("application_history")
     .setDescription("Get a user's application history")
+    .setContexts(InteractionContextType.Guild)
     .setNameLocalizations({})
     .setDescriptionLocalizations({})
     .addStringOption((opt) =>
