@@ -27,8 +27,7 @@ const modal: SelectMenuHandler = {
   customId: "ticket",
   async execute(client, data, interaction) {
     if (!interaction.guildId) return;
-    const [, triggerId, applicationId, ownerId] =
-      interaction.customId.split(":");
+    const [, triggerId] = interaction.values[0].split(":");
 
     const trigger = await getServerTicketTrigger(
       triggerId,
@@ -73,10 +72,6 @@ const modal: SelectMenuHandler = {
     });
 
     let responses: TicketFormResponse[] = [];
-    if (applicationId) {
-      const application = await getCompletedApplication(applicationId, ownerId);
-      if (application) responses = application.responses;
-    }
 
     ticketQueueManager.wrap(async () => {
       const checks = await performTicketChecks(

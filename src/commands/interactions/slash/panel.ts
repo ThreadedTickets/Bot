@@ -387,7 +387,7 @@ function buildTriggerActionRows(
   if (type === "select") {
     const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
       new StringSelectMenuBuilder()
-        .setCustomId("triggerSelect")
+        .setCustomId("ticket")
         .setPlaceholder("Select a trigger")
         .addOptions(
           uniqueTriggers.slice(0, 25).map((trigger) => {
