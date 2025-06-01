@@ -43,10 +43,10 @@ export async function raiseTicket(
         })
       ).discordMsg
     );
-  if (ticket.isRaised)
-    return repliable?.editReply(t(locale, "TICKET_ALREADY_RAISED"));
   if (!ticket.allowRaising)
     return repliable?.editReply(t(locale, "TICKET_DOES_NOT_ALLOW_RAISE"));
+  if (ticket.isRaised)
+    return repliable?.editReply(t(locale, "TICKET_ALREADY_RAISED"));
 
   await TicketSchema.findOneAndUpdate({ _id: ticketId }, { isRaised: true });
   await invalidateCache(`ticket:${ticketId}`);
