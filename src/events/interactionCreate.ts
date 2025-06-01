@@ -102,7 +102,13 @@ const event: Event<"interactionCreate"> = {
               ...announcement,
               flags: [MessageFlags.Ephemeral],
             })
-            .catch(() => {});
+            .catch((err) => {
+              logger(
+                "Commands",
+                "Warn",
+                `Error when showing announcement: ${err}`
+              );
+            });
         }
       } catch (err: any) {
         logger(

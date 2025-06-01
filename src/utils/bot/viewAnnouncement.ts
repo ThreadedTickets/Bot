@@ -6,11 +6,11 @@ export async function viewAnnouncement(userId: string) {
 
   // Check if announcement exists
   const announcement = await redis.get(announcementKey);
-  if (!announcement) return null;
+  if (!announcement) return false;
 
   // Check if user has already viewed the announcement
   const hasViewed = await redis.sismember(viewedSetKey, userId);
-  if (hasViewed) return null;
+  if (hasViewed) return false;
 
   // Mark as viewed
   await redis.sadd(viewedSetKey, userId);
