@@ -237,8 +237,8 @@ const command: AppCommand = {
           .map((m) => ({
             name:
               "name" in m
-                ? `[Ticket] ${m.name}`.slice(0, 100)
-                : `[Application] ${m.label}`.slice(0, 100),
+                ? `[Application] ${m.name}`.slice(0, 100)
+                : `[Ticket] ${m.label}`.slice(0, 100),
             value: m._id,
           }))
           .slice(0, 25)

@@ -1,5 +1,11 @@
 import "dotenv/config";
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import {
+  Client,
+  GatewayIntentBits,
+  GuildMember,
+  Options,
+  Partials,
+} from "discord.js";
 import { loadPrefixCommands } from "./handlers/commandHandler";
 import { deployAppCommands } from "./handlers/interactionCommandHandler";
 import { loadEvents } from "./handlers/eventHandler";
@@ -34,6 +40,51 @@ const discordClient = new Client({
     GatewayIntentBits.GuildMembers,
   ],
   partials: [Partials.Channel],
+  makeCache: Options.cacheWithLimits({
+    ApplicationCommandManager: 0,
+    ApplicationEmojiManager: 0,
+    AutoModerationRuleManager: 0,
+    BaseGuildEmojiManager: 0,
+    DMMessageManager: 100,
+    EntitlementManager: 0,
+    GuildBanManager: 0,
+    GuildEmojiManager: 0,
+    GuildForumThreadManager: 0,
+    GuildInviteManager: 0,
+    GuildMemberManager: 100,
+    GuildMessageManager: 100,
+    GuildScheduledEventManager: 0,
+    GuildStickerManager: 0,
+    GuildTextThreadManager: 100,
+    MessageManager: 100,
+    PresenceManager: 0,
+    ReactionManager: 0,
+    ReactionUserManager: 0,
+    StageInstanceManager: 0,
+    ThreadManager: 100,
+    ThreadMemberManager: 50,
+    UserManager: 0,
+    VoiceStateManager: 0,
+  }),
+  sweepers: {
+    ...Options.DefaultSweeperSettings,
+    messages: {
+      interval: 3_600, // Every hour.
+      lifetime: 1_800, // Remove messages older than 30 minutes.
+    },
+    users: {
+      interval: 3_600,
+      filter: () => (user) => user.id !== process.env["DISCORD_CLIENT_ID"], // Remove all bots.
+    },
+    threadMembers: {
+      interval: 3_600,
+      filter: () => (user) => user.id !== process.env["DISCORD_CLIENT_ID"],
+    },
+    threads: {
+      interval: 3_600,
+      lifetime: 1_800,
+    },
+  },
 });
 export const clusterClient = new ClusterClient(discordClient);
 export const client = clusterClient.client;
