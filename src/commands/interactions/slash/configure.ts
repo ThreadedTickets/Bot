@@ -78,7 +78,7 @@ function normalizeMessage(raw: any): {
       color:
         embed.color !== undefined
           ? `#${embed.color.toString(16).padStart(6, "0")}`
-          : "#000000",
+          : `#${colours.primary}`,
       fields: Array.isArray(embed.fields) ? embed.fields : [],
       author: {
         name: embed.author?.name ?? null,
