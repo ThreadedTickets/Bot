@@ -3,16 +3,16 @@ export const supportedLocales = {
     name: "English",
     emoji: "🇬🇧",
   },
-  de: {
-    name: "German",
-    emoji: "🇩🇪",
-  },
-  fr: {
-    name: "French",
-    emoji: "🇫🇷",
-  },
-  es: {
-    name: "Spanish",
-    emoji: "🇪🇸",
-  },
+  // de: {
+  //   name: "German",
+  //   emoji: "🇩🇪",
+  // },
+  // fr: {
+  //   name: "French",
+  //   emoji: "🇫🇷",
+  // },
+  // es: {
+  //   name: "Spanish",
+  //   emoji: "🇪🇸",
+  // },
 } as const;
