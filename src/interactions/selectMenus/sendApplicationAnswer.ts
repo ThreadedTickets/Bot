@@ -93,18 +93,6 @@ const select: SelectMenuHandler = {
             ),
           },
         ],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-              new ButtonBuilder()
-                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                .setStyle(ButtonStyle.Link)
-                .setLabel(
-                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-                )
-            )
-            .toJSON(),
-        ],
       };
 
       const customMessage = application.submissionMessage
@@ -121,11 +109,23 @@ const select: SelectMenuHandler = {
         };
       }
 
-      interaction.user.send(
-        resolveDiscordMessagePlaceholders(baseMessage, {
+      interaction.user.send({
+        components: [
+          new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+              new ButtonBuilder()
+                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                .setStyle(ButtonStyle.Link)
+                .setLabel(
+                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
+                )
+            )
+            .toJSON(),
+        ],
+        ...resolveDiscordMessagePlaceholders(baseMessage, {
           applicationName: application.name,
-        })
-      );
+        }),
+      });
 
       return handleApplicationSubmit(
         applicationTyped,

@@ -60,18 +60,6 @@ const event: Event<"messageCreate"> = {
             description: t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_CANCELED"),
           },
         ],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-              new ButtonBuilder()
-                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                .setStyle(ButtonStyle.Link)
-                .setLabel(
-                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-                )
-            )
-            .toJSON(),
-        ],
       };
 
       const customMessage = application.cancelMessage
@@ -87,11 +75,23 @@ const event: Event<"messageCreate"> = {
 
       await invalidateCache(`runningApplications:${message.author.id}`);
 
-      return message.reply(
-        resolveDiscordMessagePlaceholders(baseMessage, {
+      return message.reply({
+        components: [
+          new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+              new ButtonBuilder()
+                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                .setStyle(ButtonStyle.Link)
+                .setLabel(
+                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
+                )
+            )
+            .toJSON(),
+        ],
+        ...resolveDiscordMessagePlaceholders(baseMessage, {
           applicationName: application.name,
-        })
-      );
+        }),
+      });
     }
 
     if (currentQuestion.type === "choice") return;
