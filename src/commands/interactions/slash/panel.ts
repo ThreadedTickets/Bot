@@ -65,6 +65,12 @@ const command: AppCommand = {
     )
     .addStringOption((opt) =>
       opt
+        .setName("dropdown_placeholder")
+        .setDescription("Only needed if doing a dropdown panel")
+        .setMaxLength(100)
+    )
+    .addStringOption((opt) =>
+      opt
         .setName("trigger_2")
         .setDescription("Pick a trigger")
         .setAutocomplete(true)
@@ -337,7 +343,8 @@ const command: AppCommand = {
       ),
       components: buildTriggerActionRows(
         validTriggers,
-        interaction.options.getString("type", true) as "button" | "select"
+        interaction.options.getString("type", true) as "button" | "select",
+        interaction.options.getString("dropdown_placeholder") ?? "Open a ticket"
       ),
     });
 
@@ -360,7 +367,8 @@ function buildTriggerActionRows(
     description?: string;
     colour?: ButtonStyle;
   }[],
-  type: "button" | "select"
+  type: "button" | "select",
+  placeholder: string
 ): ActionRowBuilder<any>[] {
   // Remove duplicates by `value`
   const uniqueTriggers = Array.from(
@@ -388,7 +396,7 @@ function buildTriggerActionRows(
     const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
       new StringSelectMenuBuilder()
         .setCustomId("ticket")
-        .setPlaceholder("Open a ticket")
+        .setPlaceholder(placeholder)
         .addOptions(
           uniqueTriggers.slice(0, 25).map((trigger) => {
             const option = new StringSelectMenuOptionBuilder()
