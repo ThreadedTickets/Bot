@@ -3,6 +3,7 @@ import { Application, ApplicationQuestion } from "../../types/Application";
 import { Locale } from "../../types/Locale";
 import { logger } from "../logger";
 import { TicketFormResponse, TicketTrigger } from "../../types/Ticket";
+import { onError } from "../onError";
 
 // hooks/index.ts
 type HookHandler = (data: any) => Promise<void> | void;
@@ -105,8 +106,9 @@ export async function runHooks<K extends keyof HookEventMap>(
   for (const { handler } of sorted) {
     try {
       await handler(data);
-    } catch (err) {
+    } catch (err: any) {
       logger("Hooks", "Error", `Error with hook ${event}: ${err}`);
+      onError("Hooks", `Hook error: ${event}`, { stack: err.stack });
     }
   }
 }
