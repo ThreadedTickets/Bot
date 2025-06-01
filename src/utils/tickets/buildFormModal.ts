@@ -51,13 +51,15 @@ export function buildTicketFormModal(
     if (min > max) [min, max] = [max, min]; // swap if incorrect
 
     // Fix default value
-    let value = defaultValue?.slice(0, max) || "";
-    if (value.length < min) {
+    let value =
+      typeof defaultValue === "string" ? defaultValue.slice(0, max) : null;
+
+    if (value && value.length < min) {
       value = value.padEnd(min, " ");
     }
 
     // Final validation
-    if (value.length < min || value.length > max) {
+    if (value && (value.length < min || value.length > max)) {
       return new Error(`Cannot correct default value for "${question}".`);
     }
 
