@@ -69,6 +69,7 @@ const modal: SelectMenuHandler = {
 
     await interaction.reply({
       content: t(data.lang!, "TICKET_CREATE_PERFORMING_CHECKS"),
+      flags: [MessageFlags.Ephemeral],
     });
 
     let responses: TicketFormResponse[] = [];
