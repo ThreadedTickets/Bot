@@ -1,6 +1,5 @@
 import { Event } from "../types/Event";
 import { TicketChannelManager } from "../utils/bot/TicketChannelManager";
-import { logger } from "../utils/logger";
 import { TranscriptWriter } from "../utils/tickets/TranscriptManager";
 
 const event: Event<"messageDelete"> = {

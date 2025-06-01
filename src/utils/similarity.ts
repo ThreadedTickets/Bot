@@ -1,6 +1,9 @@
 const levenshteinDistance = (a: string, b: string): number => {
-  const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]).map((row, i) =>
-    row.concat(Array.from({ length: a.length }, (_, j) => (i === 0 ? j + 1 : 0)))
+  const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]).map(
+    (row, i) =>
+      row.concat(
+        Array.from({ length: a.length }, (_, j) => (i === 0 ? j + 1 : 0))
+      )
   );
 
   for (let i = 1; i <= b.length; i++) {

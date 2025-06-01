@@ -20,7 +20,6 @@ import { fetchChannelById } from "../bot/fetchMessage";
 import { logger } from "../logger";
 import { onError } from "../onError";
 import { buildChannelPermissionOverwrites } from "../hooks/events/tickets/new/main";
-import ticketOwnerPermissionsClosed from "../../constants/ticketOwnerPermissionsClosed";
 import everyoneTicketPermissions from "../../constants/everyoneTicketPermissions";
 import botTicketPermissions from "../../constants/botTicketPermissions";
 import { TicketSchema } from "../../database/modals/Ticket";

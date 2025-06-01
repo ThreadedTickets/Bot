@@ -9,7 +9,7 @@ const redis = new Redis({
 
 redis
   .once("ready", () => logger("Redis", "Info", "Redis ready"))
-  .on("error", err => logger("Redis", "Error", err.message))
+  .on("error", (err) => logger("Redis", "Error", err.message))
   .on("close", () => logger("Redis", "Warn", "Redis connection closed"))
   .on("connect", () => logger("Redis", "Info", "Redis connected"));
 

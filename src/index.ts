@@ -1,11 +1,5 @@
 import "dotenv/config";
-import {
-  Client,
-  GatewayIntentBits,
-  GuildMember,
-  Options,
-  Partials,
-} from "discord.js";
+import { Client, GatewayIntentBits, Options, Partials } from "discord.js";
 import { loadPrefixCommands } from "./handlers/commandHandler";
 import { deployAppCommands } from "./handlers/interactionCommandHandler";
 import { loadEvents } from "./handlers/eventHandler";

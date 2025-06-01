@@ -1,14 +1,11 @@
 import {
-  CategoryChannel,
   ChannelType,
   Guild,
   GuildBasedChannel,
   GuildMember,
   PermissionsBitField,
-  TextChannel,
   User,
 } from "discord.js";
-import { getCache } from "../database/getCachedElse";
 import { TicketTrigger } from "../../types/Ticket";
 import { getTickets, getUserTickets } from "../bot/getServer";
 

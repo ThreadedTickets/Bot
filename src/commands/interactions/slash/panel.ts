@@ -9,7 +9,6 @@ import {
   SlashCommandBuilder,
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
-  TextBasedChannel,
   TextChannel,
 } from "discord.js";
 import { AppCommand } from "../../../types/Command";

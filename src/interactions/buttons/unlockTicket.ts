@@ -1,19 +1,9 @@
-import {
-  ActionRowBuilder,
-  GuildMember,
-  MessageFlags,
-  ModalBuilder,
-  PermissionFlagsBits,
-  TextInputBuilder,
-  TextInputStyle,
-} from "discord.js";
+import { GuildMember, MessageFlags, PermissionFlagsBits } from "discord.js";
 import { t } from "../../lang";
 import { ButtonHandler } from "../../types/Interactions";
 import { getUserPermissions } from "../../utils/calculateUserPermissions";
 import { getServerGroupsByIds, getTicket } from "../../utils/bot/getServer";
 import { onError } from "../../utils/onError";
-import { reopenTicket } from "../../utils/tickets/reopen";
-import { lockTicket } from "../../utils/tickets/lock";
 import { unlockTicket } from "../../utils/tickets/unlock";
 
 const button: ButtonHandler = {

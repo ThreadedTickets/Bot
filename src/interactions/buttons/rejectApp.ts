@@ -3,7 +3,6 @@ import { ButtonHandler } from "../../types/Interactions";
 import {
   getCompletedApplication,
   getServerApplication,
-  getServerGroups,
   getServerGroupsByIds,
 } from "../../utils/bot/getServer";
 import { onError } from "../../utils/onError";

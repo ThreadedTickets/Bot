@@ -12,9 +12,23 @@ type TimeUnit = "seconds" | "minutes" | "hours" | "days" | "weeks" | "months";
  * @param months Months component (assumes 30 days per month)
  * @returns Total duration converted into the given unit
  */
-export function toTimeUnit(unit: TimeUnit, seconds = 0, minutes = 0, hours = 0, days = 0, weeks = 0, months = 0): number {
+export function toTimeUnit(
+  unit: TimeUnit,
+  seconds = 0,
+  minutes = 0,
+  hours = 0,
+  days = 0,
+  weeks = 0,
+  months = 0
+): number {
   // Convert everything to seconds first
-  const totalSeconds = seconds + minutes * 60 + hours * 3600 + days * 86400 + weeks * 604800 + months * 2592000; // Assumes 30-day months
+  const totalSeconds =
+    seconds +
+    minutes * 60 +
+    hours * 3600 +
+    days * 86400 +
+    weeks * 604800 +
+    months * 2592000; // Assumes 30-day months
 
   switch (unit) {
     case "seconds":

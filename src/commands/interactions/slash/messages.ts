@@ -73,7 +73,7 @@ const cmd: AppCommand = {
     .setName("messages")
     .setDescription("Messages configuration base")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .setContexts(InteractionContextType.Guild)
+    .setContexts(InteractionContextType.Guild)
     .addSubcommand((cmd) =>
       cmd
         .setName("view")

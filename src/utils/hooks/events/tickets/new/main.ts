@@ -8,7 +8,6 @@ import {
   Interaction,
   Message,
   OverwriteData,
-  PermissionFlagsBits,
   PermissionResolvable,
   PermissionsBitField,
   TextChannel,

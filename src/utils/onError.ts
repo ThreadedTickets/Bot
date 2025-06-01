@@ -1,4 +1,4 @@
-import { APIEmbed, MessageFlags } from "discord.js";
+import { APIEmbed } from "discord.js";
 import { ErrorSchema } from "../database/modals/Error";
 import { logger, LogLocation } from "./logger";
 import colours from "../constants/colours";

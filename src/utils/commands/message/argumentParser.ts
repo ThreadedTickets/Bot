@@ -1,13 +1,24 @@
 import { ArgSpec, ArgType } from "../../../types/Command";
 
 const parseUsage = (usage: string): ArgSpec[] => {
-  const regex = /(\[|<)([^\]<>\[\]:+={}]+)(?:\{([^}]+)\})?(?:=(.*?))?(?:<(\w+)>)?(?::\(([^)]+)\))?(\+)?(\]|>)/g;
+  const regex =
+    /(\[|<)([^\]<>\[\]:+={}]+)(?:\{([^}]+)\})?(?:=(.*?))?(?:<(\w+)>)?(?::\(([^)]+)\))?(\+)?(\]|>)/g;
 
   const args: ArgSpec[] = [];
 
   let match: RegExpExecArray | null;
   while ((match = regex.exec(usage)) !== null) {
-    const [_, open, name, condition, defaultValue, type = "string", choices, rest, close] = match;
+    const [
+      _,
+      open,
+      name,
+      condition,
+      defaultValue,
+      type = "string",
+      choices,
+      rest,
+      close,
+    ] = match;
 
     args.push({
       name,
@@ -24,23 +35,38 @@ const parseUsage = (usage: string): ArgSpec[] => {
 };
 
 // Function to parse the input arguments based on the command usage
-export const parseArgs = (usage: string, input: string): { args: Record<string, any>; error?: string; code?: number; context?: any } => {
+export const parseArgs = (
+  usage: string,
+  input: string
+): {
+  args: Record<string, any>;
+  error?: string;
+  code?: number;
+  context?: any;
+} => {
   const specs = parseUsage(usage);
   const tokens = input.trim().split(/ +/);
   const result: Record<string, any> = {};
 
   let index = 0;
 
-  const evaluateCondition = (condition: string, context: Record<string, any>): boolean => {
+  const evaluateCondition = (
+    condition: string,
+    context: Record<string, any>
+  ): boolean => {
     try {
-      return new Function("context", `with (context) { return ${condition}; }`)(context);
+      return new Function("context", `with (context) { return ${condition}; }`)(
+        context
+      );
     } catch {
       return false;
     }
   };
 
   for (const spec of specs) {
-    const shouldInclude = spec.condition ? evaluateCondition(spec.condition, result) : true;
+    const shouldInclude = spec.condition
+      ? evaluateCondition(spec.condition, result)
+      : true;
 
     if (!shouldInclude) continue;
 
@@ -48,7 +74,8 @@ export const parseArgs = (usage: string, input: string): { args: Record<string, 
 
     if (token === undefined || token === "") {
       if (spec.default !== undefined) {
-        result[spec.name] = spec.type === "number" ? Number(spec.default) : spec.default;
+        result[spec.name] =
+          spec.type === "number" ? Number(spec.default) : spec.default;
         continue;
       }
 
@@ -119,7 +146,11 @@ export const parseArgs = (usage: string, input: string): { args: Record<string, 
       args: result,
       code: 3,
       error: `Too many arguments`,
-      context: { extra: tokens.slice(index), received: tokens.length, expected: index },
+      context: {
+        extra: tokens.slice(index),
+        received: tokens.length,
+        expected: index,
+      },
     };
   }
 

@@ -7,7 +7,7 @@ import {
 } from "../../utils/bot/getServer";
 import { onError } from "../../utils/onError";
 import { getUserPermissions } from "../../utils/calculateUserPermissions";
-import { GuildMember, MessageFlags, PermissionFlagsBits } from "discord.js";
+import { GuildMember, PermissionFlagsBits } from "discord.js";
 import { generateReasonModal } from "../../utils/bot/generateReasonModal";
 
 const button: ButtonHandler = {

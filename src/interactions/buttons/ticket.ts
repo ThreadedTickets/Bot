@@ -1,6 +1,6 @@
 import { GuildMember, MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { t } from "../../lang";
-import { ButtonHandler, ModalHandler } from "../../types/Interactions";
+import { ButtonHandler } from "../../types/Interactions";
 import {
   TicketForm,
   TicketFormResponse,

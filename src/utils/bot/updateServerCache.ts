@@ -1,5 +1,4 @@
 import { Document } from "mongoose";
-import { GuildSchema } from "../../database/modals/Guild";
 import { updateCachedData } from "../database/updateCache";
 import { toTimeUnit } from "../formatters/toTimeUnit";
 

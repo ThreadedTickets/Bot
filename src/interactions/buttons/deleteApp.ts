@@ -4,7 +4,6 @@ import {
   getCompletedApplication,
   getServer,
   getServerApplication,
-  getServerGroups,
   getServerGroupsByIds,
 } from "../../utils/bot/getServer";
 import { onError } from "../../utils/onError";

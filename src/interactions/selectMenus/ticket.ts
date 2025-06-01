@@ -1,19 +1,12 @@
 import { GuildMember, MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { t } from "../../lang";
-import {
-  ButtonHandler,
-  ModalHandler,
-  SelectMenuHandler,
-} from "../../types/Interactions";
+import { SelectMenuHandler } from "../../types/Interactions";
 import {
   TicketForm,
   TicketFormResponse,
   TicketTrigger,
 } from "../../types/Ticket";
-import {
-  getCompletedApplication,
-  getServerTicketTrigger,
-} from "../../utils/bot/getServer";
+import { getServerTicketTrigger } from "../../utils/bot/getServer";
 import { onError } from "../../utils/onError";
 import {
   canCreateTicketTarget,

@@ -1,8 +1,6 @@
-import { GuildMember } from "discord.js";
 import { massCloseManager } from "..";
 import { Event } from "../types/Event";
-import { getServerGroupsByIds, getUserTickets } from "../utils/bot/getServer";
-import { getUserPermissions } from "../utils/calculateUserPermissions";
+import { getUserTickets } from "../utils/bot/getServer";
 import { invalidateCache } from "../utils/database/invalidateCache";
 import { closeTicket } from "../utils/tickets/close";
 import { logger } from "../utils/logger";

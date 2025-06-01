@@ -1,5 +1,4 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { InMemoryCache } from "../../..";
 import { CommandPermission } from "../../../constants/permissions";
 import { PrefixCommand } from "../../../types/Command";
 import { getServerMessage } from "../../../utils/bot/getServer";
@@ -7,7 +6,6 @@ import {
   countAnnouncementViews,
   hasUserViewedAnnouncement,
 } from "../../../utils/bot/viewAnnouncement";
-import { invalidateCache } from "../../../utils/database/invalidateCache";
 import serverMessageToDiscordMessage from "../../../utils/formatters/serverMessageToDiscordMessage";
 import redis from "../../../utils/redis";
 

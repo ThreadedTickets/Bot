@@ -8,18 +8,14 @@ import {
 } from "discord.js";
 import { AppCommand } from "../../../types/Command";
 import {
-  getServerApplication,
-  getServerApplications,
   getServerGroupsByIds,
   getServerTicketTrigger,
   getServerTicketTriggers,
 } from "../../../utils/bot/getServer";
 import { onError } from "../../../utils/onError";
 import { t } from "../../../lang";
-import { performApplicationChecks } from "../../../utils/applications/performChecks";
 import { runHooks } from "../../../utils/hooks";
-import { Application } from "../../../types/Application";
-import { Ticket, TicketTrigger } from "../../../types/Ticket";
+import { TicketTrigger } from "../../../types/Ticket";
 import {
   canCreateTicketTarget,
   performTicketChecks,

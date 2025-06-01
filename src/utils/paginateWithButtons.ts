@@ -3,10 +3,8 @@ import {
   ButtonStyle,
   ActionRowBuilder,
   ComponentType,
-  CommandInteraction,
   Message,
   MessageEditOptions,
-  APIEmbed,
   ButtonInteraction,
   ChatInputCommandInteraction,
 } from "discord.js";

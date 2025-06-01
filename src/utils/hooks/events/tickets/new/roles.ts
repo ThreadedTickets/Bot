@@ -1,18 +1,6 @@
-import {
-  Client,
-  Guild,
-  GuildMember,
-  Interaction,
-  Message,
-  User,
-} from "discord.js";
+import { Client, Guild, Interaction, Message, User } from "discord.js";
 import { registerHook } from "../../..";
-import {
-  Application,
-  ApplicationQuestion,
-} from "../../../../../types/Application";
 import { getGuildMember } from "../../../../bot/getGuildMember";
-import { logger } from "../../../../logger";
 import { TicketFormResponse, TicketTrigger } from "../../../../../types/Ticket";
 import { Locale } from "../../../../../types/Locale";
 import { updateMemberRoles } from "../../applications/end/roles";

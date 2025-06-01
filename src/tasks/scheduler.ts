@@ -17,10 +17,18 @@ export const startTasks = (client: Client) => {
   for (const task of tasks) {
     if (task.schedule) {
       cron.schedule(task.schedule, () => task.run(client));
-      logger("Scheduler", "Info", `Task ${task.name} set to run on schedule ${task.schedule}`);
+      logger(
+        "Scheduler",
+        "Info",
+        `Task ${task.name} set to run on schedule ${task.schedule}`
+      );
     } else if (task.intervalMs) {
       setInterval(() => task.run(client), task.intervalMs);
-      logger("Scheduler", "Info", `Task ${task.name} set to run every ${task.intervalMs}ms`);
+      logger(
+        "Scheduler",
+        "Info",
+        `Task ${task.name} set to run every ${task.intervalMs}ms`
+      );
     }
   }
 };

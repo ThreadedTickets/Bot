@@ -1,8 +1,4 @@
-import {
-  ActionRowBuilder,
-  StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-} from "discord.js";
+import { ActionRowBuilder, StringSelectMenuBuilder } from "discord.js";
 import colours from "../../constants/colours";
 import { Application } from "../../types/Application";
 import { getServerMessage } from "../bot/getServer";

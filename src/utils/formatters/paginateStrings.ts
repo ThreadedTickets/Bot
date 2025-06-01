@@ -1,8 +1,4 @@
-import {
-  EmbedBuilder,
-  MessageCreateOptions,
-  MessageEditOptions,
-} from "discord.js";
+import { EmbedBuilder, MessageEditOptions } from "discord.js";
 import colours from "../../constants/colours";
 
 /**

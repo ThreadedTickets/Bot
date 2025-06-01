@@ -33,7 +33,9 @@ const saveCache = (cache: CommandCache) => {
 export const deployAppCommands = async () => {
   const cache = loadCache();
   const newCache: CommandCache = {};
-  const files = loadFilesRecursively(path.join(__dirname, "../commands/interactions"));
+  const files = loadFilesRecursively(
+    path.join(__dirname, "../commands/interactions")
+  );
 
   const globalToRegister: ApplicationCommandData[] = [];
   const guildToRegister: ApplicationCommandData[] = [];
@@ -50,7 +52,8 @@ export const deployAppCommands = async () => {
     newCache[command.data.name] = { mtime, isGuild };
 
     // Check if the command has been modified based on timestamp or any other changes
-    const hasChanged = !cached || cached.mtime !== mtime || cached.isGuild !== isGuild;
+    const hasChanged =
+      !cached || cached.mtime !== mtime || cached.isGuild !== isGuild;
 
     if (hasChanged) {
       if (isGuild) {
@@ -63,13 +66,25 @@ export const deployAppCommands = async () => {
 
   // Only update if there are changes
   if (guildToRegister.length > 0) {
-    await rest.put(Routes.applicationGuildCommands(clientId, testGuildId), { body: guildToRegister });
-    logger("Handlers", "Info", `Updated ${guildToRegister.length} guild commands`);
+    await rest.put(Routes.applicationGuildCommands(clientId, testGuildId), {
+      body: guildToRegister,
+    });
+    logger(
+      "Handlers",
+      "Info",
+      `Updated ${guildToRegister.length} guild commands`
+    );
   }
 
   if (globalToRegister.length > 0) {
-    await rest.put(Routes.applicationCommands(clientId), { body: globalToRegister });
-    logger("Handlers", "Info", `Updated ${globalToRegister.length} global commands`);
+    await rest.put(Routes.applicationCommands(clientId), {
+      body: globalToRegister,
+    });
+    logger(
+      "Handlers",
+      "Info",
+      `Updated ${globalToRegister.length} global commands`
+    );
   }
 
   saveCache(newCache);

@@ -1,9 +1,4 @@
-import {
-  InteractionContextType,
-  MessageFlags,
-  PermissionFlagsBits,
-  SlashCommandBuilder,
-} from "discord.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { AppCommand } from "../../../types/Command";
 import { getAnnouncement } from "../../../utils/bot/viewAnnouncement";
 import { t } from "../../../lang";

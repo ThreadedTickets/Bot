@@ -11,7 +11,6 @@ import { TicketChannelManager } from "../../../utils/bot/TicketChannelManager";
 import { getServerGroupsByIds, getTicket } from "../../../utils/bot/getServer";
 import { onError } from "../../../utils/onError";
 import { getUserPermissions } from "../../../utils/calculateUserPermissions";
-import { reopenTicket } from "../../../utils/tickets/reopen";
 import { lockTicket } from "../../../utils/tickets/lock";
 
 const command: AppCommand = {

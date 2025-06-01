@@ -7,7 +7,6 @@ import {
   canCreateTicketTarget,
   performTicketChecks,
 } from "../../utils/tickets/performChecks";
-import { GuildMember } from "discord.js";
 import { getGuildMember } from "../../utils/bot/getGuildMember";
 import { runHooks } from "../../utils/hooks";
 

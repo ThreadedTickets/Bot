@@ -1,6 +1,4 @@
 import {
-  ApplicationCommandAutocompleteStringOption,
-  ApplicationCommandOptionChoiceData,
   CategoryChannel,
   ChannelType,
   GuildMember,
@@ -14,15 +12,10 @@ import { AppCommand } from "../../../types/Command";
 import { t } from "../../../lang";
 import {
   getServerGroupsByIds,
-  getTicket,
-  getTickets,
   getTicketTrust,
 } from "../../../utils/bot/getServer";
 import { onError } from "../../../utils/onError";
 import { getUserPermissions } from "../../../utils/calculateUserPermissions";
-import path from "path";
-import fs from "fs";
-import { formatDate } from "../../../utils/formatters/date";
 import { TicketChannelManager } from "../../../utils/bot/TicketChannelManager";
 import { fetchChannelById } from "../../../utils/bot/fetchMessage";
 import { buildChannelPermissionOverwrites } from "../../../utils/hooks/events/tickets/new/main";

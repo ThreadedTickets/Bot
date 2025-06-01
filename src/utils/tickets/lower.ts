@@ -9,11 +9,7 @@ import {
 import { client } from "../..";
 import { t } from "../../lang";
 import { Locale } from "../../types/Locale";
-import {
-  getServer,
-  getServerGroupsByIds,
-  getTicketTrust,
-} from "../bot/getServer";
+import { getServer, getTicketTrust } from "../bot/getServer";
 import {
   getAvailableLogChannel,
   postLogToWebhook,
@@ -22,10 +18,6 @@ import colours from "../../constants/colours";
 import { fetchChannelById } from "../bot/fetchMessage";
 import { logger } from "../logger";
 import { onError } from "../onError";
-import { buildChannelPermissionOverwrites } from "../hooks/events/tickets/new/main";
-import ticketOwnerPermissionsClosed from "../../constants/ticketOwnerPermissionsClosed";
-import everyoneTicketPermissions from "../../constants/everyoneTicketPermissions";
-import botTicketPermissions from "../../constants/botTicketPermissions";
 import { TicketSchema } from "../../database/modals/Ticket";
 import { invalidateCache } from "../database/invalidateCache";
 

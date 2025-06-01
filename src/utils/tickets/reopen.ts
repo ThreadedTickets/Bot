@@ -1,14 +1,9 @@
 import {
-  ActionRowBuilder,
-  ButtonBuilder,
   ButtonInteraction,
-  ButtonStyle,
   ChatInputCommandInteraction,
-  ModalSubmitInteraction,
   TextChannel,
 } from "discord.js";
 import { client, TaskScheduler } from "../..";
-import { formatDuration, parseDurationToMs } from "../formatters/duration";
 import { t } from "../../lang";
 import { Locale } from "../../types/Locale";
 import { TicketSchema } from "../../database/modals/Ticket";
@@ -20,11 +15,9 @@ import {
 import colours from "../../constants/colours";
 import { fetchChannelById } from "../bot/fetchMessage";
 import { logger } from "../logger";
-import { TicketChannelManager } from "../bot/TicketChannelManager";
 import { onError } from "../onError";
 import { invalidateCache } from "../database/invalidateCache";
 import { buildChannelPermissionOverwrites } from "../hooks/events/tickets/new/main";
-import ticketOwnerPermissionsClosed from "../../constants/ticketOwnerPermissionsClosed";
 import everyoneTicketPermissions from "../../constants/everyoneTicketPermissions";
 import botTicketPermissions from "../../constants/botTicketPermissions";
 import ticketOwnerPermissions from "../../constants/ticketOwnerPermissions";

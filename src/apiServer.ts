@@ -4,7 +4,6 @@ import { logger } from "./utils/logger";
 import { MessageCreatorSchema } from "./database/modals/MessageCreator";
 import { validateDiscordMessage } from "./utils/bot/validateMessage";
 import {
-  getServer,
   getServerApplication,
   getServerApplications,
   getServerGroup,
@@ -16,8 +15,6 @@ import {
 import { invalidateCache } from "./utils/database/invalidateCache";
 import limits from "./constants/limits";
 import { generateId } from "./utils/database/generateId";
-import { updateCachedData } from "./utils/database/updateCache";
-import { toTimeUnit } from "./utils/formatters/toTimeUnit";
 import { GroupCreatorSchema } from "./database/modals/GroupCreator";
 import {
   GroupSchema,

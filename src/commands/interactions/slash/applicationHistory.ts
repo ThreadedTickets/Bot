@@ -6,13 +6,11 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { AppCommand } from "../../../types/Command";
-import { getAnnouncement } from "../../../utils/bot/viewAnnouncement";
 import { t } from "../../../lang";
 import {
   getServerApplication,
   getServerApplications,
   getServerGroupsByIds,
-  getServerLocale,
   getUserCompletedApplications,
 } from "../../../utils/bot/getServer";
 import { onError } from "../../../utils/onError";

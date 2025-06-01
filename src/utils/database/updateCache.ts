@@ -9,7 +9,11 @@ import redis from "../redis";
  * @param data The new data
  * @returns True if the data was successfully cached, otherwise false
  */
-export const updateCachedData = async (key: string, ttl: number, data: any): Promise<boolean> => {
+export const updateCachedData = async (
+  key: string,
+  ttl: number,
+  data: any
+): Promise<boolean> => {
   try {
     await redis.set(key, JSON.stringify(data), "EX", ttl);
     return true;
