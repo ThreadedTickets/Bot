@@ -1,6 +1,6 @@
 import { GuildMember, MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { t } from "../../lang";
-import { ModalHandler } from "../../types/Interactions";
+import { ButtonHandler, ModalHandler } from "../../types/Interactions";
 import {
   TicketForm,
   TicketFormResponse,
@@ -17,8 +17,9 @@ import {
 } from "../../utils/tickets/performChecks";
 import { runHooks } from "../../utils/hooks";
 import { ticketQueueManager } from "../..";
+import { buildTicketFormModal } from "../../utils/tickets/buildFormModal";
 
-const modal: ModalHandler = {
+const modal: ButtonHandler = {
   customId: "ticket",
   async execute(client, data, interaction) {
     if (!interaction.guildId) return;
@@ -47,6 +48,24 @@ const modal: ModalHandler = {
     const triggerTyped: TicketTrigger = {
       ...triggerObject,
     };
+
+    if (trigger.form.length) {
+      const modal = buildTicketFormModal(
+        triggerTyped.form,
+        `ticket:${trigger._id}`,
+        triggerTyped.label
+      );
+
+      if (modal instanceof Error)
+        return await interaction.reply({
+          ...(
+            await onError("Tickets", modal.message, { stack: modal.stack })
+          ).discordMsg,
+          flags: [MessageFlags.Ephemeral],
+        });
+
+      return interaction.showModal(modal);
+    }
 
     await interaction.editReply({
       content: t(data.lang!, "TICKET_CREATE_PERFORMING_CHECKS"),
