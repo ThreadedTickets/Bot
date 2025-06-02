@@ -211,6 +211,7 @@ registerHook(
       syncChannelPermissionsWhenMoved: trigger.syncChannelPermissionsWhenMoved,
       takeTranscripts: trigger.takeTranscripts,
       channel: ticketChannel.id,
+      dmOnClose: trigger.dmOnClose ?? null,
     });
 
     invalidateCache(`tickets:${trigger.server}:${owner}:Open`);

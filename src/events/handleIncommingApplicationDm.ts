@@ -198,6 +198,7 @@ const event: Event<"messageCreate"> = {
       let baseMessage: {
         content?: string;
         embeds?: any[];
+        components?: any[];
       } = {
         embeds: [
           {
@@ -208,6 +209,18 @@ const event: Event<"messageCreate"> = {
               "APPLICATION_DEFAULT_MESSAGE_SUBMITTED"
             ),
           },
+        ],
+        components: [
+          new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+              new ButtonBuilder()
+                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                .setStyle(ButtonStyle.Link)
+                .setLabel(
+                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
+                )
+            )
+            .toJSON(),
         ],
       };
 
@@ -222,6 +235,21 @@ const event: Event<"messageCreate"> = {
         baseMessage = {
           content: customMessage.content,
           embeds: customMessage.embeds,
+          components: [
+            new ActionRowBuilder<ButtonBuilder>()
+              .addComponents(
+                new ButtonBuilder()
+                  .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                  .setStyle(ButtonStyle.Link)
+                  .setLabel(
+                    t(
+                      data?.lang!,
+                      "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON"
+                    )
+                  )
+              )
+              .toJSON(),
+          ],
         };
       }
 

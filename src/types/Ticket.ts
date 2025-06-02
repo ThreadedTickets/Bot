@@ -25,6 +25,9 @@ export type Ticket = {
   allowReopening: boolean;
   syncChannelPermissionsWhenMoved: boolean;
   closeOnLeave: boolean;
+  dmOnClose: string | null;
+  createdAt: Date;
+  deletedAt: Date;
 };
 
 export type TicketForm = {
@@ -70,4 +73,5 @@ export type TicketTrigger = {
   requiredRoles: string[];
   bannedRoles: string[];
   notifyStaff: string[];
+  dmOnClose: string | null;
 };

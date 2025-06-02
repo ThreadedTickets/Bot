@@ -11,13 +11,17 @@ import { formatDuration, parseDurationToMs } from "../formatters/duration";
 import { t } from "../../lang";
 import { Locale } from "../../types/Locale";
 import { TicketSchema } from "../../database/modals/Ticket";
-import { getServer, getServerGroupsByIds } from "../bot/getServer";
+import {
+  getServer,
+  getServerGroupsByIds,
+  getServerMessage,
+} from "../bot/getServer";
 import {
   getAvailableLogChannel,
   postLogToWebhook,
 } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
-import { fetchChannelById } from "../bot/fetchMessage";
+import { fetchChannelById, fetchGuildById } from "../bot/fetchMessage";
 import { logger } from "../logger";
 import { TicketChannelManager } from "../bot/TicketChannelManager";
 import { onError } from "../onError";
@@ -32,6 +36,9 @@ import { TranscriptWriter } from "./TranscriptManager";
 import { renderTranscriptFromJsonl } from "./render";
 import fs from "fs";
 import path from "path";
+import serverMessageToDiscordMessage from "../formatters/serverMessageToDiscordMessage";
+import { resolveDiscordMessagePlaceholders } from "../message/placeholders/resolvePlaceholders";
+import { generateBasePlaceholderContext } from "../message/placeholders/generateBaseContext";
 
 export async function closeTicket(
   ticketId: string,
@@ -232,5 +239,31 @@ export async function closeTicket(
       .catch((err) =>
         logger("Tickets", "Warn", `Failed to delete ticket channel: ${err}`)
       );
+  }
+
+  if (ticket.dmOnClose) {
+    const owner = await getGuildMember(client, ticket.server, ticket.owner);
+    const message = await getServerMessage(ticket.dmOnClose, ticket.server);
+    const guild = await fetchGuildById(client, ticket.server);
+    if (owner && message && guild) {
+      owner.send({
+        components: [
+          new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+              new ButtonBuilder()
+                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                .setStyle(ButtonStyle.Link)
+                .setLabel(t(locale, "TICKET_CLOSE_DM_BUTTON"))
+            )
+            .toJSON(),
+        ],
+        ...resolveDiscordMessagePlaceholders(
+          serverMessageToDiscordMessage(message),
+          generateBasePlaceholderContext({
+            server: guild,
+          })
+        ),
+      });
+    }
   }
 }
