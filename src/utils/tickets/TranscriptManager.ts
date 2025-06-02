@@ -74,6 +74,55 @@ export class TranscriptWriter {
   private ticketId: string;
   private metadata: Record<string, any> = {};
   private closed = false;
+  private writers = new Map<
+    string,
+    { writer: TranscriptWriter; timeout: NodeJS.Timeout }
+  >();
+  private readonly CLEANUP_DELAY = 2 * 60 * 1000; // 2 minutes
+
+  get(ticketId: string, anonymise: boolean): TranscriptWriter {
+    const existing = this.writers.get(ticketId);
+
+    if (existing) {
+      clearTimeout(existing.timeout); // Reset cleanup timer
+      existing.timeout = this.scheduleCleanup(ticketId);
+      return existing.writer;
+    }
+
+    const writer = new TranscriptWriter(ticketId, anonymise);
+    const timeout = this.scheduleCleanup(ticketId);
+    this.writers.set(ticketId, { writer, timeout });
+
+    return writer;
+  }
+
+  private scheduleCleanup(ticketId: string): NodeJS.Timeout {
+    return setTimeout(() => {
+      const item = this.writers.get(ticketId);
+      if (!item) return;
+      try {
+        item.writer["closed"] = true; // Soft close (no handles to close)
+      } catch (err) {
+        console.error(`Failed to close TranscriptWriter for ${ticketId}:`, err);
+      }
+      this.writers.delete(ticketId);
+    }, this.CLEANUP_DELAY);
+  }
+
+  delete(ticketId: string): void {
+    const entry = this.writers.get(ticketId);
+    if (entry) {
+      clearTimeout(entry.timeout);
+      this.writers.delete(ticketId);
+    }
+  }
+
+  clearAll(): void {
+    for (const [ticketId, { timeout }] of this.writers.entries()) {
+      clearTimeout(timeout);
+      this.writers.delete(ticketId);
+    }
+  }
 
   constructor(ticketId: string, allowAnonymity = false) {
     this.ticketId = ticketId;
@@ -253,3 +302,55 @@ export class TranscriptWriter {
     fs.renameSync(tempPath, this.filePath);
   }
 }
+class TranscriptWriterManager {
+  private writers = new Map<
+    string,
+    { writer: TranscriptWriter; timeout: NodeJS.Timeout }
+  >();
+  private readonly CLEANUP_DELAY = 2 * 60 * 1000; // 2 minutes
+
+  get(ticketId: string, anonymise: boolean): TranscriptWriter {
+    const existing = this.writers.get(ticketId);
+
+    if (existing) {
+      clearTimeout(existing.timeout); // Reset cleanup timer
+      existing.timeout = this.scheduleCleanup(ticketId);
+      return existing.writer;
+    }
+
+    const writer = new TranscriptWriter(ticketId, anonymise);
+    const timeout = this.scheduleCleanup(ticketId);
+    this.writers.set(ticketId, { writer, timeout });
+
+    return writer;
+  }
+
+  private scheduleCleanup(ticketId: string): NodeJS.Timeout {
+    return setTimeout(() => {
+      const item = this.writers.get(ticketId);
+      if (!item) return;
+      try {
+        item.writer["closed"] = true; // Soft close (no handles to close)
+      } catch (err) {
+        console.error(`Failed to close TranscriptWriter for ${ticketId}:`, err);
+      }
+      this.writers.delete(ticketId);
+    }, this.CLEANUP_DELAY);
+  }
+
+  delete(ticketId: string): void {
+    const entry = this.writers.get(ticketId);
+    if (entry) {
+      clearTimeout(entry.timeout);
+      this.writers.delete(ticketId);
+    }
+  }
+
+  clearAll(): void {
+    for (const [ticketId, { timeout }] of this.writers.entries()) {
+      clearTimeout(timeout);
+      this.writers.delete(ticketId);
+    }
+  }
+}
+export const transcriptWriterManager = new TranscriptWriterManager();

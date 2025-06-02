@@ -1,6 +1,6 @@
 import { Event } from "../types/Event";
 import { TicketChannelManager } from "../utils/bot/TicketChannelManager";
-import { TranscriptWriter } from "../utils/tickets/TranscriptManager";
+import { transcriptWriterManager } from "../utils/tickets/TranscriptManager";
 
 const event: Event<"messageCreate"> = {
   name: "messageCreate",
@@ -13,7 +13,10 @@ const event: Event<"messageCreate"> = {
     );
     if (!ticket?.takeTranscript) return;
 
-    const writer = new TranscriptWriter(ticket.ticketId, ticket.anonymise);
+    const writer = transcriptWriterManager.get(
+      ticket.ticketId,
+      ticket.anonymise
+    );
     writer.appendMessage(message);
 
     if (message.mentions.channels) {

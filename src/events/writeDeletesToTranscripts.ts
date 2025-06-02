@@ -1,6 +1,6 @@
 import { Event } from "../types/Event";
 import { TicketChannelManager } from "../utils/bot/TicketChannelManager";
-import { TranscriptWriter } from "../utils/tickets/TranscriptManager";
+import { transcriptWriterManager } from "../utils/tickets/TranscriptManager";
 
 const event: Event<"messageDelete"> = {
   name: "messageDelete",
@@ -13,7 +13,10 @@ const event: Event<"messageDelete"> = {
     );
     if (!ticket?.takeTranscript) return;
 
-    const writer = new TranscriptWriter(ticket.ticketId, ticket.anonymise);
+    const writer = transcriptWriterManager.get(
+      ticket.ticketId,
+      ticket.anonymise
+    );
     message.content = "MESSAGE DELETED";
     message.embeds = [];
     message.type = null;
