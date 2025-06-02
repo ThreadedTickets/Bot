@@ -263,4 +263,6 @@ export const lang = {
     "Application accepted by {user} with the reason {reason}",
   APPLICATION_VERDICT_REJECT_HEADER:
     "Application rejected by {user} with the reason {reason}",
+
+  TICKET_CLOSE_DM_BUTTON: "Want your own ticket system? Invite Threaded!",
 };

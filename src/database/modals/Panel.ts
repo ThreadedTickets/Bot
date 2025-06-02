@@ -411,6 +411,7 @@ const ticketTriggerSchema = new mongoose.Schema({
   allowRaising: { type: Boolean, default: true },
   allowReopening: { type: Boolean, default: true },
   defaultToRaised: { type: Boolean, default: false },
+  dmOnClose: { type: String, default: null },
   closeOnLeave: { type: Boolean, default: false },
   sendCopyOfFormInTicket: { type: Boolean, default: true },
   notifyStaff: { type: [String], default: [] }, // Forced to be the group staff for threaded tickets
@@ -502,6 +503,7 @@ const ticketTriggerSchemaAjv = {
     openChannel: { type: ["string", "null"] },
     closeChannel: { type: ["string", "null"] },
     isThread: { type: "boolean" },
+    dmOnClose: { type: ["string", "null"] },
 
     allowAutoresponders: { type: "boolean" },
     syncChannelPermissionsWhenMoved: { type: "boolean" },
@@ -563,6 +565,7 @@ const ticketTriggerSchemaAjv = {
   },
 
   required: [
+    "dmOnClose",
     "label",
     "takeTranscripts",
     "requiredRoles",

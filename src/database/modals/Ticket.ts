@@ -78,9 +78,13 @@ const schema = new mongoose.Schema(
     allowRaising: { type: Boolean, default: true },
     allowReopening: { type: Boolean, default: true },
     syncChannelPermissionsWhenMoved: { type: Boolean, default: false },
+
+    dmOnClose: { type: String, default: null },
+    createdAt: { type: Date, default: null, required: true },
+    deletedAt: { type: Date, default: null },
   },
   {
-    timestamps: true,
+    timestamps: false,
   }
 );
 
