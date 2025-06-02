@@ -50,6 +50,7 @@ export async function closeTicket(
     { _id: ticketId },
     {
       status: "Closed",
+      deletedAt: new Date(),
     },
     {
       new: false,
