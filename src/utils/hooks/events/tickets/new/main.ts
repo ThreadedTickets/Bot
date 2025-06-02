@@ -211,6 +211,7 @@ registerHook(
       syncChannelPermissionsWhenMoved: trigger.syncChannelPermissionsWhenMoved,
       takeTranscripts: trigger.takeTranscripts,
       channel: ticketChannel.id,
+      createdAt: new Date(),
       dmOnClose: trigger.dmOnClose ?? null,
     });
 
