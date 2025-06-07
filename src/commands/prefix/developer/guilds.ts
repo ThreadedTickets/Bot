@@ -1,5 +1,6 @@
 import { CommandPermission } from "../../../constants/permissions";
 import { PrefixCommand } from "../../../types/Command";
+import {AttachmentBuilder} from "discord.js"
 
 const command: PrefixCommand<{
   key: string;
