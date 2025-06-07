@@ -6,6 +6,7 @@ const command: PrefixCommand<{
 }> = {
   name: "guildlist",
   aliases: ["gl"],
+  usage: "gl",
   permissionLevel: CommandPermission.Admin,
   async execute(client, data, message, args) {
     const guilds = client.guilds.cache.map(guild => `${guild.name} - ${guild.id}`);
