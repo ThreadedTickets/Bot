@@ -10,10 +10,19 @@ const command: PrefixCommand<{
   usage: "gl",
   permissionLevel: CommandPermission.Owner,
   async execute(client, data, message, args) {
-    const guilds = client.guilds.cache.map(guild => `${guild.name} - ${guild.id}`);
-  const content = guilds.join("\n");
+   const lines = client.guilds.cache.map(guild => {
+    const name = guild.name;
+    const id = guild.id;
+    const memberCount = guild.memberCount ?? "Unknown";
 
-  const buffer = Buffer.from(content, "utf-8");
+    const vanity = guild.vanityURLCode
+      ? `https://discord.gg/${guild.vanityURLCode}`
+      : "No vanity URL";
+
+    return `${name} - ${id} | Members: ${memberCount} | Vanity: ${vanity}`;
+  });
+
+  const buffer = Buffer.from(lines.join("\n"), "utf-8");
   const attachment = new AttachmentBuilder(buffer, { name: "guilds.txt" });
 
     message.reply({files:[attachment]})
