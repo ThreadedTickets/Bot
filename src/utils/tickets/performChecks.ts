@@ -107,7 +107,7 @@ export async function canCreateTicketTarget(
     }
 
     const permissions = parent.permissionsFor(guild.members.me!);
-    if (!permissions?.has(PermissionsBitField.Flags.CreatePublicThreads)) {
+    if (!permissions?.has(PermissionsBitField.Flags.CreatePrivateThreads)) {
       return {
         allowed: false,
         error: "2010",
