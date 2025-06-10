@@ -31,6 +31,7 @@ export const lang = {
   ERROR_CODE_1011: "The given response was too low. It must be at least {min}",
   ERROR_CODE_1012: "The given response was too high. It must be at most {max}",
   ERROR_CODE_1013: "This response must be a number",
+  ERROR_CODE_1014: "Threaded does not support file uploads at the moment",
 
   ERROR_CODE_2001:
     "You have a role that is blacklisted from using this ticket trigger",

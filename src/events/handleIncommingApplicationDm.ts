@@ -97,6 +97,11 @@ const event: Event<"messageCreate"> = {
     if (currentQuestion.type === "choice") return;
 
     if (currentQuestion.type === "text") {
+      if (message.attachments.size > 0)
+        return message.reply(
+          (await onError("Commands", t(data!.lang!, `ERROR_CODE_1014`)))
+            .discordMsg
+        );
       if (currentQuestion.minimum && selection.length < currentQuestion.minimum)
         return message.reply(
           (
