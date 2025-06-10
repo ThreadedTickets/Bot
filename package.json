@@ -4,11 +4,11 @@
   "description": "",
   "main": ".build/src/cluster.js",
   "scripts": {
-    "bot": "node .build/src/cluster.js",
-    "start": "rm -rf .build/ && npx tsc && npm run bot",
+    "bot": "npx pm2 start ./build/src/cluster.js --name Threaded",
+    "start": "rm -rf .build/ && npm i pm2 --save && npx tsc && npm run bot",
     "bot:debug": "rm -rf .build/ && npx tsc && node --trace-warnings .build/src/cluster.js",
     "debug": "npm run bot:debug",
-    "build": "npm i && npm run start"
+    "build": "rm -rf .build/ && npm i pm2 --save && npx tsc echo \"Run 'npx pm2 start ./build/src/cluster.js --name Threaded' to start bot\""
   },
   "keywords": [],
   "author": "",
