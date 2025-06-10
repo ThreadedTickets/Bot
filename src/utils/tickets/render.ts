@@ -481,7 +481,7 @@ export async function renderTranscriptFromJsonl(
 
 function minifyHtml(html: string): string {
   // Remove newlines and tabs
-  let minified = html.replace(/[\n\r\t]+/g, "");
+  let minified = html.replace(/[\n\r\t]+/g, "") ?? "";
 
   // Collapse multiple spaces into one, except inside tags (attribute values, text nodes)
   // We do this by splitting text inside and outside tags and minifying only outside tags
