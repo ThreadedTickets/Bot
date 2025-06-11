@@ -1,3 +1,5 @@
+import { logger } from "../logger";
+
 export function formatDuration(ms: number): string {
   const seconds = Math.floor(ms / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -18,7 +20,14 @@ export function parseDurationToMs(
   input: string,
   throwOnInvalid: boolean = false
 ) {
-  if (typeof input !== "string") throw new TypeError("Input must be a string");
+  if (!input || typeof input !== "string") {
+    logger(
+      "Parse Duration MS",
+      "Warn",
+      `Invalid input, returned 0ms: ${input}`
+    );
+    return 0;
+  }
 
   // Define units and their corresponding ms values + synonyms
   const units = {
