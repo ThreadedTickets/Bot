@@ -27,7 +27,7 @@ const modal: SelectMenuHandler = {
     if (!interaction.guildId) return;
 
     if (interaction.values[0].split(":")[0] === "apply") {
-      const [, applicationId] = interaction.customId.split(":");
+      const [, applicationId] = interaction.values[0].split(":");
       await interaction.reply({
         content: t(data.lang!, "APPLICATION_PENDING_CHECKS"),
         flags: [MessageFlags.Ephemeral],
