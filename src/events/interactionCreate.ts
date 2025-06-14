@@ -197,6 +197,7 @@ const event: Event<"interactionCreate"> = {
                 fullId: interaction.customId,
                 user: interaction.user.id,
                 server: interaction.guild?.id || "DMs",
+                stack: (err as any).stack ?? "Unknown",
               })
             ).discordMsg
           ).catch(() => {});
