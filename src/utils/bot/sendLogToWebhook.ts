@@ -51,35 +51,75 @@ export const postLogToWebhook = async (
 ) => {
   if (!logConfig.enabled || !logConfig.channel) return;
 
-  let webhookClient = new WebhookClient({ url: logConfig.webhook });
+  let webhookClient: WebhookClient | null = null;
+
+  const guild = client.guilds.cache.find((g) =>
+    g.channels.cache.has(logConfig.channel)
+  );
+  if (!guild) return;
+
+  const channel = guild.channels.cache.get(logConfig.channel);
+  if (!channel || !channel.isTextBased()) {
+    await updateLoggingConfigToNull(guild.id, logConfig);
+    return;
+  }
+
+  // Prepare the webhook channel (either the thread's parent or the text channel)
+  let webhookChannel: TextChannel;
+  if (channel.isThread()) {
+    if (!channel.parent || !channel.parent.isTextBased()) return;
+    webhookChannel = channel.parent as TextChannel;
+  } else if (channel.type === ChannelType.GuildText) {
+    webhookChannel = channel;
+  } else {
+    return;
+  }
+
+  // If no webhook URL, create one before attempting to send
+  if (!logConfig.webhook) {
+    try {
+      const newWebhook = await createWebhook(webhookChannel, client);
+      logConfig.webhook = newWebhook.url;
+      webhookClient = new WebhookClient({ url: newWebhook.url });
+
+      const { data: document } = await getCachedDataElse(
+        `guilds:${guild.id}`,
+        toTimeUnit("seconds", 0, 30),
+        async () =>
+          await GuildSchema.findOneAndUpdate(
+            { id: guild.id },
+            { $setOnInsert: { id: guild.id } },
+            { upsert: true, new: true }
+          ),
+        GuildSchema
+      );
+
+      await updateWebhookInLoggingConfig(document.settings.logging, "", newWebhook.url);
+      await document.save();
+
+      updateCachedData(
+        `guilds:${guild.id}`,
+        toTimeUnit("seconds", 0, 30),
+        document.toObject()
+      );
+
+      logger(
+        "Webhooks",
+        "Info",
+        `Created new webhook for guild ${guild.id} as none existed`
+      );
+    } catch (err) {
+      logger("Webhooks", "Error", `Failed to create missing webhook: ${err}`);
+      return;
+    }
+  } else {
+    webhookClient = new WebhookClient({ url: logConfig.webhook });
+  }
 
   try {
-    // Attempt to send to existing webhook
     await webhookClient.send(content);
   } catch (error) {
-    const guild = client.guilds.cache.find((g) =>
-      g.channels.cache.has(logConfig.channel)
-    );
-    if (!guild) return;
-
-    const channel = guild.channels.cache.get(logConfig.channel);
-    if (!channel || !channel.isTextBased()) {
-      // If the channel is deleted or invalid, disable the logging and set the webhook to null
-      await updateLoggingConfigToNull(guild.id, logConfig);
-      return;
-    }
-
-    // Webhook likely invalid or deleted, recreate it
-    let webhookChannel: TextChannel;
-
-    if (channel.isThread()) {
-      if (!channel.parent || !channel.parent.isTextBased()) return;
-      webhookChannel = channel.parent as TextChannel;
-    } else if (channel.type === ChannelType.GuildText) {
-      webhookChannel = channel;
-    } else {
-      return;
-    }
+    logger("Webhooks", "Warn", `Initial webhook send failed, attempting recovery: ${error}`);
 
     try {
       const newWebhook = await createWebhook(webhookChannel, client);
@@ -99,14 +139,12 @@ export const postLogToWebhook = async (
         GuildSchema
       );
 
-      // Recursively find and update all webhook URLs in settings.logging
       await updateWebhookInLoggingConfig(
         document.settings.logging,
         oldWebhookUrl,
         newWebhook.url
       );
 
-      // Save the updated document back to the database
       await document.save();
 
       updateCachedData(
@@ -118,10 +156,9 @@ export const postLogToWebhook = async (
       logger(
         "Webhooks",
         "Info",
-        `Successfully updated all logs for guild ${guild.id} with new webhook URL`
+        `Recovered webhook for guild ${guild.id}`
       );
 
-      // Send log to the new webhook
       await webhookClient.send({
         ...content,
         embeds: [...(content.embeds as APIEmbed[])],
@@ -131,6 +168,7 @@ export const postLogToWebhook = async (
     }
   }
 };
+
 
 // Helper function to disable logging and set webhook and channel to null
 const updateLoggingConfigToNull = async (
