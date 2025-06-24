@@ -75,7 +75,6 @@ export function parseDurationToMs(
     }
 
     const added = value * multiplier;
-    logger("Parse Duration MS", "Debug", `Parsed ${value}${unitStr} = ${added}ms`);
     totalMs += added;
   }
 
