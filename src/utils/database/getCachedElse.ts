@@ -17,38 +17,69 @@ export const getCachedDataElse = async <T>(
   hydrateModel?: mongoose.Model<any>
 ): Promise<{ cached: boolean; data: T }> => {
   databaseRequests.inc();
+
   const cached = await redis.get(key);
   if (cached) {
-    cacheHits.inc();
-    const parsed = JSON.parse(cached);
-    return {
-      cached: true,
-      data: hydrateModel ? hydrateModel.hydrate(parsed) : (parsed as T),
-    };
+    try {
+      const parsed = JSON.parse(cached);
+      if (parsed === null) {
+        cacheHits.inc();
+        return {
+          cached: true,
+          data: parsed,
+        };
+      }
+
+      cacheHits.inc();
+      return {
+        cached: true,
+        data: hydrateModel ? hydrateModel.hydrate(parsed) : (parsed as T),
+      };
+    } catch (e) {
+      console.warn(`Failed to parse cached data for key "${key}":`, e);
+      // Optional: you could delete the corrupt key if you want to regenerate it
+      await redis.del(key);
+    }
   }
 
+  // Fallback: not in cache or parsing failed
   const functionResult = await functionIfNotFound();
-  await redis.set(key, JSON.stringify(functionResult), "EX", ttl);
-  cacheMisses.inc();
 
+  // Store result if it's not undefined
+  if (functionResult !== undefined) {
+    await redis.set(key, JSON.stringify(functionResult), "EX", ttl);
+  }
+
+  cacheMisses.inc();
   return {
     cached: false,
     data: functionResult,
   };
 };
 
-export const getCache = async (
+
+ort const getCache = async (
   key: string,
   hydrateModel?: mongoose.Model<any>
 ): Promise<{ cached: boolean; data: string | null }> => {
   const cached = await redis.get(key);
   if (cached) {
-    cacheHits.inc();
-    const parsed = cached;
-    return {
-      cached: true,
-      data: hydrateModel ? hydrateModel.hydrate(parsed) : (parsed as string),
-    };
+    try {
+      const parsed = JSON.parse(cached);
+      if (parsed === null) {
+        cacheHits.inc();
+        return { cached: true, data: parsed };
+      }
+
+      cacheHits.inc();
+      return {
+        cached: true,
+        data: hydrateModel ? hydrateModel.hydrate(parsed) : parsed,
+      };
+    } catch (e) {
+      console.warn(`Failed to parse cache for key "${key}":`, e);
+      await redis.del(key);
+    }
   }
 
   return {
