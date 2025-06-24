@@ -58,7 +58,7 @@ export const getCachedDataElse = async <T>(
 };
 
 
-ort const getCache = async (
+export const getCache = async (
   key: string,
   hydrateModel?: mongoose.Model<any>
 ): Promise<{ cached: boolean; data: string | null }> => {
