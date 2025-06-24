@@ -30,11 +30,12 @@ async function handleGuildMemberRemove(
   data: any,
   member: GuildMember
 ) {
-  logger(
+  /** logger(
     "System",
     "Info",
     `Detected guild member remove ${member.user.username} - running application on leave`
   );
+  */
 
   const serverApplications = await getServerApplications(member.guild.id);
   let counters = {
@@ -253,11 +254,13 @@ async function handleGuildMemberRemove(
       await wait(250);
     }
   }
+  /*
   logger(
     "System",
     "Info",
     `Finished processing guild member leave event: ${counters.nothing} nothing | ${counters.approve} approved | ${counters.reject} rejected | ${counters.delete} deleted`
   );
+  */
 }
 
 export default event;
