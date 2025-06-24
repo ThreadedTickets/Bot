@@ -1,4 +1,4 @@
-export function parseDurationToMs(
+export default function parseDurationToMs(
   input: string,
   throwOnInvalid: boolean = false
 ) {
