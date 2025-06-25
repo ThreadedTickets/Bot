@@ -4,48 +4,35 @@ import redis from "../redis";
 
 /**
  * Get cached data from Redis or compute and cache it if not found.
- *
- * @param key The Redis key to search
- * @param ttl The time to cache the result for in seconds
- * @param functionIfNotFound A function to run if the data requested is not found in cache
- * @returns The data and whether it was from cache or not
  */
 export const getCachedDataElse = async <T>(
   key: string,
   ttl: number,
   functionIfNotFound: () => Promise<T>,
   hydrateModel?: mongoose.Model<any>
-): Promise<{ cached: boolean; data: T }> => {
+): Promise<{ cached: boolean; data: any }> => {
   databaseRequests.inc();
 
   const cached = await redis.get(key);
   if (cached) {
     try {
       const parsed = JSON.parse(cached);
+      cacheHits.inc();
+
       if (parsed === null) {
-        cacheHits.inc();
-        return {
-          cached: true,
-          data: parsed,
-        };
+        return { cached: true, data: null };
       }
 
-      cacheHits.inc();
-      return {
-        cached: true,
-        data: hydrateModel ? hydrateModel.hydrate(parsed) : (parsed as T),
-      };
+      const data = hydrateModel ? hydrateModel.hydrate(parsed) : parsed;
+      return { cached: true, data };
     } catch (e) {
       console.warn(`Failed to parse cached data for key "${key}":`, e);
-      // Optional: you could delete the corrupt key if you want to regenerate it
       await redis.del(key);
     }
   }
 
-  // Fallback: not in cache or parsing failed
   const functionResult = await functionIfNotFound();
 
-  // Store result if it's not undefined
   if (functionResult !== undefined) {
     await redis.set(key, JSON.stringify(functionResult), "EX", ttl);
   }
@@ -57,25 +44,25 @@ export const getCachedDataElse = async <T>(
   };
 };
 
-
+/**
+ * Get cached data only, no fallback logic.
+ */
 export const getCache = async (
   key: string,
   hydrateModel?: mongoose.Model<any>
-): Promise<{ cached: boolean; data: string | null }> => {
+): Promise<{ cached: boolean; data: any }> => {
   const cached = await redis.get(key);
   if (cached) {
     try {
       const parsed = JSON.parse(cached);
+      cacheHits.inc();
+
       if (parsed === null) {
-        cacheHits.inc();
-        return { cached: true, data: parsed };
+        return { cached: true, data: null };
       }
 
-      cacheHits.inc();
-      return {
-        cached: true,
-        data: hydrateModel ? hydrateModel.hydrate(parsed) : parsed,
-      };
+      const data = hydrateModel ? hydrateModel.hydrate(parsed) : parsed;
+      return { cached: true, data };
     } catch (e) {
       console.warn(`Failed to parse cache for key "${key}":`, e);
       await redis.del(key);
