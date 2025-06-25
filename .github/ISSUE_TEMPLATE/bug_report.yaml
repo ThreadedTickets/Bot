@@ -1,0 +1,50 @@
+name: Bug report
+about: Create a report to help us improve
+title: "[Bug] "
+labels: bug
+assignees: ''
+type: "Feature"
+
+body:
+- type: textarea
+  id: description
+  attributes:
+    placeholder: "Whenever I do ... ... happens"
+    label: "When do you get this bug?"
+    render: bash
+  validation:
+    required: true
+    
+- type: textarea
+  id: reproduction
+  attributes:
+    placeholder: "Open a ticket then ..."
+    label: "List the steps to reproduce this bug"
+    render: bash
+  validation:
+    required: true
+
+- type: dropdown
+  id: reliable
+  attributes:
+    label: "Does this bug occur all the time"
+    options:
+      - Yes
+      - No
+  validation:
+    required: true
+
+- type: textarea
+  id: extra
+  attributes:
+    label: "Extra Information"
+    description: "If you think it will help, fill out some of the information below"
+    render: bash
+    value: |
+      Server ID: 
+      Component ID (Application, Trigger, ect): 
+      Interaction Type (Command, Button, ect): 
+      
+      Anything else:       
+  validation:
+    required: true
