@@ -28,7 +28,7 @@ const select: SelectMenuHandler = {
         (await onError("Commands", t(data.lang!, `ERROR_CODE_1008`))).discordMsg
       );
 
-    const appJson = JSON.parse(activeApplication.data!);
+    const appJson = activeApplication.data;
     if (applicationId !== appJson.applicationId)
       return interaction.reply(
         (await onError("Commands", t(data.lang!, `ERROR_CODE_1008`))).discordMsg

@@ -23,8 +23,8 @@ const event: Event<"messageCreate"> = {
     const activeApplication = await getCache(
       `runningApplications:${message.author.id}`
     );
-    console.log("Result:", activeApplication);
-    console.log("Raw data:", JSON.stringify(activeApplication.data, null, 2));
+    // console.log("Result:", activeApplication);
+    // console.log("Raw data:", JSON.stringify(activeApplication.data, null, 2));
 
     if (!activeApplication.cached)
       return message.reply(
