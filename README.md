@@ -6,4 +6,4 @@ This is a little more complicated as you will also require the bridge server, we
 
 ## Contributing
 
-Anyone is welcome to contribute to Threaded. Simply make a new branch with your update and feel free to open up a pull request.
+Anyone is welcome to contribute to Threaded. Simply make a new branch with your update and feel free to open up a pull request and I will review it when i can.
