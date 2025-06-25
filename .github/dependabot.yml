@@ -13,4 +13,4 @@ updates:
       interval: "daily"
     prefix: "[Update] "
     labels:
-      - Dependabot
+      - dependencies
