@@ -31,7 +31,7 @@ const modal: ButtonHandler = {
       interaction.guildId
     );
     if (!trigger)
-      return interaction.editReply(
+      return interaction.reply(
         (
           await onError(
             "Commands",
