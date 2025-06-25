@@ -23,13 +23,16 @@ const event: Event<"messageCreate"> = {
     const activeApplication = await getCache(
       `runningApplications:${message.author.id}`
     );
+    console.log("Result:", activeApplication);
+    console.log("Raw data:", JSON.stringify(activeApplication.data, null, 2));
+
     if (!activeApplication.cached)
       return message.reply(
         (await onError("Commands", t(data!.lang!, `ERROR_CODE_1008`)))
           .discordMsg
       );
 
-    const appJson = JSON.parse(activeApplication.data!);
+    const appJson = activeApplication.data;
     const { applicationId, server } = appJson;
     const application = await getServerApplication(applicationId, server);
     if (!application)
