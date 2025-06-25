@@ -269,7 +269,7 @@ export function startApi(port: number) {
           throw new Error("Application to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = req.body;
+        const { _id, server, ...safeBody } = (req.body as Body);
 
         // Apply safe updates
         application.set(safeBody);
