@@ -53,6 +53,6 @@ body:
       Component ID (Application, Trigger, ect): 
       Interaction Type (Command, Button, ect): 
       
-      Anything else:       
+      Anything else: 
   validations:
     required: false
