@@ -256,7 +256,7 @@ export function startApi(port: number) {
         const application = {
           _id: id,
           server: creator.guildId,
-          ...req.body,
+          ...(req.body as Body),
         };
 
         await ApplicationTriggerSchema.create(application);
