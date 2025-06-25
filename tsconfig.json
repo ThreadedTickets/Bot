@@ -86,7 +86,7 @@
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
     /* Type Checking */
-    "strict": false /* Enable all strict type-checking options. */,
+    "strict": false /* Enable all strict type-checking options. I HAVE DISABLED THIS FOR NOW AS OTHERWISE THE BOT WOULDNT START */,
     // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
     // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
     // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
