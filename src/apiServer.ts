@@ -60,6 +60,12 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+type Body = {
+  _id?: string;
+  server?: string;
+  [key: string]: any;
+};
+
 // Exportable function to start the metrics server
 export function startApi(port: number) {
   app.get(`/`, limiter, async (req: Request, res: Response) => {
@@ -70,7 +76,7 @@ export function startApi(port: number) {
 
   app.post("/create/message/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { content, embeds, attachments, components } = req.body;
+    const { content, embeds, attachments, components } = (req.body as Body);
 
     if (!creatorId) {
       res.status(400).json({
@@ -151,7 +157,7 @@ export function startApi(port: number) {
 
   app.post("/create/group/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { name, roles, extraMembers, permissions } = req.body;
+    const { name, roles, extraMembers, permissions } =(req.body as Body);
 
     if (!creatorId) {
       res.status(400).json({
@@ -311,7 +317,7 @@ export function startApi(port: number) {
         const trigger = {
           _id: id,
           server: creator.guildId,
-          ...req.body,
+          ...(req.body as Body),
         };
 
         await TicketTriggerSchema.create(trigger);
@@ -324,7 +330,7 @@ export function startApi(port: number) {
           throw new Error("Trigger to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = req.body;
+        const { _id, server, ...safeBody } = (req.body as Body);
 
         // Apply safe updates
         trigger.set(safeBody);
