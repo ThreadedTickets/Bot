@@ -1,11 +1,20 @@
 name: Bug report
-description: Create a report to help us improve
+description: Report a bug you have found while using Threaded
 title: "[Bug] "
 labels: bug
 assignees: []
-type: "Feature"
+type: "Bug"
 
 body:
+- type: input
+  id: id
+  attributes:
+    label: "Error ID"
+    description: "Threaded may have provided an Error ID. If it has, paste it here"
+    render: bash
+  validations:
+    required: false
+    
 - type: textarea
   id: description
   attributes:
