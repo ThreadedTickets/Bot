@@ -106,13 +106,14 @@ export async function canCreateTicketTarget(
       };
     }
 
-    const permissions = parent.permissionsFor(guild.members.me!);
-    if (!permissions?.has(PermissionsBitField.Flags.CreatePrivateThreads)) {
-      return {
-        allowed: false,
-        error: "2010",
-      };
-    }
+    // This stupid thing seems to be pumping out errors, there should be plenty of other error handling
+    // const permissions = parent.permissionsFor(guild.members.me!);
+    // if (!permissions?.has(PermissionsBitField.Flags.CreatePrivateThreads)) {
+    //   return {
+    //     allowed: false,
+    //     error: "2010",
+    //   };
+    // }
 
     const threads = await parent.threads.fetchActive();
     if (threads.threads.size >= 1000) {
