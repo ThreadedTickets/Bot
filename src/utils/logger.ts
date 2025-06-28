@@ -42,7 +42,7 @@ export const logger = (
 
   console.log(
     gray("["),
-    cyan(formatDate(new Date(), "DD-MM-YY HH:MM:ss")),
+    cyan(formatDate(new Date(), "DD-MM-YY HH:mm:ss")),
     gray("]"),
     `${gray("[")}${coloredType}${gray("]")}`,
     ...content
