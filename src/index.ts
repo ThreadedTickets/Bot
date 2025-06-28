@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "@dotenvx/dotenvx";
 import { Client, GatewayIntentBits, Options, Partials } from "discord.js";
 import { loadPrefixCommands } from "./handlers/commandHandler";
 import { deployAppCommands } from "./handlers/interactionCommandHandler";
