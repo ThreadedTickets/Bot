@@ -11,6 +11,7 @@ updates:
     # Check the npm registry for updates every day (weekdays)
     schedule:
       interval: "daily"
-    prefix: "[Update] "
+    commit-message:
+      prefix: "[Update] "
     labels:
       - dependencies
