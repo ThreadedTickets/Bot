@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "@dotenvx/dotenvx";
 import { ClusterManager, HeartbeatManager } from "discord-hybrid-sharding";
 import { logger } from "./utils/logger";
 import { Client } from "discord-cross-hosting";

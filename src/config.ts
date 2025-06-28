@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "@dotenvx/dotenvx";
 import { CacheWithLimitsOptions } from "discord.js";
 
 export default {
