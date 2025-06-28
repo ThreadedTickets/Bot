@@ -22,7 +22,7 @@
     "discord-cross-hosting": "^2.3.8",
     "discord-hybrid-sharding": "^2.2.6",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.0.0",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "fast-glob": "^3.3.3",
