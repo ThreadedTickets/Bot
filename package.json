@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@dotenvx/dotenvx": "^1.45.1",
-    "@skyra/discord-components-core": "^3.6.1",
+    "@skyra/discord-components-core": "^4.0.2",
     "@skyra/discord-components-react": "^3.6.1",
     "ajv": "^8.17.1",
     "axios": "^1.8.4",
