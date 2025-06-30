@@ -3,6 +3,7 @@
 
 language: "en-GB"
 early_access: true
+enable_free_tier: true
 reviews:
   request_changes_workflow: true
   high_level_summary: true
