@@ -18,7 +18,6 @@ reviews:
     drafts: false
     base_branches:
       - master
-      - a/*
   path_instructions:
     - path: "*"
       instructions:
