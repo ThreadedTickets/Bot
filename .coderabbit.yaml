@@ -17,9 +17,8 @@ reviews:
       - "SWEEP"
     drafts: false
     base_branches:
-      - main
-      - release/**
-      - develop
+      - master
+      - *
   path_instructions:
     - path: "*"
       instructions:
