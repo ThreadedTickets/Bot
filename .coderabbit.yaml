@@ -17,8 +17,8 @@ reviews:
       - "SWEEP"
     drafts: false
     base_branches:
-      - **
-      - master 
+      - master
+      - a/*
   path_instructions:
     - path: "*"
       instructions:
