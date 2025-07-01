@@ -3,11 +3,9 @@ import fs from "fs";
 import path from "path";
 import { AppCommand } from "../types/Command";
 import { CommandCache } from "../types/CommandCache";
-import dotenv from "dotenv";
 import { loadFilesRecursively } from "../utils/commands/load";
 import { logger } from "../utils/logger";
-
-dotenv.config();
+import "@dotenvx/dotenvx";
 
 const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 const clientId = process.env.DISCORD_CLIENT_ID!;
