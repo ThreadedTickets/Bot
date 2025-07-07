@@ -13,6 +13,7 @@ import { permissionLevels } from "../constants/permissions";
 import { t } from "../lang";
 import { getCache } from "../utils/database/getCachedElse";
 import { EventData } from "./eventHandler";
+import * as Sentry from "@sentry/node";
 
 const prefix = config.prefix;
 
@@ -204,6 +205,38 @@ export const handlePrefixMessage = async (
     command.execute(client, data, message, parsedArgs);
   } catch (err: any) {
     logger("Commands", "Error", `${err}`);
+    Sentry.withScope((scope) => {
+      // Tag and user context
+      scope.setTag("context", "command");
+      scope.setUser({ id: message.author.id });
+
+      // Custom structured data
+      scope.setContext("command", {
+        name: command.name,
+        args,
+        parsedArgs,
+      });
+
+      scope.setContext("message", {
+        channel: message.channel.id,
+        guild: message.guild?.id || "DM",
+      });
+
+      // Optional: Add a breadcrumb for history
+      Sentry.addBreadcrumb({
+        category: "command",
+        message: `Error in command ${command.name}`,
+        level: "error",
+        data: {
+          user: message.author.id,
+          guild: message.guild?.id || "DM",
+          args,
+        },
+      });
+
+      // Actually capture the exception
+      Sentry.captureException(err);
+    });
     message.reply(
       (
         await onError("Commands", `${err}`, {

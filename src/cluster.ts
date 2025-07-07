@@ -1,4 +1,5 @@
 import "@dotenvx/dotenvx";
+import "./instrument";
 import { ClusterManager, HeartbeatManager } from "discord-hybrid-sharding";
 import { logger } from "./utils/logger";
 import { Client } from "discord-cross-hosting";

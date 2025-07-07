@@ -3,3 +3,5 @@ node_modules
 transcripts
 .build
 package-lock.json
+# Sentry Config File
+.sentryclirc

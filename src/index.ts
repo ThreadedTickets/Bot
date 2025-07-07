@@ -18,6 +18,7 @@ import { closeTicket } from "./utils/tickets/close";
 import { Locale } from "./types/Locale";
 import { AsyncQueueManager } from "./utils/bot/QueueManager";
 import { ClusterClient, getInfo } from "discord-hybrid-sharding";
+import * as Sentry from "@sentry/node";
 
 const shardList = getInfo().SHARD_LIST;
 const totalShards = getInfo().TOTAL_SHARDS;
@@ -119,9 +120,11 @@ export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 client.login(process.env["DISCORD_TOKEN"]);
 
-process.on("unhandledRejection", (err: Error) =>
-  onError("System", `${err.message}`, { stack: err.stack })
-);
-process.on("uncaughtException", (err: Error) =>
-  onError("System", `${err.message}`, { stack: err.stack })
-);
+process.on("unhandledRejection", (err: Error) => {
+  onError("System", `${err.message}`, { stack: err.stack });
+  Sentry.captureException(err);
+});
+process.on("uncaughtException", (err: Error) => {
+  onError("System", `${err.message}`, { stack: err.stack });
+  Sentry.captureException(err);
+});

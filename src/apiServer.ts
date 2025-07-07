@@ -47,7 +47,6 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
 }
 
 const app = express();
-
 // Auth middleware
 app.use(authMiddleware);
 app.use(express.json());
@@ -76,7 +75,7 @@ export function startApi(port: number) {
 
   app.post("/create/message/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { content, embeds, attachments, components } = (req.body as Body);
+    const { content, embeds, attachments, components } = req.body as Body;
 
     if (!creatorId) {
       res.status(400).json({
@@ -157,7 +156,7 @@ export function startApi(port: number) {
 
   app.post("/create/group/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { name, roles, extraMembers, permissions } =(req.body as Body);
+    const { name, roles, extraMembers, permissions } = req.body as Body;
 
     if (!creatorId) {
       res.status(400).json({
@@ -269,7 +268,7 @@ export function startApi(port: number) {
           throw new Error("Application to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = (req.body as Body);
+        const { _id, server, ...safeBody } = req.body as Body;
 
         // Apply safe updates
         application.set(safeBody);
@@ -330,7 +329,7 @@ export function startApi(port: number) {
           throw new Error("Trigger to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = (req.body as Body);
+        const { _id, server, ...safeBody } = req.body as Body;
 
         // Apply safe updates
         trigger.set(safeBody);
