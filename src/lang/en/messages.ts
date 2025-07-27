@@ -74,7 +74,7 @@ export const lang = {
   TICKET_LOWER_LOG_TITLE: `Ticket Lowered`,
   NEW_TICKET_LOG_TITLE: "New Ticket",
   NEW_TICKET_LOG_BODY: `A new ticket for {user} has been made using the ticket trigger {trigger}`,
-  TICKET_CLOSE_LOG_BODY: `A ticket for {user} has been closed. If there is one, the transcript ID is \`{id}\`\n\`\`\`{reason}\n\`\`\``,
+  TICKET_CLOSE_LOG_BODY: `A ticket for {user} has been closed. If there is one, the transcript ID is \`{id}\`\n\`\`\`\n{reason}\n\`\`\``,
   TICKET_CLOSE_LOG_TITLE: `Ticket Closed`,
   TICKET_CLOSE_REOPEN_MESSAGE:
     "This ticket has been scheduled to close in {duration}",
@@ -207,7 +207,7 @@ export const lang = {
 
   TICKET_CLOSE_WITH_TRANSCRIPT_LOG_TITLE: "New Ticket Transcript",
   TICKET_CLOSE_WITH_TRANSCRIPT_LOG_BODY:
-    "Attached is a ticket transcript for {user}'s recent ticket on `{id}`",
+    "Attached is a ticket transcript for {user}'s recent ticket on `{id}`\n```\n{reason}\n```",
   TRANSCRIPT_NOT_FOUND: "I could not find this transcript",
 
   DEBUGGER_GROUP_PERMISSIONS_TITLE: "Group Permissions Debugger",
