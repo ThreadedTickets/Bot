@@ -58,7 +58,7 @@ const button: ButtonHandler = {
 
     interaction.showModal(
       new ModalBuilder()
-        .setTitle("Schedule closure")
+        .setTitle("Close Ticket")
         .setCustomId(`close:${ticketId}`)
         .addComponents(
           new ActionRowBuilder<TextInputBuilder>().addComponents(
