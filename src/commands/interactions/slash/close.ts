@@ -1,9 +1,12 @@
 import {
+  ActionRowBuilder,
   GuildMember,
   InteractionContextType,
-  MessageFlags,
+  ModalBuilder,
   PermissionFlagsBits,
   SlashCommandBuilder,
+  TextInputBuilder,
+  TextInputStyle,
 } from "discord.js";
 import { AppCommand } from "../../../types/Command";
 import { t } from "../../../lang";
@@ -11,7 +14,6 @@ import { TicketChannelManager } from "../../../utils/bot/TicketChannelManager";
 import { getServerGroupsByIds, getTicket } from "../../../utils/bot/getServer";
 import { onError } from "../../../utils/onError";
 import { getUserPermissions } from "../../../utils/calculateUserPermissions";
-import { closeTicket } from "../../../utils/tickets/close";
 
 const command: AppCommand = {
   type: "slash",
@@ -20,13 +22,7 @@ const command: AppCommand = {
     .setDescription("Close the ticket")
     .setContexts(InteractionContextType.Guild)
     .setNameLocalizations({})
-    .setDescriptionLocalizations({})
-    .addStringOption((option) =>
-      option
-        .setName("schedule")
-        .setDescription("Schedule this ticket to close")
-        .setMaxLength(100)
-    ),
+    .setDescriptionLocalizations({}),
 
   async execute(client, data, interaction) {
     if (!interaction.guildId) return;
@@ -80,16 +76,30 @@ const command: AppCommand = {
         ).discordMsg
       );
 
-    await interaction.reply({
-      content: t(data.lang!, "THINK"),
-      flags: [MessageFlags.Ephemeral],
-    });
-
-    await closeTicket(
-      ticketId,
-      data.lang!,
-      interaction,
-      interaction.options.getString("schedule")
+    interaction.showModal(
+      new ModalBuilder()
+        .setTitle("Schedule closure")
+        .setCustomId(`close:${ticketId}`)
+        .addComponents(
+          new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+              .setCustomId("duration")
+              .setLabel("Duration (10mins)")
+              .setMaxLength(100)
+              .setPlaceholder(`Leave blank to close instantly`)
+              .setStyle(TextInputStyle.Short)
+              .setRequired(false)
+          ),
+          new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+              .setCustomId("reason")
+              .setLabel("Reason")
+              .setMaxLength(100)
+              .setPlaceholder(`Why are you closing this ticket?`)
+              .setStyle(TextInputStyle.Short)
+              .setRequired(false)
+          )
+        )
     );
   },
 };

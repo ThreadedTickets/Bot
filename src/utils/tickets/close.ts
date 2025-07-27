@@ -43,6 +43,7 @@ import { generateBasePlaceholderContext } from "../message/placeholders/generate
 export async function closeTicket(
   ticketId: string,
   locale: Locale,
+  reason?: string,
   repliable?: ModalSubmitInteraction | ChatInputCommandInteraction,
   schedule?: string | null
 ) {
@@ -51,6 +52,7 @@ export async function closeTicket(
     {
       status: "Closed",
       deletedAt: new Date(),
+      closeReason: reason || "No reason provided",
     },
     {
       new: false,
@@ -106,6 +108,7 @@ export async function closeTicket(
                 {
                   user: `<@${ticket.owner}>`,
                   id: ticketId,
+                  reason: reason || "No reason provided",
                 }
               ),
             },
@@ -137,7 +140,7 @@ export async function closeTicket(
     const formattedDuration = formatDuration(ms);
     TaskScheduler.scheduleTask(
       "closeTicket",
-      { ticketId, locale },
+      { ticketId, locale, reason },
       ms,
       `CLOSE-${ticketId}`
     );
@@ -221,6 +224,7 @@ export async function closeTicket(
                 {
                   user: `<@${ticket.owner}>`,
                   id: ticketId,
+                  reason: reason || "No reason provided",
                 }
               ),
             },

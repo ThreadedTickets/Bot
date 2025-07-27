@@ -82,6 +82,7 @@ const schema = new mongoose.Schema(
     dmOnClose: { type: String, default: null },
     createdAt: { type: Date, default: null, required: true },
     deletedAt: { type: Date, default: null },
+    closeReason: { type: String, default: null },
   },
   {
     timestamps: false,

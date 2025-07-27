@@ -96,8 +96,8 @@ export const TaskScheduler = new Scheduler((src, lvl, msg) =>
 );
 TaskScheduler.registerTaskFunction(
   "closeTicket",
-  (params: { ticketId: string; locale: Locale }) => {
-    closeTicket(params.ticketId, params.locale);
+  (params: { ticketId: string; locale: Locale, reason: string }) => {
+    closeTicket(params.ticketId, params.locale, params.reason);
   }
 );
 export const InMemoryCache = new MemCache({

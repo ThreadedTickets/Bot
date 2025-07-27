@@ -69,6 +69,15 @@ const button: ButtonHandler = {
               .setPlaceholder(`Leave blank to close instantly`)
               .setStyle(TextInputStyle.Short)
               .setRequired(false)
+          ),
+          new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+              .setCustomId("reason")
+              .setLabel("Reason")
+              .setMaxLength(100)
+              .setPlaceholder(`Why are you closing this ticket?`)
+              .setStyle(TextInputStyle.Short)
+              .setRequired(false)
           )
         )
     );
