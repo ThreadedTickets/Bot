@@ -58,7 +58,7 @@ const button: ButtonHandler = {
 
     interaction.showModal(
       new ModalBuilder()
-        .setTitle("Schedule closure")
+        .setTitle("Close Ticket")
         .setCustomId(`close:${ticketId}`)
         .addComponents(
           new ActionRowBuilder<TextInputBuilder>().addComponents(
@@ -67,6 +67,15 @@ const button: ButtonHandler = {
               .setLabel("Duration (10mins)")
               .setMaxLength(100)
               .setPlaceholder(`Leave blank to close instantly`)
+              .setStyle(TextInputStyle.Short)
+              .setRequired(false)
+          ),
+          new ActionRowBuilder<TextInputBuilder>().addComponents(
+            new TextInputBuilder()
+              .setCustomId("reason")
+              .setLabel("Reason")
+              .setMaxLength(100)
+              .setPlaceholder(`Why are you closing this ticket?`)
               .setStyle(TextInputStyle.Short)
               .setRequired(false)
           )

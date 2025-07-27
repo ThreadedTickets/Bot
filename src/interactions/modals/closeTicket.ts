@@ -14,8 +14,11 @@ const modal: ModalHandler = {
 
     const ticketId = interaction.customId.split(":")[1];
     const duration = interaction.fields.getTextInputValue("duration") || null;
+    const reason =
+      interaction.fields.getTextInputValue("reason") ||
+      "No reason was provided";
 
-    await closeTicket(ticketId, data.lang!, interaction, duration);
+    await closeTicket(ticketId, data.lang!, reason, interaction, duration);
   },
 };
 
