@@ -129,56 +129,64 @@ registerHook(
       .join(", ");
 
     let ticketChannel = null;
-    if (trigger.isThread && !parentChannel?.isTextBased())
+    try {
+      if (trigger.isThread && !parentChannel?.isTextBased())
+        return returnError(
+          new Error("Incorrect channel type for threads"),
+          messageOrInteraction,
+          "ERROR_CODE_2015",
+          lang
+        );
+      else if (trigger.isThread) {
+        const channel: TextChannel = parentChannel! as TextChannel;
+        ticketChannel = await channel.threads.create({
+          name: resolvePlaceholders(
+            trigger.channelNameFormat,
+            generateBasePlaceholderContext({ server: guild, user: user })
+          ),
+          invitable: false,
+          type: ChannelType.PrivateThread,
+          reason: `Creating ticket: ${trigger._id}`,
+        });
+      } else if (
+        !trigger.isThread &&
+        parentChannel &&
+        parentChannel.type !== ChannelType.GuildCategory
+      ) {
+        return returnError(
+          new Error("Incorrect channel type for channel tickets"),
+          messageOrInteraction,
+          "ERROR_CODE_2015",
+          lang
+        );
+      } else if (!trigger.isThread) {
+        ticketChannel = await guild.channels.create({
+          name: resolvePlaceholders(
+            trigger.channelNameFormat,
+            generateBasePlaceholderContext({ server: guild, user: user })
+          ),
+          parent: parentChannel?.id || null,
+          type: ChannelType.GuildText,
+          permissionOverwrites: buildChannelPermissionOverwrites(
+            await getServerGroupsByIds(trigger.groups, guild.id),
+            guild.id,
+            {
+              id: user.id,
+              ...ticketOwnerPermissions,
+            },
+            everyoneTicketPermissions,
+            { id: client.user!.id, ...botTicketPermissions }
+          ),
+        });
+      }
+    } catch (error) {
       return returnError(
-        new Error("Incorrect channel type for threads"),
+        new Error(`Failed to create ticket channel: ${error}`),
         messageOrInteraction,
         "ERROR_CODE_2015",
         lang
       );
-    else if (trigger.isThread) {
-      const channel: TextChannel = parentChannel! as TextChannel;
-      ticketChannel = await channel.threads.create({
-        name: resolvePlaceholders(
-          trigger.channelNameFormat,
-          generateBasePlaceholderContext({ server: guild, user: user })
-        ),
-        invitable: false,
-        type: ChannelType.PrivateThread,
-        reason: `Creating ticket: ${trigger._id}`,
-      });
-    } else if (
-      !trigger.isThread &&
-      parentChannel &&
-      parentChannel.type !== ChannelType.GuildCategory
-    ) {
-      return returnError(
-        new Error("Incorrect channel type for channel tickets"),
-        messageOrInteraction,
-        "ERROR_CODE_2015",
-        lang
-      );
-    } else if (!trigger.isThread) {
-      ticketChannel = await guild.channels.create({
-        name: resolvePlaceholders(
-          trigger.channelNameFormat,
-          generateBasePlaceholderContext({ server: guild, user: user })
-        ),
-        parent: parentChannel?.id || null,
-        type: ChannelType.GuildText,
-        permissionOverwrites: buildChannelPermissionOverwrites(
-          await getServerGroupsByIds(trigger.groups, guild.id),
-          guild.id,
-          {
-            id: user.id,
-            ...ticketOwnerPermissions,
-          },
-          everyoneTicketPermissions,
-          { id: client.user!.id, ...botTicketPermissions }
-        ),
-      });
     }
-
     if (!ticketChannel)
       return returnError(
         new Error("Failed to create ticket channel"),
