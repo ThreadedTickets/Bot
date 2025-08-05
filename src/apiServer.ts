@@ -35,6 +35,7 @@ import os from "os";
 import { getInfo } from "discord-hybrid-sharding";
 import { formatDuration } from "./utils/formatters/duration";
 import { updateCachedData } from "./utils/database/updateCache";
+import { TagSchema } from "./database/modals/Tag";
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
@@ -371,6 +372,49 @@ export function startApi(port: number) {
             message: `Server has been added to the cache. It can be accessed through guilds:${_id}`,
             key: `guilds:${_id}`,
           });
+          break;
+        case "message":
+          const msg = await MessageSchema.findOne({ _id: _id });
+          if (!msg) {
+            res.status(400).json({ message: "That message doesn't exist" });
+            return;
+          }
+          await updateCachedData(`message:${_id}`, 30, msg);
+          res.status(200).json({
+            message: `Message has been added to the cache. It can be accessed through message:${_id}`,
+            key: `message:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "messages":
+          const msgs = await MessageSchema.find({ server: _id });
+          await updateCachedData(`messages:${_id}`, 30, msgs);
+          res.status(200).json({
+            message: `Messages have been added to the cache. It can be accessed through messages:${_id}`,
+            key: `messages:${_id}`,
+          });
+          break;
+        case "tag":
+          const tag = await TagSchema.findOne({ _id: _id });
+          if (!tag) {
+            res.status(400).json({ message: "That tag doesn't exist" });
+            return;
+          }
+          await updateCachedData(`tag:${_id}`, 30, tag);
+          res.status(200).json({
+            message: `Tag has been added to the cache. It can be accessed through tag:${_id}`,
+            key: `tag:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "tags":
+          const tags = await TagSchema.find({ server: _id });
+          await updateCachedData(`tags:${_id}`, 30, tags);
+          res.status(200).json({
+            message: `Tags have been added to the cache. It can be accessed through tags:${_id}`,
+            key: `tags:${_id}`,
+          });
+          break;
         default:
           break;
       }
