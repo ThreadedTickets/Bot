@@ -354,15 +354,17 @@ export function startApi(port: number) {
   app.post("/forceCache", async (req: Request, res: Response) => {
     try {
       const { type, _id } = req.body as Body;
+      if (!_id || !type)
+        return res
+          .status(400)
+          .json({ message: "Not all fields were provided" });
       switch (type) {
         case "server":
           await getServer(_id);
-          res
-            .status(200)
-            .json({
-              message: `Server has been added to the cache. It can be accessed through guilds:${_id}`,
-              key: `guilds:${_id}`,
-            });
+          res.status(200).json({
+            message: `Server has been added to the cache. It can be accessed through guilds:${_id}`,
+            key: `guilds:${_id}`,
+          });
         default:
           break;
       }
