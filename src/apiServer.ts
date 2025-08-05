@@ -4,7 +4,6 @@ import { logger } from "./utils/logger";
 import { MessageCreatorSchema } from "./database/modals/MessageCreator";
 import { validateDiscordMessage } from "./utils/bot/validateMessage";
 import {
-  getServer,
   getServerApplication,
   getServerApplications,
   getServerGroup,
@@ -20,6 +19,7 @@ import { GroupCreatorSchema } from "./database/modals/GroupCreator";
 import {
   GroupSchema,
   GroupSchemaValidator,
+  GuildSchema,
   MessageSchema,
 } from "./database/modals/Guild";
 import {
@@ -34,6 +34,7 @@ import { client } from ".";
 import os from "os";
 import { getInfo } from "discord-hybrid-sharding";
 import { formatDuration } from "./utils/formatters/duration";
+import { updateCachedData } from "./utils/database/updateCache";
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
@@ -360,7 +361,12 @@ export function startApi(port: number) {
       }
       switch (type) {
         case "server":
-          await getServer(_id);
+          const server = await GuildSchema.findOne({ _id: _id });
+          if (!server) {
+            res.status(400).json({ message: "That server doesn't exist" });
+            return;
+          }
+          await updateCachedData(`guilds:${_id}`, 30, JSON.stringify(server));
           res.status(200).json({
             message: `Server has been added to the cache. It can be accessed through guilds:${_id}`,
             key: `guilds:${_id}`,
