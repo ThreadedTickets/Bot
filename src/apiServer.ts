@@ -354,10 +354,10 @@ export function startApi(port: number) {
   app.post("/forceCache", async (req: Request, res: Response) => {
     try {
       const { type, _id } = req.body as Body;
-      if (!_id || !type)
-        return res
-          .status(400)
-          .json({ message: "Not all fields were provided" });
+      if (!_id || !type) {
+        res.status(400).json({ message: "Not all fields were provided" });
+        return;
+      }
       switch (type) {
         case "server":
           await getServer(_id);
@@ -368,10 +368,9 @@ export function startApi(port: number) {
         default:
           break;
       }
-      res.status(200).json({ message: "Ticket trigger saved successfully" });
     } catch (error: any) {
       res.status(500).json({
-        message: `Error when saving ticket trigger: ${error.message}`,
+        message: `Error when caching: ${error.message}`,
       });
     }
   });
