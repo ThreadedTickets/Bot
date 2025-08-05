@@ -388,7 +388,16 @@ export function startApi(port: number) {
         // In this case _id is of the server we want the messages of
         case "messages":
           const msgs = await MessageSchema.find({ server: _id });
-          await updateCachedData(`messages:${_id}`, 30, msgs);
+          await updateCachedData(
+            `messages:${_id}`,
+            30,
+            msgs.map((m) => {
+              return {
+                _id: m._id,
+                name: m.name,
+              };
+            })
+          );
           res.status(200).json({
             message: `Messages have been added to the cache. It can be accessed through messages:${_id}`,
             key: `messages:${_id}`,
