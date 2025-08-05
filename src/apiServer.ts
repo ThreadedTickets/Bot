@@ -4,6 +4,7 @@ import { logger } from "./utils/logger";
 import { MessageCreatorSchema } from "./database/modals/MessageCreator";
 import { validateDiscordMessage } from "./utils/bot/validateMessage";
 import {
+  getServer,
   getServerApplication,
   getServerApplications,
   getServerGroup,
@@ -76,7 +77,7 @@ export function startApi(port: number) {
 
   app.post("/create/message/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { content, embeds, attachments, components } = (req.body as Body);
+    const { content, embeds, attachments, components } = req.body as Body;
 
     if (!creatorId) {
       res.status(400).json({
@@ -157,7 +158,7 @@ export function startApi(port: number) {
 
   app.post("/create/group/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { name, roles, extraMembers, permissions } =(req.body as Body);
+    const { name, roles, extraMembers, permissions } = req.body as Body;
 
     if (!creatorId) {
       res.status(400).json({
@@ -269,7 +270,7 @@ export function startApi(port: number) {
           throw new Error("Application to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = (req.body as Body);
+        const { _id, server, ...safeBody } = req.body as Body;
 
         // Apply safe updates
         application.set(safeBody);
@@ -330,7 +331,7 @@ export function startApi(port: number) {
           throw new Error("Trigger to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = (req.body as Body);
+        const { _id, server, ...safeBody } = req.body as Body;
 
         // Apply safe updates
         trigger.set(safeBody);
@@ -342,6 +343,29 @@ export function startApi(port: number) {
       await invalidateCache(`ticketTriggerCreators:${creatorId}`);
       await invalidateCache(`ticketTriggers:${creator.guildId}`);
       await invalidateCache(`ticketTrigger:${id}`);
+      res.status(200).json({ message: "Ticket trigger saved successfully" });
+    } catch (error: any) {
+      res.status(500).json({
+        message: `Error when saving ticket trigger: ${error.message}`,
+      });
+    }
+  });
+
+  app.post("/forceCache", async (req: Request, res: Response) => {
+    try {
+      const { type, _id } = req.body as Body;
+      switch (type) {
+        case "server":
+          await getServer(_id);
+          res
+            .status(200)
+            .json({
+              message: `Server has been added to the cache. It can be accessed through guilds:${_id}`,
+              key: `guilds:${_id}`,
+            });
+        default:
+          break;
+      }
       res.status(200).json({ message: "Ticket trigger saved successfully" });
     } catch (error: any) {
       res.status(500).json({
