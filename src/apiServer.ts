@@ -424,6 +424,26 @@ export function startApi(port: number) {
             key: `tags:${_id}`,
           });
           break;
+        case "interactive":
+          const interactive = [
+            ...(await TagSchema.find({ server: _id })).map((t) => ({
+              _id: t._id,
+              name: t.name,
+            })),
+            ...(await ApplicationTriggerSchema.find({ server: _id })).map(
+              (t) => ({ _id: t._id, name: t.name })
+            ),
+            ...(await TicketTriggerSchema.find({ server: _id })).map((t) => ({
+              _id: t._id,
+              name: t.label,
+            })),
+          ];
+          await updateCachedData(`interactive:${_id}`, 30, interactive);
+          res.status(200).json({
+            message: `Interactive components have been added to the cache. It can be accessed through interactive:${_id}`,
+            key: `interactive:${_id}`,
+          });
+          break;
         default:
           break;
       }
