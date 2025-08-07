@@ -1,0 +1,106 @@
+{
+  "Translate Message": {
+    "mtime": 1754594424812.3918,
+    "isGuild": false
+  },
+  "application_history": {
+    "mtime": 1754594424818.3894,
+    "isGuild": false
+  },
+  "applications": {
+    "mtime": 1754594424823.3875,
+    "isGuild": false
+  },
+  "apply": {
+    "mtime": 1754594424830.3848,
+    "isGuild": false
+  },
+  "autoresponders": {
+    "mtime": 1754594424839.3813,
+    "isGuild": false
+  },
+  "awaiting-reply": {
+    "mtime": 1754594424843.3796,
+    "isGuild": false
+  },
+  "close": {
+    "mtime": 1754594424845.379,
+    "isGuild": false
+  },
+  "debug": {
+    "mtime": 1754594424848.378,
+    "isGuild": false
+  },
+  "get_trigger_id": {
+    "mtime": 1754594424849.3774,
+    "isGuild": false
+  },
+  "groups": {
+    "mtime": 1754594424852.3762,
+    "isGuild": false
+  },
+  "language": {
+    "mtime": 1754594424854.3755,
+    "isGuild": false
+  },
+  "lock": {
+    "mtime": 1754594424855.375,
+    "isGuild": false
+  },
+  "logging": {
+    "mtime": 1754594424719.428,
+    "isGuild": false
+  },
+  "lower": {
+    "mtime": 1754594424858.374,
+    "isGuild": false
+  },
+  "messages": {
+    "mtime": 1754594424864.3716,
+    "isGuild": false
+  },
+  "move": {
+    "mtime": 1754594424867.3704,
+    "isGuild": false
+  },
+  "panel": {
+    "mtime": 1754594424872.3684,
+    "isGuild": false
+  },
+  "raise": {
+    "mtime": 1754594424875.3674,
+    "isGuild": false
+  },
+  "reopen": {
+    "mtime": 1754594424878.3662,
+    "isGuild": false
+  },
+  "tag": {
+    "mtime": 1754594424882.3645,
+    "isGuild": false
+  },
+  "tags": {
+    "mtime": 1754594424886.363,
+    "isGuild": false
+  },
+  "ticket": {
+    "mtime": 1754594424892.3608,
+    "isGuild": false
+  },
+  "transcript": {
+    "mtime": 1754594424895.3596,
+    "isGuild": false
+  },
+  "ticket_triggers": {
+    "mtime": 1754594424899.358,
+    "isGuild": false
+  },
+  "unlock": {
+    "mtime": 1754594424902.357,
+    "isGuild": false
+  },
+  "update": {
+    "mtime": 1754594424904.356,
+    "isGuild": false
+  }
+}
