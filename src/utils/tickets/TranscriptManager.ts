@@ -231,10 +231,17 @@ export class TranscriptWriter {
     const parts = path.split(".");
     let current = this.metadata;
     for (let i = 0; i < parts.length - 1; i++) {
+      if (parts[i] === "__proto__" || parts[i] === "constructor") {
+        throw new Error("Invalid property name detected.");
+      }
       if (!current[parts[i]]) current[parts[i]] = {};
       current = current[parts[i]];
     }
-    current[parts[parts.length - 1]] = value;
+    const lastPart = parts[parts.length - 1];
+    if (lastPart === "__proto__" || lastPart === "constructor") {
+      throw new Error("Invalid property name detected.");
+    }
+    current[lastPart] = value;
     this.saveMeta();
   }
 
