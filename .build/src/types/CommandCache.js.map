@@ -1,1 +1,0 @@
-{"version":3,"file":"CommandCache.js","sources":["src/types/CommandCache.ts"],"sourceRoot":"/","sourcesContent":["export interface CommandCache {\r\n  [commandName: string]: {\r\n    mtime: number; // last modified time\r\n    isGuild: boolean;\r\n  };\r\n}\r\n"],"names":[],"mappings":"","debug_id":"3a11c04a-4044-507b-b446-76d188a3162b"}
