@@ -81,9 +81,9 @@ export function startApi(port: number) {
     const creatorId = req.query.id;
     const { content, embeds, attachments, components } = req.body as Body;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
-        message: "Please provide a creatorId ID (?id=) and data in the body",
+        message: "Please provide a valid creatorId (?id=) as a string and data in the body",
       });
       return;
     }
