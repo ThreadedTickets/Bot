@@ -365,7 +365,7 @@ export function startApi(port: number) {
       }
       switch (type) {
         case "server":
-          const server = await GuildSchema.findOne({ _id: _id });
+          const server = await GuildSchema.findOne({ _id: { $eq: _id } });
           if (!server) {
             res.status(400).json({ message: "That server doesn't exist" });
             return;
@@ -377,7 +377,7 @@ export function startApi(port: number) {
           });
           break;
         case "message":
-          const msg = await MessageSchema.findOne({ _id: _id });
+          const msg = await MessageSchema.findOne({ _id: { $eq: _id } });
           if (!msg) {
             res.status(400).json({ message: "That message doesn't exist" });
             return;
@@ -390,7 +390,7 @@ export function startApi(port: number) {
           break;
         // In this case _id is of the server we want the messages of
         case "messages":
-          const msgs = await MessageSchema.find({ server: _id });
+          const msgs = await MessageSchema.find({ server: { $eq: _id } });
           await updateCachedData(
             `messages:${_id}`,
             30,
@@ -407,7 +407,7 @@ export function startApi(port: number) {
           });
           break;
         case "tag":
-          const tag = await TagSchema.findOne({ _id: _id });
+          const tag = await TagSchema.findOne({ _id: { $eq: _id } });
           if (!tag) {
             res.status(400).json({ message: "That tag doesn't exist" });
             return;
