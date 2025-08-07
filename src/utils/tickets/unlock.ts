@@ -17,7 +17,6 @@ import {
 } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
 import { fetchChannelById } from "../bot/fetchMessage";
-import { logger } from "../logger";
 import { onError } from "../onError";
 import { buildChannelPermissionOverwrites } from "../hooks/events/tickets/new/main";
 import everyoneTicketPermissions from "../../constants/everyoneTicketPermissions";
@@ -25,6 +24,7 @@ import botTicketPermissions from "../../constants/botTicketPermissions";
 import { TicketSchema } from "../../database/modals/Ticket";
 import { invalidateCache } from "../database/invalidateCache";
 import ticketOwnerPermissions from "../../constants/ticketOwnerPermissions";
+import logger from "../logger";
 
 export async function unlockTicket(
   ticketId: string,
@@ -35,7 +35,7 @@ export async function unlockTicket(
   if (!ticket)
     return repliable?.editReply(
       (
-        await onError("Tickets", t(locale, "TICKET_NOT_FOUND"), {
+        await onError(new Error("Could not find ticket"), {
           ticketId: ticketId,
         })
       ).discordMsg
@@ -88,18 +88,12 @@ export async function unlockTicket(
         ),
       })
       .catch((err) =>
-        logger(
-          "Tickets",
-          "Warn",
-          `Failed to edit ticket channel on unlock: ${err}`
-        )
+        logger.warn(`Failed to edit ticket channel on unlock`, err)
       );
   } else if (ticketChannel?.isThread()) {
     await ticketChannel.members
       .add(ticket.owner)
-      .catch((err) =>
-        logger("Tickets", "Warn", `Failed to add ticket owner: ${err}`)
-      );
+      .catch((err) => logger.warn(`Failed to add ticket owner on unlock`, err));
   }
 
   repliable?.editReply(t(locale, "TICKET_UNLOCK"));
@@ -110,10 +104,6 @@ export async function unlockTicket(
         content: t(locale, "TICKET_UNLOCK"),
       })
       .catch((err) =>
-        logger(
-          "Tickets",
-          "Warn",
-          `Failed to send message to ticket channel: ${err}`
-        )
+        logger.warn(`Failed to send message to ticket channel on unlock`, err)
       );
 }

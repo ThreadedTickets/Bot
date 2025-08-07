@@ -1,5 +1,5 @@
 import { Channel, Client, Message } from "discord.js";
-import { logger } from "../logger";
+import logger from "../logger";
 
 /**
  * Fetches a message from a Discord message URL.
@@ -16,7 +16,7 @@ export async function fetchMessageFromUrl(
   );
 
   if (!match) {
-    console.error("Invalid Discord message URL");
+    logger.error("Invalid Discord message URL", { url: url });
     return null;
   }
 
@@ -29,7 +29,7 @@ export async function fetchMessageFromUrl(
     const message = await channel.messages.fetch(messageId);
     return message;
   } catch (err) {
-    console.error("Failed to fetch message:", err);
+    logger.error("Failed to fetch message:", err);
     return null;
   }
 }
@@ -52,7 +52,7 @@ export async function fetchGuildById(client: Client, guildId: string) {
     const guild = await client.guilds.fetch(guildId);
     return guild; // This is a Guild object
   } catch (error) {
-    logger("Fetcher", "Warn", `Failed to fetch guild: ${error}`);
+    logger.error(`Failed to fetch guild`, error);
     return null;
   }
 }

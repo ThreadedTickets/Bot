@@ -3,8 +3,8 @@ import { Event } from "../types/Event";
 import { getUserTickets } from "../utils/bot/getServer";
 import { invalidateCache } from "../utils/database/invalidateCache";
 import { closeTicket } from "../utils/tickets/close";
-import { logger } from "../utils/logger";
 import { formatDuration } from "../utils/formatters/duration";
+import logger from "../utils/logger";
 
 const event: Event<"guildMemberRemove"> = {
   name: "guildMemberRemove",
@@ -30,12 +30,11 @@ const event: Event<"guildMemberRemove"> = {
       }
     }, member.guild.id);
 
-    logger(
-      "Tickets",
-      "Info",
+    logger.debug(
       `Finished mass close of ${userTickets.length} tickets in ${
         member.guild.name
-      }. Took ${formatDuration(new Date().getTime() - start)}`
+      }. Took ${formatDuration(new Date().getTime() - start)}`,
+      { user: user.id }
     );
   },
 };

@@ -1,5 +1,5 @@
 import { Client, APIEmbed } from "discord.js";
-import { logger } from "../logger";
+import logger from "../logger";
 
 export async function sendMessageToChannel(
   client: Client,
@@ -20,8 +20,12 @@ export async function sendMessageToChannel(
       typeof message === "string" ? { content: message } : message
     );
 
+    logger.debug(
+      `Message sent to channel (${guildId}-${channelId}): ${msg.id}`
+    );
+
     return msg;
   } catch (err) {
-    logger("System", "Warn", `Failed to send message to channel: ${err}`);
+    logger.warn(`Failed to send message to channel`, err);
   }
 }

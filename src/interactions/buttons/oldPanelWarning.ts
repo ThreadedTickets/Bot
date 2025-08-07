@@ -7,8 +7,9 @@ const button: ButtonHandler = {
     interaction.reply(
       (
         await onError(
-          "Commands",
-          "This is an old panel and can no longer be used. If you are a server admin, please run /panel to create a new panel"
+          new Error(
+            "This is an old panel and can no longer be used. If you are a server admin, please run /panel to create a new panel"
+          )
         )
       ).discordMsg
     );

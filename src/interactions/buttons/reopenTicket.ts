@@ -20,7 +20,7 @@ const button: ButtonHandler = {
     if (!ticket)
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "TICKET_NOT_FOUND"), {
+          await onError(new Error("Ticket not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -36,7 +36,7 @@ const button: ButtonHandler = {
     )
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "MISSING_PERMISSIONS"), {
+          await onError(new Error("Missing reopen permission"), {
             ticketId: ticketId,
           })
         ).discordMsg

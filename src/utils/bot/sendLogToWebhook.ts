@@ -6,7 +6,6 @@ import {
   APIEmbed,
 } from "discord.js";
 import { WebhookContent } from "../../types/WebhookContent";
-import { logger } from "../logger";
 import { getCachedDataElse } from "../database/getCachedElse";
 import { toTimeUnit } from "../formatters/toTimeUnit";
 import { GuildSchema } from "../../database/modals/Guild";
@@ -15,6 +14,7 @@ import {
   LogChannel,
   LoggingSettings,
 } from "../../commands/interactions/slash/logging";
+import logger from "../logger";
 
 export type LogConfig = {
   enabled: boolean;
@@ -94,7 +94,11 @@ export const postLogToWebhook = async (
         GuildSchema
       );
 
-      await updateWebhookInLoggingConfig(document.settings.logging, "", newWebhook.url);
+      await updateWebhookInLoggingConfig(
+        document.settings.logging,
+        "",
+        newWebhook.url
+      );
       await document.save();
 
       updateCachedData(
@@ -103,13 +107,9 @@ export const postLogToWebhook = async (
         document.toObject()
       );
 
-      logger(
-        "Webhooks",
-        "Info",
-        `Created new webhook for guild ${guild.id} as none existed`
-      );
+      logger.debug(`Created new webhook for guild ${guild.id} as none existed`);
     } catch (err) {
-      logger("Webhooks", "Error", `Failed to create missing webhook: ${err}`);
+      logger.error(`Failed to create missing webhook`, err);
       return;
     }
   } else {
@@ -119,7 +119,7 @@ export const postLogToWebhook = async (
   try {
     await webhookClient.send(content);
   } catch (error) {
-    logger("Webhooks", "Warn", `Initial webhook send failed, attempting recovery: ${error}`);
+    logger.warn(`Initial webhook send failed, attempting recovery`, error);
 
     try {
       const newWebhook = await createWebhook(webhookChannel, client);
@@ -153,22 +153,17 @@ export const postLogToWebhook = async (
         document.toObject()
       );
 
-      logger(
-        "Webhooks",
-        "Info",
-        `Recovered webhook for guild ${guild.id}`
-      );
+      logger.debug(`Recovered webhook for guild ${guild.id}`);
 
       await webhookClient.send({
         ...content,
         embeds: [...(content.embeds as APIEmbed[])],
       });
     } catch (err) {
-      logger("Webhooks", "Error", `Failed to recreate deleted webhook: ${err}`);
+      logger.error(`Failed to recreate deleted webhook`, err);
     }
   }
 };
-
 
 // Helper function to disable logging and set webhook and channel to null
 const updateLoggingConfigToNull = async (
@@ -179,7 +174,7 @@ const updateLoggingConfigToNull = async (
     const document = await GuildSchema.findOne({ id: guildId });
 
     if (!document) {
-      logger("Webhooks", "Error", `Guild ${guildId} not found.`);
+      logger.error(`Guild ${guildId} not found.`);
       return;
     }
 
@@ -209,17 +204,11 @@ const updateLoggingConfigToNull = async (
       document.toObject()
     );
 
-    logger(
-      "Webhooks",
-      "Info",
+    logger.debug(
       `Logging has been disabled for guild ${guildId} and the webhook/channel set to null.`
     );
   } catch (err) {
-    logger(
-      "Webhooks",
-      "Error",
-      `Failed to update logging config for guild ${guildId}: ${err}`
-    );
+    logger.error(`Failed to update logging config for guild ${guildId}`, err);
   }
 };
 

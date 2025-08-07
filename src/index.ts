@@ -13,14 +13,16 @@ import { startApi } from "./apiServer";
 import { InMemoryCache as MemCache } from "./utils/database/InMemoryCache";
 import PQueue from "p-queue";
 import { TaskScheduler as Scheduler } from "./utils/Scheduler";
-import { logger } from "./utils/logger";
 import { closeTicket } from "./utils/tickets/close";
 import { Locale } from "./types/Locale";
 import { AsyncQueueManager } from "./utils/bot/QueueManager";
 import { ClusterClient, getInfo } from "discord-hybrid-sharding";
+import logger from "./utils/logger";
 
-const shardList = getInfo().SHARD_LIST;
-const totalShards = getInfo().TOTAL_SHARDS;
+const isProd = process.env["IS_PROD"] === "true";
+
+const shardList = isProd ? getInfo().SHARD_LIST : [0];
+const totalShards = isProd ? getInfo().TOTAL_SHARDS : 1;
 
 const discordClient = new Client({
   shards: shardList,
@@ -80,8 +82,11 @@ const discordClient = new Client({
     },
   },
 });
-export const clusterClient = new ClusterClient(discordClient);
-export const client = clusterClient.client;
+export const clusterClient = isProd
+  ? new ClusterClient(discordClient)
+  : discordClient;
+// @ts-ignore
+export const client = isProd ? clusterClient.client : discordClient;
 
 loadPrefixCommands();
 deployAppCommands();
@@ -91,17 +96,15 @@ startMetricsServer(parseInt(process.env["METRICS_PORT"]!, 10));
 startApi(parseInt(process.env["API_PORT"]!, 10));
 loadInteractionHandlers();
 loadLanguages();
-export const TaskScheduler = new Scheduler((src, lvl, msg) =>
-  logger(src, lvl, msg)
-);
+export const TaskScheduler = new Scheduler();
 TaskScheduler.registerTaskFunction(
   "closeTicket",
-  (params: { ticketId: string; locale: Locale, reason: string }) => {
+  (params: { ticketId: string; locale: Locale; reason: string }) => {
     closeTicket(params.ticketId, params.locale, params.reason);
   }
 );
 export const InMemoryCache = new MemCache({
-  defaultTTL: 1000 * 60 * 60, // an hour
+  defaultTTL: 1000 * 10 * 60, // 10 minutes
   cleanupInterval: 1000 * 10, // 10 seconds
   groupLimits: {
     "responders:": 100,
@@ -120,8 +123,8 @@ export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 client.login(process.env["DISCORD_TOKEN"]);
 
 process.on("unhandledRejection", (err: Error) =>
-  onError("System", `${err.message}`, { stack: err.stack })
+  logger.error("Unhandled Rejection", err)
 );
 process.on("uncaughtException", (err: Error) =>
-  onError("System", `${err.message}`, { stack: err.stack })
+  logger.error("Uncaught Exception", err)
 );

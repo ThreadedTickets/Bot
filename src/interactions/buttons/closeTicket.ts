@@ -6,7 +6,6 @@ import {
   TextInputBuilder,
   TextInputStyle,
 } from "discord.js";
-import { t } from "../../lang";
 import { ButtonHandler } from "../../types/Interactions";
 import { getUserPermissions } from "../../utils/calculateUserPermissions";
 import { getServerGroupsByIds, getTicket } from "../../utils/bot/getServer";
@@ -21,7 +20,7 @@ const button: ButtonHandler = {
     if (!ticket)
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "TICKET_NOT_FOUND"), {
+          await onError(new Error("Ticket not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -38,7 +37,7 @@ const button: ButtonHandler = {
     )
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "NO_CLOSE_OWN_TICKET"), {
+          await onError(new Error("Missing close-own permission"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -50,7 +49,7 @@ const button: ButtonHandler = {
     )
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "MISSING_PERMISSIONS"), {
+          await onError(new Error("Missing close permission"), {
             ticketId: ticketId,
           })
         ).discordMsg

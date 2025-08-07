@@ -32,7 +32,6 @@ import {
   getServerMessage,
 } from "../../../../bot/getServer";
 import serverMessageToDiscordMessage from "../../../../formatters/serverMessageToDiscordMessage";
-import { logger } from "../../../../logger";
 import { buildQAMessages } from "../../applications/end/sendToSubmissionChannel";
 import {
   getAvailableLogChannel,
@@ -45,6 +44,7 @@ import everyoneTicketPermissions from "../../../../../constants/everyoneTicketPe
 import botTicketPermissions from "../../../../../constants/botTicketPermissions";
 import { invalidateCache } from "../../../../database/invalidateCache";
 import { getGuildMember } from "../../../../bot/getGuildMember";
+import logger from "../../../../logger";
 
 registerHook(
   "TicketCreate",
@@ -244,10 +244,9 @@ registerHook(
       const QAMessages = buildQAMessages(responses);
       for (const message of QAMessages) {
         ticketChannel.send(message).catch((err) => {
-          logger(
-            "Tickets",
-            "Warn",
-            `Failed to send form response message: ${err}`
+          logger.warn(
+            `Failed to send form response message on ticket open`,
+            err
           );
         });
       }
@@ -264,11 +263,11 @@ registerHook(
         })
       )
       .catch((err) => {
-        logger("Tickets", "Warn", `Failed to send info header: ${err}`);
+        logger.warn(`Failed to send info header on ticket open`, err);
       });
     if (infoHeader)
       infoHeader.pin().catch((err) => {
-        logger("Tickets", "Warn", `Failed to pin info header: ${err}`);
+        logger.warn(`Failed to pin info header on ticket open`, err);
       });
 
     let finalMentionableString = trigger.notifyStaff
@@ -288,7 +287,7 @@ registerHook(
       .join(", ");
 
     ticketChannel.send(mentionParts).catch((err) => {
-      logger("Tickets", "Warn", `Failed to send mentionable string: ${err}`);
+      logger.warn(`Failed to send mentionable string on ticket open`, err);
     });
 
     const confirmContent = {
@@ -346,7 +345,7 @@ async function returnError(
   locale: Locale
 ) {
   const message = (
-    await onError("Tickets", t(locale, key, { error: error.message }), {
+    await onError(error, {
       stack: error.stack,
     })
   ).discordMsg;
@@ -471,10 +470,8 @@ export function buildChannelPermissionOverwrites(
 
   const dropped = sorted.length - overwrites.length;
   if (dropped > 0) {
-    logger(
-      "Tickets",
-      "Warn",
-      `Dropped ${dropped} permission overwrites due to Discord's 100-overwrite limit.`
+    logger.warn(
+      `Dropped ${dropped} permission overwrites due to Discord's 100-overwrite limit on ticket open`
     );
   }
 

@@ -281,14 +281,7 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing edit permission"))).discordMsg
         );
 
       const server = await getServer(interaction.guildId);
@@ -322,27 +315,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing create permission"))).discordMsg
         );
 
       const responders = await getServerResponders(interaction.guildId);
       if (responders.length >= limits.free.autoResponders.amount)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "RESPONDERS_LIMIT_REACHED"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Auto responder limit reached"))).discordMsg
         );
 
       const id = generateId("AR");
@@ -362,30 +341,14 @@ const cmd: AppCommand = {
 
       if (!message)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "CONFIG_CREATE_MESSAGE_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Message not found"))).discordMsg
         );
 
       if (matcherType === "regex") {
         const validRegex = validateUserRegex(matcher);
         if (!validRegex.valid)
           return interaction.editReply(
-            (
-              await onError(
-                "Commands",
-                t(lang, "INVALID_MATCHER_REGEX"),
-                {
-                  matcher,
-                },
-                lang as Locale
-              )
-            ).discordMsg
+            (await onError(new Error("Invalid regex"))).discordMsg
           );
       }
 
@@ -418,14 +381,7 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing view permission"))).discordMsg
         );
       const responderId = interaction.options.getString("responder", true);
       const responder = await getServerResponder(
@@ -434,14 +390,7 @@ const cmd: AppCommand = {
       );
       if (!responder)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "RESPONDER_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Responder not found"))).discordMsg
         );
 
       interaction.editReply({
@@ -487,14 +436,7 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing edit permission"))).discordMsg
         );
       const responderId = interaction.options.getString("responder", true);
       const name = interaction.options.getString("name");
@@ -516,14 +458,7 @@ const cmd: AppCommand = {
         !normalizedScope
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "RESPONDER_UPDATE_NO_OPTIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Invalid usage"))).discordMsg
         );
 
       const responder = await getServerResponder(
@@ -532,30 +467,14 @@ const cmd: AppCommand = {
       );
       if (!responder)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "RESPONDER_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Responder not found"))).discordMsg
         );
 
       if (matcherType === "regex") {
         const validRegex = validateUserRegex(matcher || responder.matcher);
         if (!validRegex.valid)
           return interaction.editReply(
-            (
-              await onError(
-                "Commands",
-                t(lang, "INVALID_MATCHER_REGEX"),
-                {
-                  matcher,
-                },
-                lang as Locale
-              )
-            ).discordMsg
+            (await onError(new Error("Invalid regex"))).discordMsg
           );
       }
 
@@ -565,14 +484,7 @@ const cmd: AppCommand = {
       );
       if (!message)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "CONFIG_CREATE_MESSAGE_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Message not found"))).discordMsg
         );
 
       interaction.editReply({
@@ -603,14 +515,7 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing delete permission"))).discordMsg
         );
       const responderId = interaction.options.getString("responder", true);
       const responder = await getServerResponder(
@@ -619,14 +524,7 @@ const cmd: AppCommand = {
       );
       if (!responder)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "RESPONDER_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Responder not found"))).discordMsg
         );
 
       await AutoResponderSchema.findOneAndDelete({ _id: responderId });

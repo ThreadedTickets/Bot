@@ -16,10 +16,10 @@ import {
 } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
 import { fetchChannelById } from "../bot/fetchMessage";
-import { logger } from "../logger";
 import { onError } from "../onError";
 import { TicketSchema } from "../../database/modals/Ticket";
 import { invalidateCache } from "../database/invalidateCache";
+import logger from "../logger";
 
 export async function raiseTicket(
   ticketId: string,
@@ -30,7 +30,7 @@ export async function raiseTicket(
   if (!ticket)
     return repliable?.editReply(
       (
-        await onError("Tickets", t(locale, "TICKET_NOT_FOUND"), {
+        await onError(new Error("Could not find ticket"), {
           ticketId: ticketId,
         })
       ).discordMsg
@@ -88,10 +88,6 @@ export async function raiseTicket(
         ],
       })
       .catch((err) =>
-        logger(
-          "Tickets",
-          "Warn",
-          `Failed to send message to ticket channel: ${err}`
-        )
+        logger.warn(`Failed to send message to ticket channel on raise`, err)
       );
 }

@@ -30,7 +30,7 @@ const command: AppCommand = {
     if (!ticketId)
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "TICKET_NOT_FOUND"), {
+          await onError(new Error("Ticket not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -39,7 +39,7 @@ const command: AppCommand = {
     if (!ticket)
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "TICKET_NOT_FOUND"), {
+          await onError(new Error("Ticket not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -55,7 +55,7 @@ const command: AppCommand = {
     )
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "MISSING_PERMISSIONS"), {
+          await onError(new Error("Missing unlock permission"), {
             ticketId: ticketId,
           })
         ).discordMsg

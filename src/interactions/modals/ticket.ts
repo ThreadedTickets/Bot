@@ -27,12 +27,7 @@ const modal: ModalHandler = {
     );
     if (!trigger)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_TICKET_TRIGGER_NOT_FOUND")
-          )
-        ).discordMsg
+        (await onError(new Error("Trigger not found"))).discordMsg
       );
 
     const triggerObject = trigger.toObject();
@@ -60,8 +55,7 @@ const modal: ModalHandler = {
         return interaction.editReply(
           (
             await onError(
-              "Commands",
-              t(data.lang!, `ERROR_CODE_${checks.error}`)
+              new Error(t(data.lang!, `ERROR_CODE_${checks.error}`))
             )
           ).discordMsg
         );
@@ -76,8 +70,7 @@ const modal: ModalHandler = {
         return interaction.editReply(
           (
             await onError(
-              "Commands",
-              t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`)
+              new Error(t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`))
             )
           ).discordMsg
         );

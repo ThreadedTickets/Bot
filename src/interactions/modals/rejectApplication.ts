@@ -31,18 +31,12 @@ const modal: ModalHandler = {
     const application = await getCompletedApplication(applicationId, owner);
     if (!application)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_APPLICATION_NOT_FOUND")
-          )
-        ).discordMsg
+        (await onError(new Error("Application not found"))).discordMsg
       );
 
     if (application.status !== "Pending")
       return interaction.reply(
-        (await onError("Commands", t(data.lang!, "APPLICATION_NOT_PENDING")))
-          .discordMsg
+        (await onError(new Error("Application already responded"))).discordMsg
       );
 
     const server = await getServer(interaction.guildId);

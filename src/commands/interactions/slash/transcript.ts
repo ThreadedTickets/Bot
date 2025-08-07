@@ -77,7 +77,7 @@ const command: AppCommand = {
     if (!ticketId)
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "TRANSCRIPT_NOT_FOUND"), {
+          await onError(new Error("Transcript not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -86,7 +86,7 @@ const command: AppCommand = {
     if (!ticket)
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "TRANSCRIPT_NOT_FOUND"), {
+          await onError(new Error("Transcript not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -103,7 +103,7 @@ const command: AppCommand = {
     )
       return interaction.reply(
         (
-          await onError("Tickets", t(data.lang!, "MISSING_PERMISSIONS"), {
+          await onError(new Error("Missing view permission"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -122,7 +122,7 @@ const command: AppCommand = {
     if (!fs.existsSync(transcriptPath))
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "TRANSCRIPT_NOT_FOUND"), {
+          await onError(new Error("Transcript not found"), {
             ticketId: ticketId,
             path: transcriptPath,
           })
@@ -137,7 +137,7 @@ const command: AppCommand = {
       .catch(async (err) => {
         interaction.editReply(
           (
-            await onError("Tickets", err, {
+            await onError(err, {
               ticketId: ticketId,
               path: transcriptPath,
             })

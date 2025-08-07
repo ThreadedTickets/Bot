@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import { logger } from "../utils/logger";
+import logger from "../utils/logger";
 
 // Type-safe language cache
 type Messages = Record<string, string>;
@@ -18,7 +18,7 @@ export function loadLanguages() {
     if (!fs.existsSync(messagesPath)) continue;
 
     languages[locale.name] = require(messagesPath).lang;
-    logger("Startup", "Info", `Loaded locale ${locale.name}`);
+    logger.info(`Loaded locale ${locale.name}`);
   }
 }
 

@@ -1,11 +1,7 @@
 import { formatDuration } from "./formatters/duration";
+import logger from "./logger";
 import redis from "./redis";
 
-type Logger = (
-  source: string,
-  level: "Info" | "Warn" | "Error",
-  message: string
-) => void;
 type TaskFunction = (params?: any) => Promise<void> | void;
 
 interface StoredTask {
@@ -26,15 +22,9 @@ export class TaskScheduler {
   private tasks: Map<string, ScheduledTask> = new Map();
   private taskRegistry: Map<string, TaskFunction> = new Map();
   private processingBacklog = false;
-  private logger: Logger;
 
-  constructor(
-    logger: Logger = (source, level, message) => {
-      console.log(`[${source}] [${level}] ${message}`);
-    }
-  ) {
+  constructor() {
     this.redis = redis;
-    this.logger = logger;
   }
 
   /** Register a named task function */
@@ -100,7 +90,7 @@ export class TaskScheduler {
     this.processingBacklog = true;
 
     const start = Date.now();
-    this.logger("System", "Info", "Starting to process backlog tasks...");
+    logger.info("Starting to process backlog tasks...");
 
     const allTasks = await this.listTasks();
     const now = Date.now();
@@ -108,9 +98,7 @@ export class TaskScheduler {
     for (const task of allTasks) {
       const fn = this.taskRegistry.get(task.functionKey);
       if (!fn) {
-        this.logger(
-          "System",
-          "Info",
+        logger.debug(
           `No registered function for task ${task.taskId} with key ${task.functionKey}. Removing task.`
         );
         await this.redis.hdel("scheduled_tasks", task.taskId);
@@ -139,9 +127,7 @@ export class TaskScheduler {
     }
 
     const elapsed = Date.now() - start;
-    this.logger(
-      "System",
-      "Info",
+    logger.info(
       `Finished processing backlog tasks in ${formatDuration(elapsed)}`
     );
     this.processingBacklog = false;
@@ -159,11 +145,7 @@ export class TaskScheduler {
 
       await fn(params);
     } catch (err: any) {
-      this.logger(
-        "System",
-        "Info",
-        `Error running task ${taskId}: ${err.message ?? err}`
-      );
+      logger.error(`Error running task ${taskId}`, err);
     }
     this.tasks.delete(taskId);
     await this.redis.hdel("scheduled_tasks", taskId);

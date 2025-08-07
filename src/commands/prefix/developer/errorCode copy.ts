@@ -1,7 +1,7 @@
-import { CommandPermission } from "../../constants/permissions";
-import { renderTranscriptFromJsonl } from "../../transcript";
-import { PrefixCommand } from "../../types/Command";
-import { TranscriptWriter } from "../../utils/tickets/TranscriptManager";
+import { CommandPermission } from "../../../constants/permissions";
+import { renderTranscriptFromJsonl } from "../../../transcript";
+import { PrefixCommand } from "../../../types/Command";
+import { TranscriptWriter } from "../../../utils/tickets/TranscriptManager";
 import fs from "fs";
 import path from "path";
 const cmd: PrefixCommand<{

@@ -19,18 +19,12 @@ const button: ButtonHandler = {
     const application = await getCompletedApplication(applicationId, owner);
     if (!application)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_APPLICATION_NOT_FOUND")
-          )
-        ).discordMsg
+        (await onError(new Error("Application attempt not found"))).discordMsg
       );
 
     if (application.status !== "Pending")
       return interaction.reply(
-        (await onError("Commands", t(data.lang!, "APPLICATION_NOT_PENDING")))
-          .discordMsg
+        (await onError(new Error("Application already responded"))).discordMsg
       );
     const applicationTrigger = await getServerApplication(
       application.application,
@@ -38,12 +32,7 @@ const button: ButtonHandler = {
     );
     if (!applicationTrigger)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_APPLICATION_NOT_FOUND")
-          )
-        ).discordMsg
+        (await onError(new Error("Application not found"))).discordMsg
       );
     const userPermissions = getUserPermissions(
       interaction.member as GuildMember,
@@ -54,8 +43,7 @@ const button: ButtonHandler = {
       !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
     )
       return interaction.reply(
-        (await onError("Commands", t(data.lang!, "MISSING_PERMISSIONS")))
-          .discordMsg
+        (await onError(new Error("Missing respond permission"))).discordMsg
       );
 
     return interaction.showModal(

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { WebhookTypes, webhookUrls } from "../../constants/webhooks";
 import { WebhookContent } from "../../types/WebhookContent";
-import { logger } from "../logger";
+import logger from "../logger";
 
 export const postToWebhook = async (
   type: WebhookTypes,
@@ -13,11 +13,7 @@ export const postToWebhook = async (
   axios
     .post(url, content)
     .catch((err) => {
-      return logger(
-        "Webhooks",
-        "Error",
-        `Something went wrong posting webhook ${type}: ${err}`
-      );
+      return logger.error(`Couldn't post webhook ${type}`, err);
     })
-    .finally(() => logger("Webhooks", "Info", `Posted to webhook ${type}`));
+    .finally(() => logger.debug(`Posted to webhook ${type}`));
 };

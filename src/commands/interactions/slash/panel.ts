@@ -25,9 +25,9 @@ import { Locale } from "../../../types/Locale";
 import { resolveDiscordMessagePlaceholders } from "../../../utils/message/placeholders/resolvePlaceholders";
 import serverMessageToDiscordMessage from "../../../utils/formatters/serverMessageToDiscordMessage";
 import { generateBasePlaceholderContext } from "../../../utils/message/placeholders/generateBaseContext";
-import { logger } from "../../../utils/logger";
 import { formatDuration } from "../../../utils/formatters/duration";
 import { getUserPermissions } from "../../../utils/calculateUserPermissions";
+import logger from "../../../utils/logger";
 
 const command: AppCommand = {
   type: "slash",
@@ -264,14 +264,7 @@ const command: AppCommand = {
       !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
     )
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "MISSING_PERMISSIONS"),
-            {},
-            data.lang! as Locale
-          )
-        ).discordMsg
+        (await onError(new Error("Missing manage permission"))).discordMsg
       );
 
     const message = await getServerMessage(
@@ -279,14 +272,7 @@ const command: AppCommand = {
       interaction.guildId
     );
     if (!message) {
-      const error = (
-        await onError(
-          "Commands",
-          t(data.lang!, "CONFIG_CREATE_MESSAGE_NOT_FOUND"),
-          {},
-          data.lang! as Locale
-        )
-      ).discordMsg;
+      const error = (await onError(new Error("Message not found"))).discordMsg;
 
       interaction.reply(error);
       return;
@@ -347,9 +333,7 @@ const command: AppCommand = {
       ),
     });
 
-    logger(
-      "Commands",
-      "Info",
+    logger.debug(
       `Processing new panel took ${formatDuration(
         new Date().getTime() - start.getTime()
       )}`
