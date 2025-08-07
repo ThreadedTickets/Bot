@@ -5,11 +5,11 @@
   "main": ".build/src/cluster.js",
   "scripts": {
     "prod": "npx dotenvx run -f .env.production -- node .build/src/cluster.js",
-    "dev": "npx dotenvx run -f .env.development -- node --trace-warnings .build/src/cluster.js",
+    "dev": "npx dotenvx run -f .env.development -- node --trace-warnings .build/src/index.js",
     "start": "rm -rf .build/ && npx tsc && npm run bot",
     "bot:debug": "rm -rf .build/ && npx tsc && npm run dev",
     "debug": "npm run bot:debug",
-    "build:prod": "rm -rf .build/ && npm i && npx tsc && npm run sentry:sourcemaps && npm run prod",
+    "build:prod": "rm -rf .build/ && npm i && npx tsc && npm run prod",
     "build:dev": "rm -rf .build/ && npm i && npx tsc && npm run dev",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org threaded --project node ./.build && sentry-cli sourcemaps upload --org threaded --project node ./.build"
   },

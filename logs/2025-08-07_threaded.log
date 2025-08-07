@@ -1,0 +1,160 @@
+[2025-08-07T13:26:32.199Z] [threaded] Logging started
+[2025-08-07T14:10:22.846Z] [threaded] Logging started
+[2025-08-07T14:10:23.173Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:10:23.174Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:10:23.178Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:10:23.178Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:10:23.265Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:10:23.400Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:10:23.608Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:10:23.947Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:10:24.261Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:10:24.576Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:11:31.706Z] [ERROR][threaded]: Error executing /applications Errors validation failed: content: Path `content` is required.
+ValidationError: Errors validation failed: content: Path `content` is required.
+    at Document.invalidate (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/mongoose/lib/document.js:3358:32)
+    at /home/alfie/Documents/Stuff i think is coo/Bot/node_modules/mongoose/lib/document.js:3119:17
+    at /home/alfie/Documents/Stuff i think is coo/Bot/node_modules/mongoose/lib/schemaType.js:1410:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2025-08-07T14:11:31.710Z] [ERROR][threaded]: Uncaught Exception Errors validation failed: content: Path `content` is required.
+ValidationError: Errors validation failed: content: Path `content` is required.
+    at Document.invalidate (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/mongoose/lib/document.js:3358:32)
+    at /home/alfie/Documents/Stuff i think is coo/Bot/node_modules/mongoose/lib/document.js:3119:17
+    at /home/alfie/Documents/Stuff i think is coo/Bot/node_modules/mongoose/lib/schemaType.js:1410:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2025-08-07T14:12:28.765Z] [threaded] Logging started
+[2025-08-07T14:12:29.154Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:12:29.156Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:12:29.160Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:12:29.160Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:12:29.254Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:12:29.315Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:12:29.473Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:12:29.770Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:12:30.225Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:12:30.477Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:12:43.383Z] [WARN][threaded]: Error 6894b45b0a8923769b8ad679 Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:13:45.906Z] [threaded] Logging started
+[2025-08-07T14:13:46.249Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:13:46.250Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:13:46.253Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:13:46.253Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:13:46.325Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:13:46.465Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:13:46.623Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:13:47.489Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:13:47.696Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:13:48.167Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:13:52.709Z] [ERROR][threaded]: Error 6894b4a089795400e10e8ccd Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:15:09.559Z] [threaded] Logging started
+[2025-08-07T14:15:09.896Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:15:09.898Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:15:09.903Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:15:09.903Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:15:09.995Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:15:10.162Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:15:10.369Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:15:10.779Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:15:11.087Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:15:11.137Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:15:16.309Z] [ERROR][threaded]: Error 6894b4f40f6990e17a06f17c Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:15:32.485Z] [ERROR][threaded]: Error 6894b5040f6990e17a06f17f Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:16:27.840Z] [threaded] Logging started
+[2025-08-07T14:16:28.152Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:16:28.153Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:16:28.156Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:16:28.156Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:16:28.223Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:16:28.473Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:16:28.674Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:16:28.882Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:16:29.489Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:16:29.588Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:16:38.706Z] [ERROR][threaded]: Error 6894b546016e0d1580269d14 Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:17:25.292Z] [threaded] Logging started
+[2025-08-07T14:17:25.597Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:17:25.599Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:17:25.601Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:17:25.601Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:17:25.671Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:17:25.918Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:17:26.120Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:17:26.430Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:17:26.940Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:17:27.036Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:17:31.852Z] [ERROR][threaded]: Error 6894b57be24963971a0b0b0e Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:18:39.257Z] [threaded] Logging started
+[2025-08-07T14:18:39.701Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:18:39.703Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:18:39.706Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:18:39.707Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:18:39.796Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:18:39.951Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:18:40.154Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:18:40.364Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:18:40.977Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:18:41.074Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:18:53.670Z] [ERROR][threaded]: Error 6894b5cde904a41bc62d837b Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:20:08.243Z] [threaded] Logging started
+[2025-08-07T14:20:08.676Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:20:08.678Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:20:08.681Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:20:08.681Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:20:08.764Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:20:08.948Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:20:09.150Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:20:09.652Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:20:09.906Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:20:10.062Z] [INFO][threaded]: Screws is running 
+[2025-08-07T14:21:59.527Z] [ERROR][threaded]: Error 6894b6872f294c37d1ee46fb Application not found
+Error: Application not found
+    at Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/commands/interactions/slash/applications.js:172:61)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.execute (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/events/interactionCreate.js:59:17)
+    at async Client.listener (/home/alfie/Documents/Stuff i think is coo/Bot/.build/src/handlers/eventHandler.js:79:13)
+[2025-08-07T14:23:39.884Z] [threaded] Logging started
+[2025-08-07T14:23:40.305Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T14:23:40.307Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T14:23:40.310Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T14:23:40.310Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T14:23:40.400Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T14:23:40.499Z] [INFO][threaded]: Redis connected 
+[2025-08-07T14:23:40.655Z] [INFO][threaded]: Redis ready 
+[2025-08-07T14:23:41.119Z] [INFO][threaded]: Updated 25 global commands 
+[2025-08-07T14:23:41.269Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T14:23:41.351Z] [INFO][threaded]: Screws is running 

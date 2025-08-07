@@ -40,12 +40,12 @@ export const onError = async (
   locale?: Locale
 ) => {
   const errorDocument = await ErrorSchema.create({
-    error: error.message,
+    content: error.message,
     context,
   });
   if (typeof error === "string") error = new Error(error);
   const id = errorDocument._id.toString();
-  logger.warn(`Error ${id}`, error);
+  logger.error(`Error ${id}`, error);
   errors.inc({ error: error.message });
 
   postToWebhook(WebhookTypes.ErrorLog, {

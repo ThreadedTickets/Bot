@@ -2,7 +2,7 @@ import Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
 
 Sentry.init({
-  dsn: "https://eb87124ab01686b4a3f1a71108620e73@o4509627847737345.ingest.us.sentry.io/4509627849572352",
+  dsn: process.env["SENTRY_URL"],
   environment: process.env.IS_PROD === "true" ? "production" : "development",
   integrations: [nodeProfilingIntegration()],
   tracesSampleRate: 1.0,

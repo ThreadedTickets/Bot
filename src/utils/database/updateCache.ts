@@ -1,4 +1,4 @@
-import { logger } from "../logger";
+import logger from "../logger";
 import redis from "../redis";
 
 /**
@@ -18,7 +18,7 @@ export const updateCachedData = async (
     await redis.set(key, JSON.stringify(data), "EX", ttl);
     return true;
   } catch (error) {
-    logger("Redis", "Error", `${error}`);
+    logger.error("Cache update error", error);
     return false;
   }
 };

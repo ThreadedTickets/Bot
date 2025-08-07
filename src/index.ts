@@ -6,7 +6,6 @@ import { loadEvents } from "./handlers/eventHandler";
 import { connectToMongooseDatabase } from "./database/connection";
 import { startMetricsServer } from "./metricsServer";
 import { loadInteractionHandlers } from "./handlers/interactionHandlers";
-import { onError } from "./utils/onError";
 import "./utils/hooks/register";
 import { loadLanguages } from "./lang";
 import { startApi } from "./apiServer";
@@ -18,6 +17,7 @@ import { Locale } from "./types/Locale";
 import { AsyncQueueManager } from "./utils/bot/QueueManager";
 import { ClusterClient, getInfo } from "discord-hybrid-sharding";
 import logger from "./utils/logger";
+import "./instrument";
 
 const isProd = process.env["IS_PROD"] === "true";
 
