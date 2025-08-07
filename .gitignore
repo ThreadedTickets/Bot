@@ -1,5 +1,6 @@
 node_modules
 .env*
 transcripts
+.build
 package-lock.json
 logs
