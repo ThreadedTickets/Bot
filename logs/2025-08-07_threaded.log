@@ -158,3 +158,201 @@ Error: Application not found
 [2025-08-07T14:23:41.119Z] [INFO][threaded]: Updated 25 global commands 
 [2025-08-07T14:23:41.269Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
 [2025-08-07T14:23:41.351Z] [INFO][threaded]: Screws is running 
+[2025-08-07T15:53:42.665Z] [threaded] Logging started
+[2025-08-07T15:53:43.161Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T15:53:43.163Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T15:53:43.166Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T15:53:43.166Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T15:53:43.269Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T15:53:43.396Z] [INFO][threaded]: Redis connected 
+[2025-08-07T15:53:43.607Z] [INFO][threaded]: Redis ready 
+[2025-08-07T15:53:44.222Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T15:53:44.467Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T15:53:44.928Z] [INFO][threaded]: Screws is running 
+[2025-08-07T15:58:33.549Z] [threaded] Logging started
+[2025-08-07T15:58:34.024Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T15:58:34.026Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T15:58:34.029Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T15:58:34.029Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T15:58:34.146Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T15:58:34.318Z] [INFO][threaded]: Redis connected 
+[2025-08-07T15:58:34.526Z] [INFO][threaded]: Redis ready 
+[2025-08-07T15:58:34.865Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T15:58:35.244Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T15:58:35.445Z] [INFO][threaded]: Screws is running 
+[2025-08-07T15:59:30.134Z] [ERROR][threaded]: Unhandled Rejection Cannot send an empty message
+DiscordAPIError[50006]: Cannot send an empty message
+    at handleErrors (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:748:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async SequentialHandler.runRequest (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:1149:23)
+    at async SequentialHandler.queueRequest (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:980:14)
+    at async _REST.request (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:1293:22)
+    at async InteractionWebhook.editMessage (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/discord.js/src/structures/Webhook.js:351:15)
+    at async ChatInputCommandInteraction.editReply (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/discord.js/src/structures/interfaces/InteractionResponses.js:254:17)
+[2025-08-07T16:01:48.667Z] [threaded] Logging started
+[2025-08-07T16:01:49.175Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:01:49.177Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:01:49.180Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:01:49.180Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:01:49.281Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:01:49.328Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:01:49.485Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:01:50.117Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:01:50.333Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:01:50.519Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:03:37.640Z] [threaded] Logging started
+[2025-08-07T16:03:38.128Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:03:38.130Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:03:38.133Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:03:38.133Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:03:38.231Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:03:38.281Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:03:38.436Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:03:38.730Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:03:39.290Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:03:39.475Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:05:11.394Z] [threaded] Logging started
+[2025-08-07T16:05:11.884Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:05:11.886Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:05:11.889Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:05:11.889Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:05:11.991Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:05:12.154Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:05:12.360Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:05:12.680Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:05:13.071Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:05:13.274Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:25:24.350Z] [threaded] Logging started
+[2025-08-07T16:25:24.843Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:25:24.845Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:25:24.848Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:25:24.848Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:25:24.951Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:25:25.123Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:25:25.327Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:25:25.652Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:25:26.148Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:25:26.248Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:27:44.289Z] [threaded] Logging started
+[2025-08-07T16:27:44.774Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:27:44.776Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:27:44.779Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:27:44.779Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:27:44.871Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:27:44.999Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:27:45.222Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:27:45.833Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:27:46.021Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:27:46.433Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:28:23.399Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:28:24.322Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22M3MQATF8KN213QWB3GCEZ 
+[2025-08-07T16:28:34.524Z] [DEBUG][threaded]: Running await-reply on TK_01K22M3MQATF8KN213QWB3GCEZ 
+[2025-08-07T16:30:42.865Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:30:43.995Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22M3MQATF8KN213QWB3GCEZ 
+[2025-08-07T16:30:54.197Z] [DEBUG][threaded]: Running await-reply on TK_01K22M3MQATF8KN213QWB3GCEZ 
+[2025-08-07T16:32:07.604Z] [threaded] Logging started
+[2025-08-07T16:32:08.013Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:32:08.015Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:32:08.018Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:32:08.018Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:32:08.104Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:32:08.268Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:32:08.480Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:32:09.297Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:32:09.304Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:32:09.908Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:32:32.438Z] [DEBUG][threaded]: Generated ID: TK_01K22P11NNZMAKMM1BW5FGDTY1 
+[2025-08-07T16:33:01.310Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:33:02.951Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22P11NNZMAKMM1BW5FGDTY1 
+[2025-08-07T16:33:13.153Z] [DEBUG][threaded]: Running await-reply on TK_01K22P11NNZMAKMM1BW5FGDTY1 
+[2025-08-07T16:34:16.487Z] [threaded] Logging started
+[2025-08-07T16:34:16.893Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:34:16.895Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:34:16.898Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:34:16.898Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:34:16.987Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:34:17.190Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:34:17.402Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:34:17.605Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:34:18.214Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:34:18.220Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:43:04.505Z] [threaded] Logging started
+[2025-08-07T16:43:04.911Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:43:04.913Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:43:04.916Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:43:04.916Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:43:05.003Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:43:05.167Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:43:05.372Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:43:05.577Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:43:06.186Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:43:06.390Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:44:27.689Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:44:28.824Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22P11NNZMAKMM1BW5FGDTY1 
+[2025-08-07T16:44:30.151Z] [DEBUG][threaded]: Canceling await task 
+[2025-08-07T16:47:09.536Z] [threaded] Logging started
+[2025-08-07T16:47:09.929Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:47:09.930Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:47:09.933Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:47:09.933Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:47:10.022Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:47:10.210Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:47:10.367Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:47:11.021Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:47:11.088Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:47:11.223Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:47:29.453Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:47:30.480Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22P11NNZMAKMM1BW5FGDTY1 
+[2025-08-07T16:47:40.681Z] [DEBUG][threaded]: Running await-reply on TK_01K22P11NNZMAKMM1BW5FGDTY1 
+[2025-08-07T16:48:12.055Z] [DEBUG][threaded]: Generated ID: TK_01K22PXQ8NB6VDS6022ZEH7WSG 
+[2025-08-07T16:48:47.885Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:48:48.611Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22PXQ8NB6VDS6022ZEH7WSG 
+[2025-08-07T16:48:51.065Z] [DEBUG][threaded]: Canceling await task 
+[2025-08-07T16:49:28.407Z] [threaded] Logging started
+[2025-08-07T16:49:28.837Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:49:28.839Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:49:28.841Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:49:28.842Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:49:28.930Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:49:29.055Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:49:29.274Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:49:29.786Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:49:30.097Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:49:30.287Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:49:36.220Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:49:37.353Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22PXQ8NB6VDS6022ZEH7WSG 
+[2025-08-07T16:49:43.288Z] [DEBUG][threaded]: Canceling await task 
+[2025-08-07T16:49:56.601Z] [DEBUG][threaded]: Total duration parsed: 10000ms 
+[2025-08-07T16:49:57.523Z] [DEBUG][threaded]: Scheduled await-reply task on TK_01K22PXQ8NB6VDS6022ZEH7WSG 
+[2025-08-07T16:50:00.588Z] [DEBUG][threaded]: Canceling await task 
+[2025-08-07T16:50:00.931Z] [ERROR][threaded]: Unhandled Rejection Unknown Emoji
+DiscordAPIError[10014]: Unknown Emoji
+    at handleErrors (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:748:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async SequentialHandler.runRequest (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:1149:23)
+    at async SequentialHandler.queueRequest (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:980:14)
+    at async _REST.request (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/@discordjs/rest/dist/index.js:1293:22)
+    at async GuildMessageManager.react (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/discord.js/src/managers/MessageManager.js:255:5)
+    at async Message.react (/home/alfie/Documents/Stuff i think is coo/Bot/node_modules/discord.js/src/structures/Message.js:902:5)
+[2025-08-07T16:50:55.378Z] [threaded] Logging started
+[2025-08-07T16:50:55.840Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:50:55.842Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:50:55.845Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:50:55.845Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:50:55.940Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:50:56.096Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:50:56.302Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:50:56.616Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:50:57.127Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:50:57.327Z] [INFO][threaded]: Screws is running 
+[2025-08-07T16:52:20.851Z] [threaded] Logging started
+[2025-08-07T16:52:21.248Z] [INFO][threaded]: Loaded locale de 
+[2025-08-07T16:52:21.249Z] [INFO][threaded]: Loaded locale en 
+[2025-08-07T16:52:21.252Z] [INFO][threaded]: Metrics server running at http://localhost:10038/metrics-pr3cH8ChoWROfROridusTov4ChiswIchoCRltrOylvOyOspuswEfrOWAqib3MA84 
+[2025-08-07T16:52:21.252Z] [INFO][threaded]: API server running at http://localhost:10005 
+[2025-08-07T16:52:21.339Z] [INFO][threaded]: Loaded 8 prefix commands (8 aliases) 
+[2025-08-07T16:52:21.499Z] [INFO][threaded]: Redis connected 
+[2025-08-07T16:52:21.702Z] [INFO][threaded]: Redis ready 
+[2025-08-07T16:52:21.917Z] [INFO][threaded]: Updated 26 global commands 
+[2025-08-07T16:52:22.523Z] [INFO][threaded]: Connected to the database ThreadedTs successfully 
+[2025-08-07T16:52:22.529Z] [INFO][threaded]: Screws is running 

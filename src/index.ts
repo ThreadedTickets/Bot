@@ -18,6 +18,7 @@ import { AsyncQueueManager } from "./utils/bot/QueueManager";
 import { ClusterClient, getInfo } from "discord-hybrid-sharding";
 import logger from "./utils/logger";
 import "./instrument";
+import { awaitReply } from "./utils/tickets/await-reply";
 
 const isProd = process.env["IS_PROD"] === "true";
 
@@ -101,6 +102,17 @@ TaskScheduler.registerTaskFunction(
   "closeTicket",
   (params: { ticketId: string; locale: Locale; reason: string }) => {
     closeTicket(params.ticketId, params.locale, params.reason);
+  }
+);
+TaskScheduler.registerTaskFunction(
+  "awaitingReply",
+  (params: {
+    ticketId: string;
+    action: "nothing" | "lock" | "close";
+    notify: string | null;
+    serverId: string;
+  }) => {
+    awaitReply(params.serverId, params.ticketId, params.action, params.notify);
   }
 );
 export const InMemoryCache = new MemCache({

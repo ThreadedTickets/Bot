@@ -9,6 +9,7 @@ import { AppCommand } from "../../../types/Command";
 import {
   getServerGroups,
   getServerMessage,
+  getServerMessages,
   getServerTag,
   getServerTags,
 } from "../../../utils/bot/getServer";
@@ -116,6 +117,31 @@ const cmd: AppCommand = {
       }
 
       const filtered = tags.filter((m) =>
+        m.name.toLowerCase().includes(focusedValue.toLowerCase())
+      );
+
+      interaction.respond(
+        filtered
+          .map((m) => ({
+            name: m.name,
+            value: m._id,
+          }))
+          .slice(0, 25)
+      );
+    } else if (focused === "message") {
+      const focusedValue = interaction.options.getString("message", true);
+      const message = await getServerMessages(interaction.guildId);
+      if (!message.length) {
+        interaction.respond([
+          {
+            name: "You don't have any message!",
+            value: "",
+          },
+        ]);
+        return;
+      }
+
+      const filtered = message.filter((m) =>
         m.name.toLowerCase().includes(focusedValue.toLowerCase())
       );
 
