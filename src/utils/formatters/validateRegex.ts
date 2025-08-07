@@ -1,8 +1,8 @@
 import RandExp from "randexp";
 import RE2 from "re2";
 import safe from "safe-regex";
-import { logger } from "../logger";
 import { onError } from "../onError";
+import logger from "../logger";
 
 export function validateUserRegex(pattern: string): {
   valid: boolean;
@@ -29,8 +29,8 @@ export function generateExampleRegex(regexStr: string): string | null {
     const randexp = new RandExp(new RegExp(regexStr));
     return randexp.gen();
   } catch (err: any) {
-    logger("System", "Warn", `Error when generating example regex: ${err}`);
-    onError("System", `Error generating example regex: ${err}`, {
+    logger.warn(`Error when generating example regex`, err);
+    onError(err, {
       stack: err.stack,
       regexStr,
     });

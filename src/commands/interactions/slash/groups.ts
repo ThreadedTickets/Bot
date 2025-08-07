@@ -11,7 +11,6 @@ import { t } from "../../../lang";
 import { getUserPermissions } from "../../../utils/calculateUserPermissions";
 import { GroupCreatorSchema } from "../../../database/modals/GroupCreator";
 import { onError } from "../../../utils/onError";
-import { Locale } from "../../../types/Locale";
 import { updateCachedData } from "../../../utils/database/updateCache";
 import { invalidateCache } from "../../../utils/database/invalidateCache";
 import { GroupSchema } from "../../../database/modals/Guild";
@@ -99,14 +98,7 @@ const cmd: AppCommand = {
     if (subcommand === "new") {
       if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild))
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing permission"))).discordMsg
         );
 
       const document = await GroupCreatorSchema.create({
@@ -137,26 +129,12 @@ const cmd: AppCommand = {
     } else if (subcommand === "edit") {
       if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild))
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing permission"))).discordMsg
         );
       const id = interaction.options.getString("group", true);
       const group = await getServerGroup(id, interaction.guildId);
       if (!group) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_GROUP_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Group not found"))).discordMsg;
 
         interaction.editReply(error);
         return;
@@ -192,26 +170,12 @@ const cmd: AppCommand = {
     } else if (subcommand === "delete") {
       if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild))
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing permission"))).discordMsg
         );
       const id = interaction.options.getString("group", true);
       const group = await getServerGroup(id, interaction.guildId);
       if (!group) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_GROUP_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Group not found"))).discordMsg;
 
         interaction.editReply(error);
         return;

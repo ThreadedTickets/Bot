@@ -28,8 +28,7 @@ const event: Event<"messageCreate"> = {
 
     if (!activeApplication.cached)
       return message.reply(
-        (await onError("Commands", t(data!.lang!, `ERROR_CODE_1008`)))
-          .discordMsg
+        (await onError(new Error(t(data!.lang!, `ERROR_CODE_1008`)))).discordMsg
       );
 
     const appJson = activeApplication.data;
@@ -37,12 +36,7 @@ const event: Event<"messageCreate"> = {
     const application = await getServerApplication(applicationId, server);
     if (!application)
       return message.reply(
-        (
-          await onError(
-            "Commands",
-            t(data!.lang!, `CONFIG_CREATE_APPLICATION_NOT_FOUND`)
-          )
-        ).discordMsg
+        (await onError(new Error("Application not found"))).discordMsg
       );
 
     const selection = message.content;
@@ -102,17 +96,18 @@ const event: Event<"messageCreate"> = {
     if (currentQuestion.type === "text") {
       if (message.attachments.size > 0)
         return message.reply(
-          (await onError("Commands", t(data!.lang!, `ERROR_CODE_1014`)))
+          (await onError(new Error(t(data!.lang!, `ERROR_CODE_1014`))))
             .discordMsg
         );
       if (currentQuestion.minimum && selection.length < currentQuestion.minimum)
         return message.reply(
           (
             await onError(
-              "Commands",
-              t(data!.lang!, `ERROR_CODE_1009`, {
-                min: currentQuestion.minimum,
-              })
+              new Error(
+                t(data!.lang!, `ERROR_CODE_1009`, {
+                  min: currentQuestion.minimum,
+                })
+              )
             )
           ).discordMsg
         );
@@ -121,10 +116,11 @@ const event: Event<"messageCreate"> = {
         return message.reply(
           (
             await onError(
-              "Commands",
-              t(data!.lang!, `ERROR_CODE_1010`, {
-                max: currentQuestion.maximum,
-              })
+              new Error(
+                t(data!.lang!, `ERROR_CODE_1010`, {
+                  max: currentQuestion.maximum,
+                })
+              )
             )
           ).discordMsg
         );
@@ -133,10 +129,11 @@ const event: Event<"messageCreate"> = {
         return message.reply(
           (
             await onError(
-              "Commands",
-              t(data!.lang!, `ERROR_CODE_1013`, {
-                min: currentQuestion.minimum,
-              })
+              new Error(
+                t(data!.lang!, `ERROR_CODE_1013`, {
+                  min: currentQuestion.minimum,
+                })
+              )
             )
           ).discordMsg
         );
@@ -147,10 +144,11 @@ const event: Event<"messageCreate"> = {
         return message.reply(
           (
             await onError(
-              "Commands",
-              t(data!.lang!, `ERROR_CODE_1011`, {
-                min: currentQuestion.minimum,
-              })
+              new Error(
+                t(data!.lang!, `ERROR_CODE_1011`, {
+                  min: currentQuestion.minimum,
+                })
+              )
             )
           ).discordMsg
         );
@@ -162,10 +160,11 @@ const event: Event<"messageCreate"> = {
         return message.reply(
           (
             await onError(
-              "Commands",
-              t(data!.lang!, `ERROR_CODE_1012`, {
-                max: currentQuestion.maximum,
-              })
+              new Error(
+                t(data!.lang!, `ERROR_CODE_1012`, {
+                  max: currentQuestion.maximum,
+                })
+              )
             )
           ).discordMsg
         );

@@ -14,7 +14,7 @@ import {
   postLogToWebhook,
 } from "../utils/bot/sendLogToWebhook";
 import { invalidateCache } from "../utils/database/invalidateCache";
-import { logger } from "../utils/logger";
+import logger from "../utils/logger";
 
 const event: Event<"guildMemberRemove"> = {
   name: "guildMemberRemove",
@@ -30,12 +30,9 @@ async function handleGuildMemberRemove(
   data: any,
   member: GuildMember
 ) {
-  /** logger(
-    "System",
-    "Info",
+  logger.debug(
     `Detected guild member remove ${member.user.username} - running application on leave`
   );
-  */
 
   const serverApplications = await getServerApplications(member.guild.id);
   let counters = {
@@ -254,13 +251,10 @@ async function handleGuildMemberRemove(
       await wait(250);
     }
   }
-  /*
-  logger(
-    "System",
-    "Info",
+
+  logger.debug(
     `Finished processing guild member leave event: ${counters.nothing} nothing | ${counters.approve} approved | ${counters.reject} rejected | ${counters.delete} deleted`
   );
-  */
 }
 
 export default event;

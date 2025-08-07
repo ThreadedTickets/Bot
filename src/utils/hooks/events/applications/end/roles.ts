@@ -5,7 +5,7 @@ import {
   ApplicationQuestion,
 } from "../../../../../types/Application";
 import { getGuildMember } from "../../../../bot/getGuildMember";
-import { logger } from "../../../../logger";
+import logger from "../../../../logger";
 
 registerHook(
   "ApplicationEnd",
@@ -76,6 +76,6 @@ export async function updateMemberRoles(
   try {
     await member.roles.set(finalRoles);
   } catch (err) {
-    logger("Hooks", "Warn", `Failed to update roles: ${err}`);
+    logger.warn(`Failed to update roles from application`, err);
   }
 }

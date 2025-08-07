@@ -3,6 +3,7 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ChatInputCommandInteraction,
+  Message,
   ModalSubmitInteraction,
   TextChannel,
 } from "discord.js";
@@ -22,7 +23,6 @@ import {
 } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
 import { fetchChannelById, fetchGuildById } from "../bot/fetchMessage";
-import { logger } from "../logger";
 import { TicketChannelManager } from "../bot/TicketChannelManager";
 import { onError } from "../onError";
 import { invalidateCache } from "../database/invalidateCache";
@@ -39,12 +39,13 @@ import path from "path";
 import serverMessageToDiscordMessage from "../formatters/serverMessageToDiscordMessage";
 import { resolveDiscordMessagePlaceholders } from "../message/placeholders/resolvePlaceholders";
 import { generateBasePlaceholderContext } from "../message/placeholders/generateBaseContext";
+import logger from "../logger";
 
 export async function closeTicket(
   ticketId: string,
   locale: Locale,
   reason?: string,
-  repliable?: ModalSubmitInteraction | ChatInputCommandInteraction,
+  repliable?: ModalSubmitInteraction | ChatInputCommandInteraction | Message,
   schedule?: string | null
 ) {
   const ticket = await TicketSchema.findOneAndUpdate(
@@ -60,15 +61,26 @@ export async function closeTicket(
   );
   await invalidateCache(`ticket:${ticketId}`);
   if (!ticket)
-    return repliable?.editReply(
-      (
-        await onError("Tickets", t(locale, "TICKET_NOT_FOUND"), {
-          ticketId: ticketId,
-        })
-      ).discordMsg
-    );
+    return "editReply" in repliable
+      ? repliable?.editReply(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        )
+      : repliable?.edit(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        );
+
   if (ticket.status === "Closed" && repliable)
-    return repliable?.editReply(t(locale, "SCHEDULE_TICKET_CLOSE_ALREADY"));
+    return "editReply" in repliable
+      ? repliable?.editReply(t(locale, "SCHEDULE_TICKET_CLOSE_ALREADY"))
+      : repliable?.edit(t(locale, "SCHEDULE_TICKET_CLOSE_ALREADY"));
   if (repliable) {
     const member = await getGuildMember(client, ticket.server, ticket.owner);
 
@@ -129,11 +141,7 @@ export async function closeTicket(
           ...(ticket.closeChannel ? { parent: ticket.closeChannel } : {}),
         })
         .catch((err) =>
-          logger(
-            "Tickets",
-            "Warn",
-            `Failed to edit ticket channel on close: ${err}`
-          )
+          logger.warn(`Failed to edit ticket channel on close`, err)
         );
     }
     const ms = parseDurationToMs(schedule);
@@ -144,9 +152,13 @@ export async function closeTicket(
       ms,
       `CLOSE-${ticketId}`
     );
-    repliable?.editReply(
-      t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
-    );
+    "editReply" in repliable
+      ? repliable?.editReply(
+          t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
+        )
+      : repliable?.edit(
+          t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
+        );
 
     if (ticketChannel?.isTextBased())
       (ticketChannel as TextChannel)
@@ -165,17 +177,13 @@ export async function closeTicket(
           ],
         })
         .catch((err) =>
-          logger(
-            "Tickets",
-            "Warn",
-            `Failed to send message to ticket channel: ${err}`
-          )
+          logger.warn(`Failed to send message to ticket channel on close`, err)
         );
     else if (ticketChannel?.isThread()) {
       await ticketChannel.members
         .remove(ticket.owner)
         .catch((err) =>
-          logger("Tickets", "Warn", `Failed to remove ticket owner: ${err}`)
+          logger.warn(`Failed to remove ticket owner on close`, err)
         );
     }
     return;
@@ -242,7 +250,7 @@ export async function closeTicket(
     await ticketChannel
       .delete("Deleting old ticket channel")
       .catch((err) =>
-        logger("Tickets", "Warn", `Failed to delete ticket channel: ${err}`)
+        logger.warn(`Failed to delete ticket channel on close`, err)
       );
   }
 

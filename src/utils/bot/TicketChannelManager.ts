@@ -17,7 +17,8 @@ export class TicketChannelManager {
     ticketId: string,
     takeTranscript: boolean,
     anonymise: boolean,
-    allowAutoresponders: boolean
+    allowAutoresponders: boolean,
+    owner: string
   ): Promise<void> {
     await this.redis.sadd(this.key, channelId);
     await this.redis.set(
@@ -27,6 +28,7 @@ export class TicketChannelManager {
         takeTranscript,
         anonymise,
         allowAutoresponders,
+        owner,
       })
     );
   }
@@ -59,6 +61,7 @@ export class TicketChannelManager {
     takeTranscript: boolean;
     anonymise: boolean;
     allowAutoresponders: boolean;
+    owner: string;
   } | null> {
     const data = await this.redis.get(`${this.prefix}${channelId}`);
     return data ? JSON.parse(data) : null;

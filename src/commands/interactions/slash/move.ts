@@ -103,7 +103,7 @@ const command: AppCommand = {
     if (!ticketId)
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "TICKET_NOT_FOUND"), {
+          await onError(new Error("Ticket not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -113,7 +113,7 @@ const command: AppCommand = {
     if (!ticket)
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "TICKET_NOT_FOUND"), {
+          await onError(new Error("Ticket not found"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -122,7 +122,7 @@ const command: AppCommand = {
     if (ticketChannel.isThread() || !ticketChannel.isTextBased())
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "TICKET_CANT_MOVE"), {
+          await onError(new Error("Ticket can't move"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -139,7 +139,7 @@ const command: AppCommand = {
     )
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "MISSING_PERMISSIONS"), {
+          await onError(new Error("Missing move permission"), {
             ticketId: ticketId,
           })
         ).discordMsg
@@ -151,7 +151,7 @@ const command: AppCommand = {
     if (!newParent || newParent?.type !== ChannelType.GuildCategory)
       return interaction.editReply(
         (
-          await onError("Tickets", t(data.lang!, "INVALID_CHANNEL"), {
+          await onError(new Error("Invalid channel type"), {
             ticketId: ticketId,
           })
         ).discordMsg

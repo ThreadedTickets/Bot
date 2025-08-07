@@ -1,5 +1,5 @@
 import { WebhookClient } from "discord.js";
-import { logger } from "../logger";
+import logger from "../logger";
 
 export async function deleteWebhookByUrl(webhookUrl: string): Promise<void> {
   try {
@@ -11,8 +11,8 @@ export async function deleteWebhookByUrl(webhookUrl: string): Promise<void> {
     const webhook = new WebhookClient({ id, token });
 
     await webhook.delete();
-    logger("Webhooks", "Info", `Deleted logging webhook ${id}`)
+    logger.debug(`Deleted logging webhook ${id}`);
   } catch (error) {
-    logger("Webhooks", "Error", `Failed to delete logging webhook: ${error}`)
+    logger.error(`Failed to delete logging webhook ${webhookUrl}`, error);
   }
 }

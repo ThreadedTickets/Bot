@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { logger } from "./logger";
+import logger from "./logger";
 
 const redis = new Redis({
   host: process.env["REDIS_HOST"],
@@ -8,9 +8,9 @@ const redis = new Redis({
 });
 
 redis
-  .once("ready", () => logger("Redis", "Info", "Redis ready"))
-  .on("error", (err) => logger("Redis", "Error", err.message))
-  .on("close", () => logger("Redis", "Warn", "Redis connection closed"))
-  .on("connect", () => logger("Redis", "Info", "Redis connected"));
+  .once("ready", () => logger.info("Redis ready"))
+  .on("error", (err) => logger.error("Redis error", err))
+  .on("close", () => logger.warn("Redis connection closed"))
+  .on("connect", () => logger.info("Redis connected"));
 
 export default redis;

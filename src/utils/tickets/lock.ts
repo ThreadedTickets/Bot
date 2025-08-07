@@ -4,6 +4,7 @@ import {
   ButtonInteraction,
   ButtonStyle,
   ChatInputCommandInteraction,
+  Message,
   TextChannel,
 } from "discord.js";
 import { client } from "../..";
@@ -20,7 +21,6 @@ import {
 } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
 import { fetchChannelById } from "../bot/fetchMessage";
-import { logger } from "../logger";
 import { onError } from "../onError";
 import { buildChannelPermissionOverwrites } from "../hooks/events/tickets/new/main";
 import ticketOwnerPermissionsClosed from "../../constants/ticketOwnerPermissionsClosed";
@@ -28,25 +28,39 @@ import everyoneTicketPermissions from "../../constants/everyoneTicketPermissions
 import botTicketPermissions from "../../constants/botTicketPermissions";
 import { TicketSchema } from "../../database/modals/Ticket";
 import { invalidateCache } from "../database/invalidateCache";
+import logger from "../logger";
 
 export async function lockTicket(
   ticketId: string,
   locale: Locale,
-  repliable: ButtonInteraction | ChatInputCommandInteraction
+  repliable: ButtonInteraction | ChatInputCommandInteraction | Message
 ) {
   const ticket = await getTicketTrust(ticketId);
   if (!ticket)
-    return repliable?.editReply(
-      (
-        await onError("Tickets", t(locale, "TICKET_NOT_FOUND"), {
-          ticketId: ticketId,
-        })
-      ).discordMsg
-    );
+    return "editReply" in repliable
+      ? repliable?.editReply(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        )
+      : repliable?.edit(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        );
+
   if (ticket.status === "Closed")
-    return repliable?.editReply(t(locale, "TICKET_CLOSED_SO_CANNOT_LOCK"));
+    return "editReply" in repliable
+      ? repliable?.editReply(t(locale, "TICKET_CLOSED_SO_CANNOT_LOCK"))
+      : repliable?.edit(t(locale, "TICKET_CLOSED_SO_CANNOT_LOCK"));
   if (ticket.status === "Locked")
-    return repliable?.editReply(t(locale, "TICKET_LOCKED_SO_CANNOT_LOCK"));
+    return "editReply" in repliable
+      ? repliable?.editReply(t(locale, "TICKET_LOCKED_SO_CANNOT_LOCK"))
+      : repliable?.edit(t(locale, "TICKET_LOCKED_SO_CANNOT_LOCK"));
 
   await TicketSchema.findOneAndUpdate({ _id: ticketId }, { status: "Locked" });
   await invalidateCache(`ticket:${ticketId}`);
@@ -94,23 +108,31 @@ export async function lockTicket(
         ),
       })
       .catch((err) =>
-        logger(
-          "Tickets",
-          "Warn",
-          `Failed to edit ticket channel on lock: ${err}`
-        )
+        logger.warn(`Failed to edit ticket channel on lock`, err)
       );
   } else if (ticketChannel.isThread()) {
     await ticketChannel.members
       .remove(ticket.owner)
       .catch((err) =>
-        logger("Tickets", "Warn", `Failed to remove ticket owner: ${err}`)
+        logger.warn(`Failed to remove ticket owner on lock`, err)
       );
   }
 
-  repliable?.editReply(t(locale, "TICKET_LOCK"));
+  "editReply" in repliable
+    ? repliable?.editReply(t(locale, "TICKET_LOCK"))
+    : repliable?.edit({
+        content: t(locale, "TICKET_LOCK"),
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().setComponents(
+            new ButtonBuilder()
+              .setCustomId(`unlock:${ticketId}`)
+              .setStyle(ButtonStyle.Primary)
+              .setLabel(t(locale, "TICKET_PIN_MESSAGE_COMPONENTS_UNLOCK"))
+          ),
+        ],
+      });
 
-  if (ticketChannel?.isTextBased())
+  if (ticketChannel?.isTextBased() && "editReply" in repliable)
     (ticketChannel as TextChannel)
       .send({
         content: t(locale, "TICKET_LOCK"),
@@ -124,10 +146,6 @@ export async function lockTicket(
         ],
       })
       .catch((err) =>
-        logger(
-          "Tickets",
-          "Warn",
-          `Failed to send message to ticket channel: ${err}`
-        )
+        logger.warn(`Failed to send message to ticket channel on lock`, err)
       );
 }

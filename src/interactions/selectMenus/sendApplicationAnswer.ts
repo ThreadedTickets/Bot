@@ -25,23 +25,18 @@ const select: SelectMenuHandler = {
     );
     if (!activeApplication.cached)
       return interaction.reply(
-        (await onError("Commands", t(data.lang!, `ERROR_CODE_1008`))).discordMsg
+        (await onError(new Error(t(data.lang!, `ERROR_CODE_1008`)))).discordMsg
       );
 
     const appJson = activeApplication.data;
     if (applicationId !== appJson.applicationId)
       return interaction.reply(
-        (await onError("Commands", t(data.lang!, `ERROR_CODE_1008`))).discordMsg
+        (await onError(new Error(t(data.lang!, `ERROR_CODE_1008`)))).discordMsg
       );
     const application = await getServerApplication(applicationId, guildId);
     if (!application)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, `CONFIG_CREATE_APPLICATION_NOT_FOUND`)
-          )
-        ).discordMsg
+        (await onError(new Error("Application not found"))).discordMsg
       );
 
     const selection = interaction.values.join(", ");

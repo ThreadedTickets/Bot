@@ -1,6 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
-import { logger } from "./utils/logger";
 import { MessageCreatorSchema } from "./database/modals/MessageCreator";
 import { validateDiscordMessage } from "./utils/bot/validateMessage";
 import {
@@ -36,6 +35,7 @@ import { getInfo } from "discord-hybrid-sharding";
 import { formatDuration } from "./utils/formatters/duration";
 import { updateCachedData } from "./utils/database/updateCache";
 import { TagSchema } from "./database/modals/Tag";
+import logger from "./utils/logger";
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
@@ -485,6 +485,6 @@ export function startApi(port: number) {
   });
 
   app.listen(port, () => {
-    logger("API", "Info", `API server running at http://localhost:${port}`);
+    logger.info(`API server running at http://localhost:${port}`);
   });
 }

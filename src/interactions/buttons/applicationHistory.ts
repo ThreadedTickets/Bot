@@ -28,14 +28,10 @@ const button: ButtonHandler = {
     if (!application)
       return interaction.editReply(
         (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_APPLICATION_NOT_FOUND"),
-            {
-              applicationId,
-              guildId: interaction.guildId,
-            }
-          )
+          await onError(new Error("Application not found"), {
+            applicationId,
+            guildId: interaction.guildId,
+          })
         ).discordMsg
       );
     const userPermissions = getUserPermissions(
@@ -49,7 +45,7 @@ const button: ButtonHandler = {
       !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
     )
       return interaction.editReply(
-        (await onError("Commands", t(data.lang!, "MISSING_PERMISSIONS")))
+        (await onError(new Error("Missing manage/respond permission")))
           .discordMsg
       );
 

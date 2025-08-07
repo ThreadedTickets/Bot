@@ -6,7 +6,6 @@ import {
   Client,
   MessageFlags,
 } from "discord.js";
-import { logger } from "../utils/logger";
 import {
   commandErrors,
   commandsRun,
@@ -22,6 +21,7 @@ import { onError } from "../utils/onError";
 import { t } from "../lang";
 import { EventData } from "../handlers/eventHandler";
 import { viewAnnouncement } from "../utils/bot/viewAnnouncement";
+import logger from "../utils/logger";
 
 const event: Event<"interactionCreate"> = {
   name: "interactionCreate",
@@ -33,18 +33,19 @@ const event: Event<"interactionCreate"> = {
         interaction.reply(
           (
             await onError(
-              "Commands",
-              t(
-                // (
-                //   await getServer(interaction.guildId)
-                // ).preferredLanguage,
-                "en",
-                `BLACKLISTED_${
-                  data.blacklist.type === "user" ? "USER" : "SERVER"
-                }`,
-                {
-                  reason: data.blacklist.reason,
-                }
+              new Error(
+                t(
+                  // (
+                  //   await getServer(interaction.guildId)
+                  // ).preferredLanguage,
+                  "en",
+                  `BLACKLISTED_${
+                    data.blacklist.type === "user" ? "USER" : "SERVER"
+                  }`,
+                  {
+                    reason: data.blacklist.reason,
+                  }
+                )
               )
             )
           ).discordMsg
@@ -104,20 +105,12 @@ const event: Event<"interactionCreate"> = {
                 flags: [MessageFlags.Ephemeral],
               })
               .catch((err) => {
-                logger(
-                  "Commands",
-                  "Warn",
-                  `Error when showing announcement: ${err}`
-                );
+                logger.warn(`Error when showing announcement`, err);
               });
           }
         }, 3000);
       } catch (err: any) {
-        logger(
-          "Commands",
-          "Error",
-          `Error executing /${interaction.commandName}: ${err}`
-        );
+        logger.error(`Error executing /${interaction.commandName}`, err);
         commandErrors.inc({
           command: interaction.commandName,
           type: interaction.isChatInputCommand()
@@ -130,7 +123,7 @@ const event: Event<"interactionCreate"> = {
           interaction.replied || interaction.deferred ? "followUp" : "reply";
         await interaction[replyMethod](
           (
-            await onError("Commands", `${err}`, {
+            await onError(err, {
               command: interaction.commandName,
               user: interaction.user.id,
               server: interaction.guild?.id || "DMs",
@@ -149,18 +142,14 @@ const event: Event<"interactionCreate"> = {
         try {
           await handler.execute(client, data as EventData, interaction);
         } catch (err: any) {
-          logger(
-            "Buttons",
-            "Error",
-            `Error in button ${interaction.customId}: ${err}`
-          );
+          logger.error(`Error in button ${interaction.customId}`, err);
           interactionErrors.inc({ name: customId, type: "Button" });
 
           const replyMethod =
             interaction.replied || interaction.deferred ? "followUp" : "reply";
           await interaction[replyMethod](
             (
-              await onError("Buttons", `${err}`, {
+              await onError(err, {
                 button: customId,
                 fullId: interaction.customId,
                 user: interaction.user.id,
@@ -181,18 +170,14 @@ const event: Event<"interactionCreate"> = {
         try {
           await handler.execute(client, data as EventData, interaction);
         } catch (err) {
-          logger(
-            "Modals",
-            "Error",
-            `Error in modal ${interaction.customId}: ${err}`
-          );
+          logger.error(`Error in modal ${interaction.customId}`, err);
           interactionErrors.inc({ name: customId, type: "Modal" });
 
           const replyMethod =
             interaction.replied || interaction.deferred ? "followUp" : "reply";
           await interaction[replyMethod](
             (
-              await onError("Modals", `${err}`, {
+              await onError(err, {
                 modal: customId,
                 fullId: interaction.customId,
                 user: interaction.user.id,
@@ -213,18 +198,14 @@ const event: Event<"interactionCreate"> = {
         try {
           await handler.execute(client, data as EventData, interaction);
         } catch (err) {
-          logger(
-            "Select Menus",
-            "Error",
-            `Error in select menu ${interaction.customId}: ${err}`
-          );
+          logger.error(`Error in select menu ${interaction.customId}`, err);
           interactionErrors.inc({ name: customId, type: "Select Menu" });
 
           const replyMethod =
             interaction.replied || interaction.deferred ? "followUp" : "reply";
           await interaction[replyMethod](
             (
-              await onError("Select Menus", `${err}`, {
+              await onError(err, {
                 menu: customId,
                 fullId: interaction.customId,
                 user: interaction.user.id,
@@ -245,10 +226,9 @@ const event: Event<"interactionCreate"> = {
             interaction as AutocompleteInteraction
           );
         } catch (err) {
-          logger(
-            "Commands",
-            "Error",
-            `Error executing autocomplete ${interaction.commandName}: ${err}`
+          logger.error(
+            `Error executing autocomplete ${interaction.commandName}`,
+            err
           );
         }
       }

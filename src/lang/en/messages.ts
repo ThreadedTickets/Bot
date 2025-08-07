@@ -95,6 +95,19 @@ export const lang = {
   APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON:
     "Want your own application? Add Threaded!",
 
+  NO_ACTION_SELF: "You can't do this to yourself",
+  TICKET_NOT_OPEN: "This ticket is not open",
+  AWAIT_ACTION_FAIL_NOT_OPEN:
+    "The await-reply action cannot run on this ticket as it is not open",
+  TICKET_ALREADY_AWAITING: "This ticket is already waiting for a response",
+  TICKET_AWAIT_CANCEL:
+    "The reply-request has been canceled for this ticket by <@{user}>",
+  TICKET_NOT_AWAITING: "This ticket has no pending reply-requests",
+  TICKET_AWAIT_REQUEST_DONE:
+    "If this ticket gets no reply {time} then it will be {action}",
+  UNABLE_TO_DM_TICKET_AWAIT:
+    "\n-# I was unable to notify the user as they have their DMs closed. The automation will continue",
+  CANCEL: "Cancel",
   BLACKLISTED_SERVER: `This server has been blacklisted from using Threaded for: {reason}`,
   BLACKLISTED_USER:
     "You have been blacklisted from using Threaded for: {reason}",

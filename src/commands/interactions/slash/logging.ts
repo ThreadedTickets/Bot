@@ -751,25 +751,18 @@ const command: AppCommand = {
 
     if (!root)
       return interaction.reply(
-        (await onError("Commands", t(lang, "UNABLE_TO_FIND_LOG_CATEGORY")))
-          .discordMsg
+        (await onError(new Error("Can't find log category"))).discordMsg
       );
 
     if (!channel && !status)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(lang, "LOG_CHANNEL_SETUP_PROVIDE_STATUS_OR_CHANNEL")
-          )
-        ).discordMsg
+        (await onError(new Error("Invalid usage"))).discordMsg
       );
 
     if (channel) {
       if (!channel || !channel.isTextBased()) {
         return interaction.reply(
-          (await onError("Commands", t(lang, "INVALID_CHANNEL_TYPE")))
-            .discordMsg
+          (await onError(new Error("Invalid channel type"))).discordMsg
         );
       }
 
@@ -779,8 +772,7 @@ const command: AppCommand = {
       if (channel.isThread()) {
         if (!channel.parent || !channel.parent.isTextBased()) {
           return interaction.reply(
-            (await onError("Commands", t(lang, "INVALID_CHANNEL_TYPE")))
-              .discordMsg
+            (await onError(new Error("Invalid channel type"))).discordMsg
           );
         }
         webhookChannel = channel.parent;
