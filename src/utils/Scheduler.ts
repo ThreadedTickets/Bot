@@ -69,6 +69,57 @@ export class TaskScheduler {
     return removed > 0;
   }
 
+  /**
+   * Check if a task exists and optionally return its details
+   * @param taskId The ID of the task to check
+   * @param returnTask If true, returns the task details when found
+   * @returns boolean or the task details if returnTask is true and task exists
+   */
+  async taskExists(taskId: string, returnTask?: false): Promise<boolean>;
+  async taskExists(
+    taskId: string,
+    returnTask: true
+  ): Promise<{
+    taskId: string;
+    runAt: number;
+    functionKey: string;
+    params?: any;
+  } | null>;
+  async taskExists(
+    taskId: string,
+    returnTask = false
+  ): Promise<
+    | boolean
+    | { taskId: string; runAt: number; functionKey: string; params?: any }
+    | null
+  > {
+    // Check in-memory tasks first
+    const inMemoryTask = this.tasks.get(taskId);
+    if (inMemoryTask) {
+      return returnTask
+        ? {
+            taskId,
+            runAt: inMemoryTask.runAt,
+            functionKey: inMemoryTask.functionKey,
+            params: inMemoryTask.params,
+          }
+        : true;
+    }
+
+    // Check Redis if not found in memory
+    const taskData = await this.redis.hget("scheduled_tasks", taskId);
+    if (taskData) {
+      try {
+        const parsed: StoredTask = JSON.parse(taskData);
+        return returnTask ? { taskId, ...parsed } : true;
+      } catch {
+        return returnTask ? null : false;
+      }
+    }
+
+    return returnTask ? null : false;
+  }
+
   /** List all tasks */
   async listTasks(): Promise<
     Array<{ taskId: string; runAt: number; functionKey: string; params?: any }>

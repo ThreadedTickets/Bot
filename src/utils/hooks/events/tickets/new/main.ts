@@ -231,7 +231,8 @@ registerHook(
       id,
       trigger.takeTranscripts,
       trigger.hideUsersInTranscript,
-      trigger.allowAutoresponders
+      trigger.allowAutoresponders,
+      owner
     );
 
     /**

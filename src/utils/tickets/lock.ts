@@ -4,6 +4,7 @@ import {
   ButtonInteraction,
   ButtonStyle,
   ChatInputCommandInteraction,
+  Message,
   TextChannel,
 } from "discord.js";
 import { client } from "../..";
@@ -32,21 +33,34 @@ import logger from "../logger";
 export async function lockTicket(
   ticketId: string,
   locale: Locale,
-  repliable: ButtonInteraction | ChatInputCommandInteraction
+  repliable: ButtonInteraction | ChatInputCommandInteraction | Message
 ) {
   const ticket = await getTicketTrust(ticketId);
   if (!ticket)
-    return repliable?.editReply(
-      (
-        await onError(new Error("Could not find ticket"), {
-          ticketId: ticketId,
-        })
-      ).discordMsg
-    );
+    return "editReply" in repliable
+      ? repliable?.editReply(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        )
+      : repliable?.edit(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        );
+
   if (ticket.status === "Closed")
-    return repliable?.editReply(t(locale, "TICKET_CLOSED_SO_CANNOT_LOCK"));
+    return "editReply" in repliable
+      ? repliable?.editReply(t(locale, "TICKET_CLOSED_SO_CANNOT_LOCK"))
+      : repliable?.edit(t(locale, "TICKET_CLOSED_SO_CANNOT_LOCK"));
   if (ticket.status === "Locked")
-    return repliable?.editReply(t(locale, "TICKET_LOCKED_SO_CANNOT_LOCK"));
+    return "editReply" in repliable
+      ? repliable?.editReply(t(locale, "TICKET_LOCKED_SO_CANNOT_LOCK"))
+      : repliable?.edit(t(locale, "TICKET_LOCKED_SO_CANNOT_LOCK"));
 
   await TicketSchema.findOneAndUpdate({ _id: ticketId }, { status: "Locked" });
   await invalidateCache(`ticket:${ticketId}`);
@@ -104,9 +118,21 @@ export async function lockTicket(
       );
   }
 
-  repliable?.editReply(t(locale, "TICKET_LOCK"));
+  "editReply" in repliable
+    ? repliable?.editReply(t(locale, "TICKET_LOCK"))
+    : repliable?.edit({
+        content: t(locale, "TICKET_LOCK"),
+        components: [
+          new ActionRowBuilder<ButtonBuilder>().setComponents(
+            new ButtonBuilder()
+              .setCustomId(`unlock:${ticketId}`)
+              .setStyle(ButtonStyle.Primary)
+              .setLabel(t(locale, "TICKET_PIN_MESSAGE_COMPONENTS_UNLOCK"))
+          ),
+        ],
+      });
 
-  if (ticketChannel?.isTextBased())
+  if (ticketChannel?.isTextBased() && "editReply" in repliable)
     (ticketChannel as TextChannel)
       .send({
         content: t(locale, "TICKET_LOCK"),

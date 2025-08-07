@@ -33,7 +33,7 @@ export class Logger {
   constructor(name: string = "app", options: LoggerOptions = {}) {
     this.name = name;
     this.options = {
-      level: LogLevel.INFO,
+      level: LogLevel.DEBUG,
       timestamp: true,
       colors: true,
       ...options,
@@ -202,11 +202,8 @@ export class Logger {
 
   private captureSentryError(message: string, args: any[]): void {
     const error = args.find((arg) => arg instanceof Error);
-    console.log("Captured sentry err", error);
     if (error) {
-      console.log(1);
       Sentry.captureException(error);
-      console.log(2);
     } else {
       Sentry.captureMessage(message, {
         level: "error",

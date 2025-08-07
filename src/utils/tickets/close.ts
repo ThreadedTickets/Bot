@@ -3,6 +3,7 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ChatInputCommandInteraction,
+  Message,
   ModalSubmitInteraction,
   TextChannel,
 } from "discord.js";
@@ -44,7 +45,7 @@ export async function closeTicket(
   ticketId: string,
   locale: Locale,
   reason?: string,
-  repliable?: ModalSubmitInteraction | ChatInputCommandInteraction,
+  repliable?: ModalSubmitInteraction | ChatInputCommandInteraction | Message,
   schedule?: string | null
 ) {
   const ticket = await TicketSchema.findOneAndUpdate(
@@ -60,15 +61,26 @@ export async function closeTicket(
   );
   await invalidateCache(`ticket:${ticketId}`);
   if (!ticket)
-    return repliable?.editReply(
-      (
-        await onError(new Error("Could not find ticket"), {
-          ticketId: ticketId,
-        })
-      ).discordMsg
-    );
+    return "editReply" in repliable
+      ? repliable?.editReply(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        )
+      : repliable?.edit(
+          (
+            await onError(new Error("Could not find ticket"), {
+              ticketId: ticketId,
+            })
+          ).discordMsg
+        );
+
   if (ticket.status === "Closed" && repliable)
-    return repliable?.editReply(t(locale, "SCHEDULE_TICKET_CLOSE_ALREADY"));
+    return "editReply" in repliable
+      ? repliable?.editReply(t(locale, "SCHEDULE_TICKET_CLOSE_ALREADY"))
+      : repliable?.edit(t(locale, "SCHEDULE_TICKET_CLOSE_ALREADY"));
   if (repliable) {
     const member = await getGuildMember(client, ticket.server, ticket.owner);
 
@@ -140,9 +152,13 @@ export async function closeTicket(
       ms,
       `CLOSE-${ticketId}`
     );
-    repliable?.editReply(
-      t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
-    );
+    "editReply" in repliable
+      ? repliable?.editReply(
+          t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
+        )
+      : repliable?.edit(
+          t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
+        );
 
     if (ticketChannel?.isTextBased())
       (ticketChannel as TextChannel)
