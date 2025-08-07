@@ -63,6 +63,8 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+app.use(limiter);
+
 type Body = {
   _id?: string;
   server?: string;
@@ -71,7 +73,7 @@ type Body = {
 
 // Exportable function to start the metrics server
 export function startApi(port: number) {
-  app.get(`/`, limiter, async (req: Request, res: Response) => {
+  app.get(`/`, async (req: Request, res: Response) => {
     res.json({
       message: `Welcome to the Threaded API! The time for me is ${new Date().toISOString()}`,
     });
@@ -81,9 +83,10 @@ export function startApi(port: number) {
     const creatorId = req.query.id;
     const { content, embeds, attachments, components } = req.body as Body;
 
-    if (!creatorId || typeof creatorId !== "string") {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
-        message: "Please provide a valid creatorId (?id=) as a string and data in the body",
+        message:
+          "Please provide a valid creatorId (?id=) as a string and data in the body",
       });
       return;
     }
@@ -162,7 +165,7 @@ export function startApi(port: number) {
     const creatorId = req.query.id;
     const { name, roles, extraMembers, permissions } = req.body as Body;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
         message: "Please provide a creatorId ID (?id=) and data in the body",
       });
@@ -233,7 +236,7 @@ export function startApi(port: number) {
   app.post("/create/application/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
         message: "Please provide a creatorId ID (?id=) and data in the body",
       });
@@ -294,7 +297,7 @@ export function startApi(port: number) {
   app.post("/create/ticket/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
         message: "Please provide a creatorId ID (?id=) and data in the body",
       });
@@ -430,13 +433,15 @@ export function startApi(port: number) {
               _id: t._id,
               name: t.name,
             })),
-            ...(await ApplicationTriggerSchema.find({ server: { $eq: _id } })).map(
-              (t) => ({ _id: t._id, name: t.name })
+            ...(
+              await ApplicationTriggerSchema.find({ server: { $eq: _id } })
+            ).map((t) => ({ _id: t._id, name: t.name })),
+            ...(await TicketTriggerSchema.find({ server: { $eq: _id } })).map(
+              (t) => ({
+                _id: t._id,
+                name: t.label,
+              })
             ),
-            ...(await TicketTriggerSchema.find({ server: { $eq: _id } })).map((t) => ({
-              _id: t._id,
-              name: t.label,
-            })),
           ];
           await updateCachedData(`interactive:${_id}`, 30, interactive);
           res.status(200).json({
