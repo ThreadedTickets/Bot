@@ -10,4 +10,18 @@ Sentry.init({
   profileLifecycle: "trace",
   release: "threaded@1",
   sendDefaultPii: true,
+  beforeSend(event) {
+    event.exception?.values?.forEach((value) => {
+      value.stacktrace?.frames?.forEach((frame) => {
+        if (frame.filename) {
+          // Normalize paths to match your repository structure
+          frame.filename = frame.filename
+            .replace("/home/container/.build/", "./")
+            .replace(/^\.\/build\//, "./")
+            .replace(".js", ".ts");
+        }
+      });
+    });
+    return event;
+  },
 });
