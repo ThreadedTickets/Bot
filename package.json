@@ -9,9 +9,9 @@
     "start": "rm -rf .build/ && npx tsc && npm run bot",
     "bot:debug": "rm -rf .build/ && npx tsc && npm run dev",
     "debug": "npm run bot:debug",
-    "build:prod": "rm -rf .build/ && npm i && npx tsc && npm run prod",
+    "build:prod": "rm -rf .build/ && npm i && npx tsc && npm run sentry:sourcemaps && npm run prod",
     "build:dev": "rm -rf .build/ && npm i && npx tsc && npm run dev",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org threaded --project threaded ./.build && sentry-cli releases files threaded@1 upload-sourcemaps ./.build --org threaded  --project threaded  --rewrite  --strip-common-prefix"
+    "sentry:sourcemaps": "sentry-cli releases files threaded@1 upload-sourcemaps ./.build --org threaded --project threaded --rewrite --strip-prefix /home/container --strip-prefix .build --validate"
   },
   "keywords": [],
   "author": "",
