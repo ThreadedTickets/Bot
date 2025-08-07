@@ -11,7 +11,7 @@
     "debug": "npm run bot:debug",
     "build:prod": "rm -rf .build/ && npm i && npx tsc && npm run prod",
     "build:dev": "rm -rf .build/ && npm i && npx tsc && npm run dev",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org threaded --project node ./.build && sentry-cli sourcemaps upload --org threaded --project node ./.build"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org threaded --project threaded ./.build && sentry-cli sourcemaps upload --org threaded --project node ./.build"
   },
   "keywords": [],
   "author": "",
