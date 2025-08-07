@@ -417,7 +417,7 @@ export function startApi(port: number) {
           break;
         // In this case _id is of the server we want the messages of
         case "tags":
-          const tags = await TagSchema.find({ server: _id });
+          const tags = await TagSchema.find({ server: { $eq: _id } });
           await updateCachedData(`tags:${_id}`, 30, tags);
           res.status(200).json({
             message: `Tags have been added to the cache. It can be accessed through tags:${_id}`,
@@ -426,14 +426,14 @@ export function startApi(port: number) {
           break;
         case "interactive":
           const interactive = [
-            ...(await TagSchema.find({ server: _id })).map((t) => ({
+            ...(await TagSchema.find({ server: { $eq: _id } })).map((t) => ({
               _id: t._id,
               name: t.name,
             })),
-            ...(await ApplicationTriggerSchema.find({ server: _id })).map(
+            ...(await ApplicationTriggerSchema.find({ server: { $eq: _id } })).map(
               (t) => ({ _id: t._id, name: t.name })
             ),
-            ...(await TicketTriggerSchema.find({ server: _id })).map((t) => ({
+            ...(await TicketTriggerSchema.find({ server: { $eq: _id } })).map((t) => ({
               _id: t._id,
               name: t.label,
             })),
