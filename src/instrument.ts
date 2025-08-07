@@ -8,6 +8,6 @@ Sentry.init({
   tracesSampleRate: 1.0,
   profileSessionSampleRate: 1.0,
   profileLifecycle: "trace",
-
+  release: "threaded@1",
   sendDefaultPii: true,
 });

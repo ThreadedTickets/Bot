@@ -1,0 +1,1 @@
+{"version":3,"file":"Locale.js","sources":["src/types/Locale.ts"],"sourceRoot":"/","sourcesContent":["import { supportedLocales } from \"../constants/locales\";\n\nexport type Locale = keyof typeof supportedLocales;\n"],"names":[],"mappings":"","debug_id":"d63bfdfd-8dc6-5bb4-aae4-de0128429322"}
