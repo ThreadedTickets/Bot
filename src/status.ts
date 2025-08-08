@@ -13,7 +13,11 @@ import {
  */
 export default function setBotStatusFromEnv(client: Client) {
   const presenceData: PresenceData = {
-    status: (process.env.BOT_STATUS as PresenceStatusData) || "online",
+    status: ["online", "idle", "dnd", "invisible"].includes(
+      process.env.BOT_STATUS as string
+    )
+      ? (process.env.BOT_STATUS as PresenceStatusData)
+      : "online",
   };
 
   // Only set activity if both type and text are provided
@@ -21,7 +25,9 @@ export default function setBotStatusFromEnv(client: Client) {
     const activityType = process.env.BOT_ACTIVITY_TYPE.toUpperCase();
     const activity: ActivityOptions = {
       name: process.env.BOT_ACTIVITY_TEXT,
-      type: ActivityType[activityType] || ActivityType.Playing,
+      type:
+        ActivityType[activityType as keyof typeof ActivityType] ??
+        ActivityType.Playing,
     };
 
     // Add URL if provided and activity is streaming
@@ -35,5 +41,5 @@ export default function setBotStatusFromEnv(client: Client) {
     presenceData.activities = [activity];
   }
 
-  client.user.setPresence(presenceData);
+  if (client.user) client.user.setPresence(presenceData);
 }

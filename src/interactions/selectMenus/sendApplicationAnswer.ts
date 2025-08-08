@@ -106,6 +106,9 @@ const select: SelectMenuHandler = {
       }
 
       interaction.user.send({
+        ...resolveDiscordMessagePlaceholders(baseMessage, {
+          applicationName: application.name,
+        }),
         components: config.isWhiteLabel
           ? []
           : [
@@ -123,9 +126,6 @@ const select: SelectMenuHandler = {
                 )
                 .toJSON(),
             ],
-        ...resolveDiscordMessagePlaceholders(baseMessage, {
-          applicationName: application.name,
-        }),
       });
 
       return handleApplicationSubmit(

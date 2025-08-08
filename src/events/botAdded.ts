@@ -13,7 +13,11 @@ const event: Event<"guildCreate"> = {
       logger.warn("Whitelabel bot added to server, checking if this is ok");
       if (!config.whiteLabelServerIds.includes(guild.id)) {
         logger.warn("Bot not allowed in server, leaving");
-        await guild.leave();
+        await guild
+          .leave()
+          .catch((err) =>
+            logger.warn(`Failed to leave unauthorized guild ${guild.id}`, err)
+          );
         return;
       }
     }
