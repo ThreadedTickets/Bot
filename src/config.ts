@@ -9,7 +9,9 @@ export default {
 
   prefix: process.env["PREFIX"] ?? ">",
   isWhiteLabel: process.env["IS_WHITELABEL"] === "true",
-  whiteLabelServerIds: (process.env["WHITELABEL_SERVER_IDS"] ?? "").split(", "),
+  whiteLabelServerIds: (process.env["WHITELABEL_SERVER_IDS"] ?? "")
+    .split(", ")
+    .filter(Boolean),
 
   mongoose: {
     uri: process.env["MONGOOSE_URI"] ?? null,
