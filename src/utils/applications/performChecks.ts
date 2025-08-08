@@ -5,6 +5,7 @@ import {
 } from "../bot/getServer";
 import { Application } from "../../types/Application";
 import { getCache } from "../database/getCachedElse";
+import logger from "../logger";
 
 /**
  *
@@ -76,25 +77,36 @@ export async function performApplicationChecks(
   }
 
   // Role checks
-  if (
-    includeRoles &&
-    "roles" in member &&
-    member.roles.cache.hasAny(...blacklistRoles)
-  )
-    return {
-      allowed: false,
-      error: "1001",
-    };
+  if (includeRoles && member instanceof GuildMember) {
+    logger.debug("Roles before role check", member.roles.cache.toJSON());
+    member = await member.fetch();
+    logger.debug("Roles after role check", member.roles.cache.toJSON());
+  }
+  // Blacklist role check
+  if (includeRoles && member instanceof GuildMember) {
+    if (
+      blacklistRoles.length > 0 &&
+      member.roles.cache.hasAny(...blacklistRoles)
+    ) {
+      return {
+        allowed: false,
+        error: "1001",
+      };
+    }
+  }
 
-  if (
-    includeRoles &&
-    "roles" in member &&
-    !member.roles.cache.hasAll(...requiredRoles)
-  )
-    return {
-      allowed: false,
-      error: "1002",
-    };
+  // Required roles check
+  if (includeRoles && member instanceof GuildMember) {
+    if (
+      requiredRoles.length > 0 &&
+      !member.roles.cache.hasAll(...requiredRoles)
+    ) {
+      return {
+        allowed: false,
+        error: "1002",
+      };
+    }
+  }
 
   // Global application limit (Pending only)
   const completedApplications = await getCompletedApplications(
