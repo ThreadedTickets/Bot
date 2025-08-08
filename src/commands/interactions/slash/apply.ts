@@ -132,6 +132,7 @@ const command: AppCommand = {
     const checks = await performApplicationChecks(
       applicationTyped,
       interaction.member as GuildMember,
+      true,
       true
     );
 

@@ -41,6 +41,7 @@ const button: ButtonHandler = {
     const checks = await performApplicationChecks(
       applicationTyped,
       interaction.member as GuildMember,
+      true,
       true
     );
 

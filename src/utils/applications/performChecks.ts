@@ -5,7 +5,6 @@ import {
 } from "../bot/getServer";
 import { Application } from "../../types/Application";
 import { getCache } from "../database/getCachedElse";
-import logger from "../logger";
 
 /**
  *
@@ -77,15 +76,12 @@ export async function performApplicationChecks(
   }
 
   // Role checks
-  let roles;
-  if (includeRoles && "roles" in member) {
-    logger.debug("Roles before role check", member.roles.cache.toJSON());
-    roles = (await member.fetch()).roles.cache;
-    logger.debug("Roles after role check", roles);
-  }
   // Blacklist role check
   if (includeRoles && "roles" in member) {
-    if (blacklistRoles.length > 0 && roles.hasAny(...blacklistRoles)) {
+    if (
+      blacklistRoles.length > 0 &&
+      member.roles.cache.hasAny(...blacklistRoles)
+    ) {
       return {
         allowed: false,
         error: "1001",
@@ -95,7 +91,10 @@ export async function performApplicationChecks(
 
   // Required roles check
   if (includeRoles && "roles" in member) {
-    if (requiredRoles.length > 0 && !roles.hasAll(...requiredRoles)) {
+    if (
+      requiredRoles.length > 0 &&
+      !member.roles.cache.hasAll(...requiredRoles)
+    ) {
       return {
         allowed: false,
         error: "1002",
