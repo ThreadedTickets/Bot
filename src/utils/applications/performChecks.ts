@@ -78,13 +78,13 @@ export async function performApplicationChecks(
 
   // Role checks
   let roles;
-  if (includeRoles && member instanceof GuildMember) {
+  if (includeRoles && "roles" in member) {
     logger.debug("Roles before role check", member.roles.cache.toJSON());
     roles = (await member.fetch()).roles.cache;
     logger.debug("Roles after role check", roles);
   }
   // Blacklist role check
-  if (includeRoles && member instanceof GuildMember) {
+  if (includeRoles && "roles" in member) {
     if (blacklistRoles.length > 0 && roles.hasAny(...blacklistRoles)) {
       return {
         allowed: false,
@@ -94,7 +94,7 @@ export async function performApplicationChecks(
   }
 
   // Required roles check
-  if (includeRoles && member instanceof GuildMember) {
+  if (includeRoles && "roles" in member) {
     if (requiredRoles.length > 0 && !roles.hasAll(...requiredRoles)) {
       return {
         allowed: false,

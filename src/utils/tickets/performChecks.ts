@@ -21,19 +21,19 @@ export async function performTicketChecks(
 
   // Role checks
   let roles;
-  if (member instanceof GuildMember) {
+  if ("roles" in member) {
     logger.debug("Roles before role check", member.roles.cache.toJSON());
     roles = (await member.fetch()).roles.cache;
     logger.debug("Roles after role check", roles);
   }
 
-  if (member instanceof GuildMember && roles.hasAny(...bannedRoles))
+  if ("roles" in member && roles.hasAny(...bannedRoles))
     return {
       allowed: false,
       error: "2001",
     };
 
-  if (member instanceof GuildMember && !roles.hasAll(...requiredRoles))
+  if ("roles" in member && !roles.hasAll(...requiredRoles))
     return {
       allowed: false,
       error: "2002",
