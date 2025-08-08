@@ -1,0 +1,110 @@
+{
+  "Translate Message": {
+    "mtime": 1754683811473.3367,
+    "isGuild": false
+  },
+  "application_history": {
+    "mtime": 1754683811481.338,
+    "isGuild": false
+  },
+  "applications": {
+    "mtime": 1754683811488.3389,
+    "isGuild": false
+  },
+  "apply": {
+    "mtime": 1754683811493.3396,
+    "isGuild": false
+  },
+  "autoresponders": {
+    "mtime": 1754683811502.3408,
+    "isGuild": false
+  },
+  "awaiting-reply": {
+    "mtime": 1754683811507.3416,
+    "isGuild": false
+  },
+  "close": {
+    "mtime": 1754683811509.3418,
+    "isGuild": false
+  },
+  "debug": {
+    "mtime": 1754683811512.3423,
+    "isGuild": false
+  },
+  "get_trigger_id": {
+    "mtime": 1754683811513.3425,
+    "isGuild": false
+  },
+  "groups": {
+    "mtime": 1754683811516.3428,
+    "isGuild": false
+  },
+  "language": {
+    "mtime": 1754683811518.3433,
+    "isGuild": false
+  },
+  "lock": {
+    "mtime": 1754683811519.3433,
+    "isGuild": false
+  },
+  "logging": {
+    "mtime": 1754683811370.3218,
+    "isGuild": false
+  },
+  "lower": {
+    "mtime": 1754683811523.3438,
+    "isGuild": false
+  },
+  "messages": {
+    "mtime": 1754683811528.3445,
+    "isGuild": false
+  },
+  "move": {
+    "mtime": 1754683811531.345,
+    "isGuild": false
+  },
+  "panel": {
+    "mtime": 1754683811537.346,
+    "isGuild": false
+  },
+  "raise": {
+    "mtime": 1754683811541.3464,
+    "isGuild": false
+  },
+  "reopen": {
+    "mtime": 1754683811547.3474,
+    "isGuild": false
+  },
+  "tag": {
+    "mtime": 1754683811549.3477,
+    "isGuild": false
+  },
+  "tags": {
+    "mtime": 1754683811553.3481,
+    "isGuild": false
+  },
+  "ticket": {
+    "mtime": 1754683811560.349,
+    "isGuild": false
+  },
+  "transcript": {
+    "mtime": 1754683811564.3499,
+    "isGuild": false
+  },
+  "ticket_triggers": {
+    "mtime": 1754683811569.3506,
+    "isGuild": false
+  },
+  "unlock": {
+    "mtime": 1754683811573.351,
+    "isGuild": false
+  },
+  "update": {
+    "mtime": 1754683811575.3513,
+    "isGuild": false
+  },
+  "whitelabel_bot": {
+    "mtime": 1754683811578.3518,
+    "isGuild": true
+  }
+}

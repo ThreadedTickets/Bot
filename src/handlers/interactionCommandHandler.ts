@@ -6,6 +6,7 @@ import { CommandCache } from "../types/CommandCache";
 import { loadFilesRecursively } from "../utils/commands/load";
 import "@dotenvx/dotenvx";
 import logger from "../utils/logger";
+import config from "../config";
 
 const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 const clientId = process.env.DISCORD_CLIENT_ID!;
@@ -40,6 +41,8 @@ export const deployAppCommands = async () => {
 
   for (const file of files) {
     const command: AppCommand = (await import(file)).default;
+
+    if (config.isWhiteLabel && command.testGuild) continue;
 
     const stats = fs.statSync(file);
     const mtime = stats.mtimeMs;

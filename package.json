@@ -9,7 +9,9 @@
     "start": "rm -rf .build/ && npx tsc && npm run bot",
     "bot:debug": "rm -rf .build/ && npx tsc && npm run dev",
     "debug": "npm run bot:debug",
+    "build:ts": "rm -rf .build/ && npx tsc && npm run sentry:sourcemaps",
     "build:prod": "rm -rf .build/ && npm i && npx tsc && npm run prod",
+    "build:whitelabel": "npm i && npm run dev",
     "build:dev": "rm -rf .build/ && npm i && npx tsc && npm run dev",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org threaded --project threaded ./.build && sentry-cli releases files threaded@1 upload-sourcemaps ./.build --org threaded  --project threaded  --rewrite  --strip-common-prefix"
   },
@@ -38,6 +40,7 @@
     "node-cron": "^4.1.1",
     "p-queue": "^8.1.0",
     "prom-client": "^15.1.3",
+    "pterodactyl.ts": "^1.2.2",
     "randexp": "^0.5.3",
     "re2": "^1.22.1",
     "react": "^18.3.1",
