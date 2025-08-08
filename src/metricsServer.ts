@@ -113,7 +113,7 @@ export function startMetricsServer(port: number) {
     }
   );
 
-  app.listen(port, () => {
+  app.listen(port || "10001", () => {
     logger.info(
       `Metrics server running at http://localhost:${port}/${process.env["METRICS_URL"]}`
     );

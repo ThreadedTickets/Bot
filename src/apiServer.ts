@@ -489,7 +489,7 @@ export function startApi(port: number) {
     });
   });
 
-  app.listen(port, () => {
+  app.listen(port || 10002, () => {
     logger.info(`API server running at http://localhost:${port}`);
   });
 }
