@@ -118,6 +118,7 @@ TaskScheduler.registerTaskFunction(
     awaitReply(params.serverId, params.ticketId, params.action, params.notify);
   }
 );
+TaskScheduler.loadAndProcessBacklog(1000);
 export const InMemoryCache = new MemCache({
   defaultTTL: 1000 * 10 * 60, // 10 minutes
   cleanupInterval: 1000 * 10, // 10 seconds
