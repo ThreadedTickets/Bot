@@ -26,7 +26,7 @@ export default {
     host: process.env["REDIS_HOST"] ?? null,
     port: parseInt(process.env["REDIS_PORT"] ?? "", 10),
     password: process.env["REDIS_PASSWORD"] ?? "",
-    prefix: process.env["REDIS_PREFIX"],
+    prefix: process.env["REDIS_PREFIX"] ?? "",
   },
 
   owner: process.env["DISCORD_OWNER"] ?? "",
