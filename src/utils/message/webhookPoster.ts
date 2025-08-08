@@ -8,7 +8,7 @@ export const postToWebhook = async (
   content: WebhookContent
 ) => {
   const url = webhookUrls[type];
-  if (!url) throw new Error(`Webhook URL not configured for type: ${type}`);
+  if (!url) return logger.debug(`Url not configured for webhook ${type}`);
 
   axios
     .post(url, content)

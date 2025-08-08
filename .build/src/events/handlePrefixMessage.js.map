@@ -1,0 +1,1 @@
+{"version":3,"file":"handlePrefixMessage.js","sourceRoot":"/","sources":["src/events/handlePrefixMessage.ts"],"names":[],"mappings":";;AAAA,+DAAiE;AAIjE,MAAM,KAAK,GAA2B;IACpC,IAAI,EAAE,eAAe;IACrB,IAAI,EAAE,KAAK;IACX,KAAK,CAAC,OAAO,CAAC,MAAM,EAAE,IAAI,EAAE,OAAO;QACjC,IAAA,oCAAmB,EAAC,MAAM,EAAE,IAAiB,EAAE,OAAO,CAAC,CAAC;IAC1D,CAAC;CACF,CAAC;AAEF,kBAAe,KAAK,CAAC"}

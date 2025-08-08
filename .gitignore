@@ -1,6 +1,6 @@
 node_modules
-.env*
+.env.production
+.env.development
 transcripts
-.build
 package-lock.json
 logs
