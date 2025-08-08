@@ -94,9 +94,9 @@ loadPrefixCommands();
 deployAppCommands();
 loadEvents(client);
 connectToMongooseDatabase();
-if (!config.isWhiteLabel) {
-  startMetricsServer(parseInt(process.env["METRICS_PORT"] ?? "10001", 10));
-  startApi(parseInt(process.env["API_PORT"] ?? "10002", 10));
+if (!config.isWhiteLabel && isProd) {
+  startMetricsServer(parseInt(process.env["METRICS_PORT"], 10));
+  startApi(parseInt(process.env["API_PORT"], 10));
 }
 loadInteractionHandlers();
 loadLanguages();
