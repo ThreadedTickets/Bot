@@ -8,7 +8,6 @@ import {
 } from "discord.js";
 import { TicketTrigger } from "../../types/Ticket";
 import { getTickets, getUserTickets } from "../bot/getServer";
-import logger from "../logger";
 
 export async function performTicketChecks(
   trigger: TicketTrigger,
@@ -20,20 +19,13 @@ export async function performTicketChecks(
   const { bannedRoles, requiredRoles, userLimit, serverLimit } = trigger;
 
   // Role checks
-  let roles;
-  if ("roles" in member) {
-    logger.debug("Roles before role check", member.roles.cache.toJSON());
-    roles = (await member.fetch()).roles.cache;
-    logger.debug("Roles after role check", roles);
-  }
-
-  if ("roles" in member && roles.hasAny(...bannedRoles))
+  if ("roles" in member && member.roles.cache.hasAny(...bannedRoles))
     return {
       allowed: false,
       error: "2001",
     };
 
-  if ("roles" in member && !roles.hasAll(...requiredRoles))
+  if ("roles" in member && !member.roles.cache.hasAll(...requiredRoles))
     return {
       allowed: false,
       error: "2002",
