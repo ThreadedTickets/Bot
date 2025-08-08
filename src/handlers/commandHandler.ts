@@ -53,38 +53,40 @@ export const handlePrefixMessage = async (
 ) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  const blacklists = await Promise.all([
-    getCache(`blacklists:${message.author.id}`),
-    getCache(`blacklists:${message.guildId}`),
-  ]);
+  if (!config.isWhiteLabel) {
+    const blacklists = await Promise.all([
+      getCache(`blacklists:${message.author.id}`),
+      getCache(`blacklists:${message.guildId}`),
+    ]);
 
-  if (blacklists[0].cached || blacklists[1].cached) {
-    // We know the user is blacklisted, im gonna just use en as locale as this is per-user not server
-    message.author
-      .send(
-        (
-          await onError(
-            new Error(
-              t(
-                // (
-                //   await getServer(interaction.guildId)
-                // ).preferredLanguage,
-                "en",
-                `BLACKLISTED_${blacklists[0].cached ? "USER" : "SERVER"}`,
-                {
-                  reason:
-                    (blacklists[0].data as string) ||
-                    (blacklists[1].data as string),
-                }
+    if (blacklists[0].cached || blacklists[1].cached) {
+      // We know the user is blacklisted, im gonna just use en as locale as this is per-user not server
+      message.author
+        .send(
+          (
+            await onError(
+              new Error(
+                t(
+                  // (
+                  //   await getServer(interaction.guildId)
+                  // ).preferredLanguage,
+                  "en",
+                  `BLACKLISTED_${blacklists[0].cached ? "USER" : "SERVER"}`,
+                  {
+                    reason:
+                      (blacklists[0].data as string) ||
+                      (blacklists[1].data as string),
+                  }
+                )
               )
             )
-          )
-        ).discordMsg
-      )
-      .catch((e) => {
-        logger.warn(`Failed to DM user ${message.author.id}`, e);
-      });
-    return;
+          ).discordMsg
+        )
+        .catch((e) => {
+          logger.warn(`Failed to DM user ${message.author.id}`, e);
+        });
+      return;
+    }
   }
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);

@@ -1,8 +1,9 @@
+import config from "../../config";
 import redis from "../redis";
 
 export class TicketChannelManager {
-  private key = "tickets:channels"; // Redis set key for storing all ticket channel IDs
-  private prefix = "tickets:channel:"; // Prefix for channel-specific keys
+  private key = `${config.redis.prefix}tickets:channels`; // Redis set key for storing all ticket channel IDs
+  private prefix = `${config.redis.prefix}tickets:channel:`; // Prefix for channel-specific keys
   private redis;
 
   constructor() {

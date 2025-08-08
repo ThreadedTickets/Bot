@@ -14,6 +14,7 @@ import { updateCachedData } from "../../utils/database/updateCache";
 import { toTimeUnit } from "../../utils/formatters/toTimeUnit";
 import { resolveDiscordMessagePlaceholders } from "../../utils/message/placeholders/resolvePlaceholders";
 import { onError } from "../../utils/onError";
+import config from "../../config";
 
 const select: SelectMenuHandler = {
   customId: "appSubmit",
@@ -105,21 +106,26 @@ const select: SelectMenuHandler = {
       }
 
       interaction.user.send({
-        components: [
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-              new ButtonBuilder()
-                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                .setStyle(ButtonStyle.Link)
-                .setLabel(
-                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-                )
-            )
-            .toJSON(),
-        ],
         ...resolveDiscordMessagePlaceholders(baseMessage, {
           applicationName: application.name,
         }),
+        components: config.isWhiteLabel
+          ? []
+          : [
+              new ActionRowBuilder<ButtonBuilder>()
+                .addComponents(
+                  new ButtonBuilder()
+                    .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                    .setStyle(ButtonStyle.Link)
+                    .setLabel(
+                      t(
+                        data?.lang!,
+                        "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON"
+                      )
+                    )
+                )
+                .toJSON(),
+            ],
       });
 
       return handleApplicationSubmit(

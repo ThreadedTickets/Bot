@@ -12,6 +12,16 @@ import { updateCachedData } from "../utils/database/updateCache";
 import { toTimeUnit } from "../utils/formatters/toTimeUnit";
 import { resolveDiscordMessagePlaceholders } from "../utils/message/placeholders/resolvePlaceholders";
 import { onError } from "../utils/onError";
+import config from "../config";
+
+const createInviteButton = (lang: string) => {
+  return new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+      .setStyle(ButtonStyle.Link)
+      .setLabel(t(lang, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON"))
+  );
+};
 
 const event: Event<"messageCreate"> = {
   name: "messageCreate",
@@ -73,18 +83,9 @@ const event: Event<"messageCreate"> = {
       await invalidateCache(`runningApplications:${message.author.id}`);
 
       return message.reply({
-        components: [
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-              new ButtonBuilder()
-                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                .setStyle(ButtonStyle.Link)
-                .setLabel(
-                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-                )
-            )
-            .toJSON(),
-        ],
+        components: config.isWhiteLabel
+          ? []
+          : [createInviteButton(data?.lang!).toJSON()],
         ...resolveDiscordMessagePlaceholders(baseMessage, {
           applicationName: application.name,
         }),
@@ -217,18 +218,9 @@ const event: Event<"messageCreate"> = {
             ),
           },
         ],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-              new ButtonBuilder()
-                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                .setStyle(ButtonStyle.Link)
-                .setLabel(
-                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-                )
-            )
-            .toJSON(),
-        ],
+        components: config.isWhiteLabel
+          ? []
+          : [createInviteButton(data?.lang!).toJSON()],
       };
 
       const customMessage = application.submissionMessage
@@ -242,21 +234,9 @@ const event: Event<"messageCreate"> = {
         baseMessage = {
           content: customMessage.content,
           embeds: customMessage.embeds,
-          components: [
-            new ActionRowBuilder<ButtonBuilder>()
-              .addComponents(
-                new ButtonBuilder()
-                  .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                  .setStyle(ButtonStyle.Link)
-                  .setLabel(
-                    t(
-                      data?.lang!,
-                      "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON"
-                    )
-                  )
-              )
-              .toJSON(),
-          ],
+          components: config.isWhiteLabel
+            ? []
+            : [createInviteButton(data?.lang!).toJSON()],
         };
       }
 

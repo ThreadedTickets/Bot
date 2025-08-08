@@ -3,6 +3,7 @@ import { loadFilesRecursively } from "../utils/commands/load";
 import { getCache } from "../utils/database/getCachedElse";
 import { Locale } from "../types/Locale";
 import { getServerLocale } from "../utils/bot/getServer";
+import config from "../config";
 
 export type EventData = {
   blacklist?: {
@@ -30,9 +31,17 @@ export const loadEvents = async (client: {
         return event.execute(client, {} as EventData, ...args);
       }
 
+      // Stops the bot responding in servers it isn't supposed to
+      if (
+        config.isWhiteLabel &&
+        guildId &&
+        !config.whiteLabelServerIds.includes(guildId)
+      )
+        return;
+
       let blacklist = null;
       let lang = null;
-      if (userId) {
+      if (userId && !config.isWhiteLabel) {
         const blacklists = await getCache(`blacklists:${userId}`);
         if (blacklists.cached) {
           blacklist = {
@@ -43,7 +52,7 @@ export const loadEvents = async (client: {
         }
       }
 
-      if (guildId) {
+      if (guildId && !config.isWhiteLabel) {
         if (!blacklist) {
           const blacklists = await getCache(`blacklists:${guildId}`);
           if (blacklists.cached) {
