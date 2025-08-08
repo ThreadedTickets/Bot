@@ -20,7 +20,6 @@ import logger from "./utils/logger";
 import "./instrument";
 import { awaitReply } from "./utils/tickets/await-reply";
 import config from "./config";
-import setBotStatusFromEnv from "./status";
 
 const isProd = process.env["IS_PROD"] === "true";
 
@@ -96,8 +95,8 @@ deployAppCommands();
 loadEvents(client);
 connectToMongooseDatabase();
 if (!config.isWhiteLabel) {
-  startMetricsServer(parseInt(process.env["METRICS_PORT"]!, 10));
-  startApi(parseInt(process.env["API_PORT"]!, 10));
+  startMetricsServer(parseInt(process.env["METRICS_PORT"] ?? "10001", 10));
+  startApi(parseInt(process.env["API_PORT"] ?? "10002", 10));
 }
 loadInteractionHandlers();
 loadLanguages();
