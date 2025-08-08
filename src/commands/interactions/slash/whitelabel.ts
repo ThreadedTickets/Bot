@@ -11,15 +11,20 @@ import { ApplicationClient, ServerBuilder, UserClient } from "pterodactyl.ts";
 import { WhitelabelSchema } from "../../../database/modals/Whitelabel";
 import { wait } from "../../..";
 import logger from "../../../utils/logger";
+import config from "../../../config";
 
-const pClient = new ApplicationClient({
-  apikey: process.env["PTERODACTYL_API_KEY"],
-  panel: process.env["PTERODACTYL_PANEL_URL"],
-});
-const uClient = new UserClient({
-  apikey: process.env["PTERODACTYL_API_KEY"],
-  panel: process.env["PTERODACTYL_PANEL_URL"],
-});
+const pClient = config.isWhiteLabel
+  ? null
+  : new ApplicationClient({
+      apikey: process.env["PTERODACTYL_API_KEY"],
+      panel: process.env["PTERODACTYL_PANEL_URL"],
+    });
+const uClient = config.isWhiteLabel
+  ? null
+  : new UserClient({
+      apikey: process.env["PTERODACTYL_API_KEY"],
+      panel: process.env["PTERODACTYL_PANEL_URL"],
+    });
 
 const command: AppCommand = {
   testGuild: true,

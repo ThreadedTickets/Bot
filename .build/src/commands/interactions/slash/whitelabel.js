@@ -9,14 +9,19 @@ const pterodactyl_ts_1 = require("pterodactyl.ts");
 const Whitelabel_1 = require("../../../database/modals/Whitelabel");
 const __1 = require("../../..");
 const logger_1 = __importDefault(require("../../../utils/logger"));
-const pClient = new pterodactyl_ts_1.ApplicationClient({
-    apikey: process.env["PTERODACTYL_API_KEY"],
-    panel: process.env["PTERODACTYL_PANEL_URL"],
-});
-const uClient = new pterodactyl_ts_1.UserClient({
-    apikey: process.env["PTERODACTYL_API_KEY"],
-    panel: process.env["PTERODACTYL_PANEL_URL"],
-});
+const config_1 = __importDefault(require("../../../config"));
+const pClient = config_1.default.isWhiteLabel
+    ? null
+    : new pterodactyl_ts_1.ApplicationClient({
+        apikey: process.env["PTERODACTYL_API_KEY"],
+        panel: process.env["PTERODACTYL_PANEL_URL"],
+    });
+const uClient = config_1.default.isWhiteLabel
+    ? null
+    : new pterodactyl_ts_1.UserClient({
+        apikey: process.env["PTERODACTYL_API_KEY"],
+        panel: process.env["PTERODACTYL_PANEL_URL"],
+    });
 const command = {
     testGuild: true,
     permissionLevel: permissions_1.CommandPermission.Owner,
@@ -225,25 +230,30 @@ const command = {
             const dbEntry = await Whitelabel_1.WhitelabelSchema.findOne({ _id: { $eq: id } });
             if (!dbEntry)
                 return interaction.editReply({ content: "Not found" });
-            const fullServer = await uClient.getServer(dbEntry.fullId);
-            const usage = await fullServer.getUsage();
-            const json = {
-                created: dbEntry.createdAt.toISOString(),
-                owner: dbEntry.owner,
-                clientId: dbEntry.clientId,
-                url: dbEntry.url,
-                status: await fullServer.getStatus(),
-                usage: usage.resources,
-            };
-            interaction.editReply({
-                content: `\`\`\`json\n${JSON.stringify(json, null, 2)}\n\`\`\``,
-                components: [
-                    new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder()
-                        .setURL(dbEntry.url)
-                        .setLabel("View")
-                        .setStyle(discord_js_1.ButtonStyle.Link)),
-                ],
-            });
+            try {
+                const fullServer = await uClient.getServer(dbEntry.fullId);
+                const usage = await fullServer.getUsage();
+                const json = {
+                    created: dbEntry.createdAt.toISOString(),
+                    owner: dbEntry.owner,
+                    clientId: dbEntry.clientId,
+                    url: dbEntry.url,
+                    status: await fullServer.getStatus(),
+                    usage: usage.resources,
+                };
+                interaction.editReply({
+                    content: `\`\`\`json\n${JSON.stringify(json, null, 2)}\n\`\`\``,
+                    components: [
+                        new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder()
+                            .setURL(dbEntry.url)
+                            .setLabel("View")
+                            .setStyle(discord_js_1.ButtonStyle.Link)),
+                    ],
+                });
+            }
+            catch (error) {
+                interaction.editReply({ content: error.message });
+            }
         }
         else if (action === "delete") {
             const id = interaction.options.getString("instance", true);
