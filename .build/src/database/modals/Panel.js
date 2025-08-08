@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="b4e5494a-b3de-5b6b-99eb-7518f0f6af8a")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -557,3 +559,4 @@ exports.TicketTriggerSchemaValidator = ajv.compile(ticketTriggerSchemaAjv);
 exports.TicketTriggerSchema = mongoose_1.default.model("Ticket Triggers", ticketTriggerSchema);
 exports.ApplicationTriggerSchema = mongoose_1.default.model("Application Triggers", applicationTriggerSchema);
 //# sourceMappingURL=/src/database/modals/Panel.js.map
+//# debugId=b4e5494a-b3de-5b6b-99eb-7518f0f6af8a

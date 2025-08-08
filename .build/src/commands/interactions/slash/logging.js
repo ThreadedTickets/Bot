@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c30b1a39-c8fd-5127-9b25-9fe4253c0f0e")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -522,3 +524,4 @@ function isWebhookUsedElsewhere(currentKey, webhookUrl, loggingConfig) {
     return false;
 }
 //# sourceMappingURL=/src/commands/interactions/slash/logging.js.map
+//# debugId=c30b1a39-c8fd-5127-9b25-9fe4253c0f0e

@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="f4c69b37-8c31-571e-808f-8fddd3ff580c")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -172,3 +174,4 @@ async function closeTicket(ticketId, locale, reason, repliable, schedule) {
     }
 }
 //# sourceMappingURL=/src/utils/tickets/close.js.map
+//# debugId=f4c69b37-8c31-571e-808f-8fddd3ff580c

@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="6e1d1cc1-d726-5b62-b16a-64597b489d12")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const lang_1 = require("../../lang");
@@ -32,3 +34,4 @@ const button = {
 };
 exports.default = button;
 //# sourceMappingURL=/src/interactions/buttons/raiseTicket.js.map
+//# debugId=6e1d1cc1-d726-5b62-b16a-64597b489d12

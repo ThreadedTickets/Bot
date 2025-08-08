@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="568babe4-dc24-5693-bc14-c0561b512c4e")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const getServer_1 = require("../../../utils/bot/getServer");
@@ -40,3 +42,4 @@ const command = {
 };
 exports.default = command;
 //# sourceMappingURL=/src/commands/interactions/slash/language.js.map
+//# debugId=568babe4-dc24-5693-bc14-c0561b512c4e

@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="b74dc138-bb52-553f-a459-1dd69a13ac45")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lang = void 0;
 exports.lang = {
@@ -200,3 +202,4 @@ exports.lang = {
     TICKET_CLOSE_DM_BUTTON: "Want your own ticket system? Invite Threaded!",
 };
 //# sourceMappingURL=/src/lang/en/messages.js.map
+//# debugId=b74dc138-bb52-553f-a459-1dd69a13ac45

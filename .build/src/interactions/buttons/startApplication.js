@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="808b083f-9236-597f-98b0-9a692c645bae")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const lang_1 = require("../../lang");
@@ -50,3 +52,4 @@ const button = {
 };
 exports.default = button;
 //# sourceMappingURL=/src/interactions/buttons/startApplication.js.map
+//# debugId=808b083f-9236-597f-98b0-9a692c645bae

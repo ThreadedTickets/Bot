@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="1e7763c9-3906-5ddf-932a-02f4857f5e6a")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     free: {
@@ -76,3 +78,4 @@ exports.default = {
     },
 };
 //# sourceMappingURL=/src/constants/limits.js.map
+//# debugId=1e7763c9-3906-5ddf-932a-02f4857f5e6a

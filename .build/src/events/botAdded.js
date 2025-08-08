@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="53fe0cfd-93ca-5164-952d-31db805ffe40")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -25,3 +27,4 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/botAdded.js.map
+//# debugId=53fe0cfd-93ca-5164-952d-31db805ffe40

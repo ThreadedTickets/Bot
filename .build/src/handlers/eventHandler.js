@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="3c04e4db-f20e-50b3-8c0d-e6afb73a31df")}catch(e){}}();
+
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -53,7 +55,8 @@ const loadEvents = async (client) => {
                 return event.execute(client, {}, ...args);
             }
             // Stops the bot responding in servers it isn't supposed to
-            if (config_1.default.isWhiteLabel &&
+            if (event.name !== "guildCreate" &&
+                config_1.default.isWhiteLabel &&
                 guildId &&
                 !config_1.default.whiteLabelServerIds.includes(guildId))
                 return;
@@ -120,3 +123,4 @@ function extractGuildId(args) {
     return null;
 }
 //# sourceMappingURL=/src/handlers/eventHandler.js.map
+//# debugId=3c04e4db-f20e-50b3-8c0d-e6afb73a31df

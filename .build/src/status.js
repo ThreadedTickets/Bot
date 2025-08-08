@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="12081df4-22dc-54e7-a36d-7aea6242f601")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = setBotStatusFromEnv;
 const discord_js_1 = require("discord.js");
@@ -32,3 +34,4 @@ function setBotStatusFromEnv(client) {
         client.user.setPresence(presenceData);
 }
 //# sourceMappingURL=/src/status.js.map
+//# debugId=12081df4-22dc-54e7-a36d-7aea6242f601

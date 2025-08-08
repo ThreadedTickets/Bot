@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="5486d5b0-d2a4-5ecb-9b72-c5873a96715b")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -98,3 +100,4 @@ function startMetricsServer(port) {
     });
 }
 //# sourceMappingURL=/src/metricsServer.js.map
+//# debugId=5486d5b0-d2a4-5ecb-9b72-c5873a96715b

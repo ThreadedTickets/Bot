@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="9231941a-3c51-5925-9a9f-7a91fb224bfd")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -71,3 +73,4 @@ async function unlockTicket(ticketId, locale, repliable) {
             .catch((err) => logger_1.default.warn(`Failed to send message to ticket channel on unlock`, err));
 }
 //# sourceMappingURL=/src/utils/tickets/unlock.js.map
+//# debugId=9231941a-3c51-5925-9a9f-7a91fb224bfd

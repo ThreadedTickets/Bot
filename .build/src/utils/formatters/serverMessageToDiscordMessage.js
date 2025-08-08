@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="23e0c62b-3bcd-569e-b95c-99b7e3a59df8")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = serverMessageToDiscordMessage;
 function serverMessageToDiscordMessage(serverMessage) {
@@ -61,3 +63,4 @@ function serverMessageToDiscordMessage(serverMessage) {
     return returnValue;
 }
 //# sourceMappingURL=/src/utils/formatters/serverMessageToDiscordMessage.js.map
+//# debugId=23e0c62b-3bcd-569e-b95c-99b7e3a59df8

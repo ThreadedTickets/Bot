@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="2249776c-cf3a-525c-a347-2f1fde6312fe")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -34,3 +36,4 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/memberLeaveServer.js.map
+//# debugId=2249776c-cf3a-525c-a347-2f1fde6312fe

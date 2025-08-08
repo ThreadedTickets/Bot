@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="113cedcf-3547-5384-8a94-fae27ace7cf6")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -19,3 +21,4 @@ async function getGuildMember(client, guildId, userId) {
     }
 }
 //# sourceMappingURL=/src/utils/bot/getGuildMember.js.map
+//# debugId=113cedcf-3547-5384-8a94-fae27ace7cf6

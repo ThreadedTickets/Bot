@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="a97035f0-3161-56c9-9303-027d47b904b2")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -35,3 +37,4 @@ async function awaitReply(serverId, ticketId, action, notify) {
         await channel.send(`<@${notify}>, the user has not responded`);
 }
 //# sourceMappingURL=/src/utils/tickets/await-reply.js.map
+//# debugId=a97035f0-3161-56c9-9303-027d47b904b2

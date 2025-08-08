@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="43600523-619b-5ade-a16e-5bb397cd9dff")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -264,3 +266,4 @@ function buildTriggerActionRows(triggers, type, placeholder) {
     throw new Error("Invalid type: must be 'button' or 'select'");
 }
 //# sourceMappingURL=/src/commands/interactions/slash/panel.js.map
+//# debugId=43600523-619b-5ade-a16e-5bb397cd9dff

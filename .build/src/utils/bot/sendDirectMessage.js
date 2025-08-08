@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="572a06f5-113e-5766-9692-5758298c9685")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -26,3 +28,4 @@ async function sendDirectMessage(client, userId, message) {
     }
 }
 //# sourceMappingURL=/src/utils/bot/sendDirectMessage.js.map
+//# debugId=572a06f5-113e-5766-9692-5758298c9685

@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="1d4d9491-10a2-57f3-a78b-370218cc403e")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.webhookUrls = exports.WebhookTypes = void 0;
 var WebhookTypes;
@@ -19,3 +21,4 @@ exports.webhookUrls = {
     [WebhookTypes.BlacklistLog]: process.env["LOGGING_DISCORD_WEBHOOK_BLACKLISTS"],
 };
 //# sourceMappingURL=/src/constants/webhooks.js.map
+//# debugId=1d4d9491-10a2-57f3-a78b-370218cc403e

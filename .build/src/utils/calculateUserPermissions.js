@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="b3ffc9c2-99b8-541e-ac18-d4931253ed36")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserPermissions = getUserPermissions;
 const discord_js_1 = require("discord.js");
@@ -149,3 +151,4 @@ function getUserPermissions(member, groups) {
     };
 }
 //# sourceMappingURL=/src/utils/calculateUserPermissions.js.map
+//# debugId=b3ffc9c2-99b8-541e-ac18-d4931253ed36

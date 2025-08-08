@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="5d0609f8-4c81-5aa7-8e79-b0b92880e5d9")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -39,3 +41,4 @@ async function hasUserViewedAnnouncement(userId) {
         .then((res) => res === 1);
 }
 //# sourceMappingURL=/src/utils/bot/viewAnnouncement.js.map
+//# debugId=5d0609f8-4c81-5aa7-8e79-b0b92880e5d9

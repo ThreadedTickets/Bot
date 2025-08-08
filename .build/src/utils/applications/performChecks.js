@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="b17ec119-c48f-5be9-9021-711b67154b59")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.performApplicationChecks = performApplicationChecks;
 const getServer_1 = require("../bot/getServer");
@@ -108,3 +110,4 @@ async function performApplicationChecks(application, member, checkForActiveAppli
     };
 }
 //# sourceMappingURL=/src/utils/applications/performChecks.js.map
+//# debugId=b17ec119-c48f-5be9-9021-711b67154b59

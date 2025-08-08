@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="283070fb-519c-50ec-8a96-be40a6e1ebf1")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -30,3 +32,4 @@ node_1.default.init({
     },
 });
 //# sourceMappingURL=/src/instrument.js.map
+//# debugId=283070fb-519c-50ec-8a96-be40a6e1ebf1

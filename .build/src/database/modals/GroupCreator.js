@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c394fb47-65e9-59c5-9f70-2f90558247bc")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -24,3 +26,4 @@ const schema = new mongoose_1.default.Schema({
 });
 exports.GroupCreatorSchema = mongoose_1.default.model("Group Creators", schema);
 //# sourceMappingURL=/src/database/modals/GroupCreator.js.map
+//# debugId=c394fb47-65e9-59c5-9f70-2f90558247bc

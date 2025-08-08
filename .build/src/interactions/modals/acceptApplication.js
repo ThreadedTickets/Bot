@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="de396acd-26de-5dc2-8e88-b68713f7b50e")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -107,3 +109,4 @@ const modal = {
 };
 exports.default = modal;
 //# sourceMappingURL=/src/interactions/modals/acceptApplication.js.map
+//# debugId=de396acd-26de-5dc2-8e88-b68713f7b50e

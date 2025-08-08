@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="1d294014-90d7-550b-b851-4edc50459359")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildTicketFormModal = buildTicketFormModal;
 const discord_js_1 = require("discord.js");
@@ -53,3 +55,4 @@ function buildTicketFormModal(questions, customId, title) {
     return modal;
 }
 //# sourceMappingURL=/src/utils/tickets/buildFormModal.js.map
+//# debugId=1d294014-90d7-550b-b851-4edc50459359

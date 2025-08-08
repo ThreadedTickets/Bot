@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="5b71777e-3865-556c-bb54-caff01d34165")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -127,3 +129,4 @@ exports.client.login(process.env["DISCORD_TOKEN"]);
 process.on("unhandledRejection", (err) => logger_1.default.error("Unhandled Rejection", err));
 process.on("uncaughtException", (err) => logger_1.default.error("Uncaught Exception", err));
 //# sourceMappingURL=/src/index.js.map
+//# debugId=5b71777e-3865-556c-bb54-caff01d34165

@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c2f57a9e-9cd6-5af7-9bab-e0445c548a07")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -22,3 +24,4 @@ async function deleteWebhookByUrl(webhookUrl) {
     }
 }
 //# sourceMappingURL=/src/utils/bot/deleteWebhook.js.map
+//# debugId=c2f57a9e-9cd6-5af7-9bab-e0445c548a07

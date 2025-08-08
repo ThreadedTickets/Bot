@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="63c35319-b63b-54a8-aedf-608a6e214929")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const calculateUserPermissions_1 = require("../../utils/calculateUserPermissions");
@@ -47,3 +49,4 @@ const button = {
 };
 exports.default = button;
 //# sourceMappingURL=/src/interactions/buttons/closeTicket.js.map
+//# debugId=63c35319-b63b-54a8-aedf-608a6e214929

@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="f05e8930-bec6-5c13-8442-1168ef4e9aab")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -14,3 +16,4 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/botRemoved.js.map
+//# debugId=f05e8930-bec6-5c13-8442-1168ef4e9aab

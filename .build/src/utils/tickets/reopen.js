@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="788491b8-7ed8-5513-b7fc-be1f55a92358")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -81,3 +83,4 @@ async function reopenTicket(ticketId, locale, repliable) {
     }
 }
 //# sourceMappingURL=/src/utils/tickets/reopen.js.map
+//# debugId=788491b8-7ed8-5513-b7fc-be1f55a92358

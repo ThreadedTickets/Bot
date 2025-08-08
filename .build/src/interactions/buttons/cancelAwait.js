@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="ec1b1697-d61d-538e-bc74-316f6d7b8af8")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -34,3 +36,4 @@ const button = {
 };
 exports.default = button;
 //# sourceMappingURL=/src/interactions/buttons/cancelAwait.js.map
+//# debugId=ec1b1697-d61d-538e-bc74-316f6d7b8af8

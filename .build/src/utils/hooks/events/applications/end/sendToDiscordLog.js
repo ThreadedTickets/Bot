@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c7ec0b97-50bf-55b4-8b72-6b078f22b870")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,3 +33,4 @@ const lang_1 = require("../../../../../lang");
     });
 });
 //# sourceMappingURL=/src/utils/hooks/events/applications/end/sendToDiscordLog.js.map
+//# debugId=c7ec0b97-50bf-55b4-8b72-6b078f22b870

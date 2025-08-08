@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="62b4087c-c808-5cef-8d6c-9ab194f27ae8")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lang = void 0;
 exports.lang = {
@@ -9,3 +11,4 @@ exports.lang = {
     COMMANDS_TRANSLATE_NO_CONTENT_TO_TRANSLATE: "Diese Nachricht enthält keinen Inhalt, den ich übersetzen könnte!",
 };
 //# sourceMappingURL=/src/lang/de/messages.js.map
+//# debugId=62b4087c-c808-5cef-8d6c-9ab194f27ae8

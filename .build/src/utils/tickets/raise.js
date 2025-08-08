@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="62a2e891-8a1d-5492-9693-a6104fdb338c")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -62,3 +64,4 @@ async function raiseTicket(ticketId, locale, repliable) {
             .catch((err) => logger_1.default.warn(`Failed to send message to ticket channel on raise`, err));
 }
 //# sourceMappingURL=/src/utils/tickets/raise.js.map
+//# debugId=62a2e891-8a1d-5492-9693-a6104fdb338c

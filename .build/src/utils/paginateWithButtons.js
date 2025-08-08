@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="b2b36cec-1dcb-513f-b101-1375ca7f133e")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.paginateWithButtons = paginateWithButtons;
 const discord_js_1 = require("discord.js");
@@ -70,3 +72,4 @@ async function paginateWithButtons(ownerId, target, pages, timeoutMs = 60000) {
     });
 }
 //# sourceMappingURL=/src/utils/paginateWithButtons.js.map
+//# debugId=b2b36cec-1dcb-513f-b101-1375ca7f133e

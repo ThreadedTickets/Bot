@@ -33,6 +33,7 @@ export const loadEvents = async (client: {
 
       // Stops the bot responding in servers it isn't supposed to
       if (
+        event.name !== "guildCreate" &&
         config.isWhiteLabel &&
         guildId &&
         !config.whiteLabelServerIds.includes(guildId)

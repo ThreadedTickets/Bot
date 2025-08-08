@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="3dbcd54f-1ca0-5cf6-ba54-6793b56360f5")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const lang_1 = require("../../../lang");
@@ -81,3 +83,4 @@ const command = {
 };
 exports.default = command;
 //# sourceMappingURL=/src/commands/interactions/slash/applicationHistory.js.map
+//# debugId=3dbcd54f-1ca0-5cf6-ba54-6793b56360f5

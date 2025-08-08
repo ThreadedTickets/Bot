@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="fdb0eeee-5e9a-5f65-b98a-0908f4243c6d")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseArgs = void 0;
 const parseUsage = (usage) => {
@@ -126,3 +128,4 @@ const parseArgs = (usage, input) => {
 };
 exports.parseArgs = parseArgs;
 //# sourceMappingURL=/src/utils/commands/message/argumentParser.js.map
+//# debugId=fdb0eeee-5e9a-5f65-b98a-0908f4243c6d

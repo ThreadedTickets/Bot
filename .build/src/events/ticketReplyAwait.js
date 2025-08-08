@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="490769dd-d83f-5a6b-bf05-2bdae328d71e")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -35,3 +37,4 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/ticketReplyAwait.js.map
+//# debugId=490769dd-d83f-5a6b-bf05-2bdae328d71e

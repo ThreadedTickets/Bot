@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="9b2dff7f-dee4-5595-948c-f1cd1a2e0824")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const permissions_1 = require("../../../constants/permissions");
 const invalidateCache_1 = require("../../../utils/database/invalidateCache");
@@ -14,3 +16,4 @@ const command = {
 };
 exports.default = command;
 //# sourceMappingURL=/src/commands/prefix/developer/clearCached.js.map
+//# debugId=9b2dff7f-dee4-5595-948c-f1cd1a2e0824

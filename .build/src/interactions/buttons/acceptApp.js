@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="fae69bfc-9a7d-5143-8ab1-2626a701484b")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const getServer_1 = require("../../utils/bot/getServer");
 const onError_1 = require("../../utils/onError");
@@ -28,3 +30,4 @@ const button = {
 };
 exports.default = button;
 //# sourceMappingURL=/src/interactions/buttons/acceptApp.js.map
+//# debugId=fae69bfc-9a7d-5143-8ab1-2626a701484b

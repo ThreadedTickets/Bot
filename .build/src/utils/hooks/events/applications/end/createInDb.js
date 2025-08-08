@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="e8784274-38f4-5cc7-9170-7215f8d877ee")}catch(e){}}();
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../../..");
 const CompletedApplications_1 = require("../../../../../database/modals/CompletedApplications");
@@ -19,3 +21,4 @@ const invalidateCache_1 = require("../../../../database/invalidateCache");
     (0, __1.runHooks)("ApplicationFinal", { application, responses, owner, client, id });
 }, 10);
 //# sourceMappingURL=/src/utils/hooks/events/applications/end/createInDb.js.map
+//# debugId=e8784274-38f4-5cc7-9170-7215f8d877ee

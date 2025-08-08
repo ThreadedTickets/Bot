@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="f4c8dcd9-cc2e-57af-ace4-5987e9513366")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -23,3 +25,4 @@ const schema = new mongoose_1.default.Schema({
 });
 exports.TicketTriggerCreatorSchema = mongoose_1.default.model("Ticket Trigger Creators", schema);
 //# sourceMappingURL=/src/database/modals/TicketTriggerCreator.js.map
+//# debugId=f4c8dcd9-cc2e-57af-ace4-5987e9513366

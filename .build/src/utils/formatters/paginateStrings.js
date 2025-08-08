@@ -1,4 +1,6 @@
 "use strict";
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="684ca6d3-cc9d-57b0-b574-94522da566f0")}catch(e){}}();
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -29,3 +31,4 @@ function paginateStrings(items, itemsPerEmbed = 10, embedTitle) {
     return pages;
 }
 //# sourceMappingURL=/src/utils/formatters/paginateStrings.js.map
+//# debugId=684ca6d3-cc9d-57b0-b574-94522da566f0
