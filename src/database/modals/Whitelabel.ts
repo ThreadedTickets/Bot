@@ -10,7 +10,15 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    server: {
+    _id: {
+      type: Number,
+      required: true,
+    },
+    fullId: {
+      type: String,
+      required: true,
+    },
+    url: {
       type: String,
       required: true,
     },

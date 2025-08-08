@@ -1,9 +1,22 @@
-import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  MessageFlags,
+  SlashCommandBuilder,
+} from "discord.js";
 import { CommandPermission } from "../../../constants/permissions";
 import { AppCommand } from "../../../types/Command";
-import { ApplicationClient, ServerBuilder } from "pterodactyl.ts";
+import { ApplicationClient, ServerBuilder, UserClient } from "pterodactyl.ts";
+import { WhitelabelSchema } from "../../../database/modals/Whitelabel";
+import { wait } from "../../..";
+import logger from "../../../utils/logger";
 
 const pClient = new ApplicationClient({
+  apikey: process.env["PTERODACTYL_API_KEY"],
+  panel: process.env["PTERODACTYL_PANEL_URL"],
+});
+const uClient = new UserClient({
   apikey: process.env["PTERODACTYL_API_KEY"],
   panel: process.env["PTERODACTYL_PANEL_URL"],
 });
@@ -15,6 +28,54 @@ const command: AppCommand = {
   data: new SlashCommandBuilder()
     .setName("whitelabel_bot")
     .setDescription(".")
+    .addSubcommand((o) =>
+      o
+        .setName("get")
+        .setDescription(".")
+        .addStringOption((o) =>
+          o
+            .setName("instance")
+            .setDescription(".")
+            .setAutocomplete(true)
+            .setRequired(true)
+        )
+    )
+    .addSubcommand((o) =>
+      o
+        .setName("delete")
+        .setDescription(".")
+        .addStringOption((o) =>
+          o
+            .setName("instance")
+            .setDescription(".")
+            .setAutocomplete(true)
+            .setRequired(true)
+        )
+    )
+    .addSubcommand((o) =>
+      o
+        .setName("reinstall")
+        .setDescription(".")
+        .addStringOption((o) =>
+          o
+            .setName("instance")
+            .setDescription(".")
+            .setAutocomplete(true)
+            .setRequired(false)
+        )
+    )
+    .addSubcommand((o) =>
+      o
+        .setName("restart")
+        .setDescription(".")
+        .addStringOption((o) =>
+          o
+            .setName("instance")
+            .setDescription(".")
+            .setAutocomplete(true)
+            .setRequired(false)
+        )
+    )
     .addSubcommand((o) =>
       o
         .setName("new")
@@ -96,8 +157,48 @@ const command: AppCommand = {
             ])
         )
     ),
+  async autocomplete(client, interaction) {
+    if (!interaction.guildId) return;
+    const focused = interaction.options.getFocused(true).name;
+
+    if (focused === "instance") {
+      const focusedValue = interaction.options.getString("instance", true);
+      const instances = await WhitelabelSchema.find();
+      if (!instances.length) {
+        interaction.respond([
+          {
+            name: "There are no instances",
+            value: "",
+          },
+        ]);
+        return;
+      }
+
+      const filtered = instances.filter(
+        (m) =>
+          m.url.includes(focusedValue.toLowerCase()) ||
+          m.owner.includes(focusedValue.toLowerCase()) ||
+          m.clientId.includes(focusedValue)
+      );
+
+      interaction.respond(
+        filtered
+          .map((m) => ({
+            name: `${m.url.split("/")[4]} | OWNER:${m.owner} | CLIENT:${
+              m.clientId
+            }`.slice(0, 100),
+            value: `${m._id}`,
+          }))
+          .slice(0, 25)
+      );
+    }
+  },
   async execute(client, data, interaction) {
     const action = interaction.options.getSubcommand(true);
+    await interaction.reply({
+      content: "Wait",
+      flags: [MessageFlags.Ephemeral],
+    });
 
     if (action === "new") {
       const token = interaction.options.getString("token", true);
@@ -127,9 +228,8 @@ const command: AppCommand = {
       const allocation = node.allocations.filter((a) => !a.assigned)[0];
 
       if (!allocation)
-        return interaction.reply({
+        return interaction.editReply({
           content: `There are no allocations free on [this node](${pClient.panel}/admin/nodes/${nodeId}/allocation)`,
-          flags: [MessageFlags.Ephemeral],
         });
 
       const pServer = await pClient.createServer(
@@ -177,7 +277,137 @@ const command: AppCommand = {
           )
       );
 
-      console.log(pServer);
+      if (!pServer)
+        return interaction.editReply({
+          content: "Failed to make server",
+        });
+
+      WhitelabelSchema.create({
+        clientId,
+        owner: owner.id,
+        url: `${pClient.panel}/server/${pServer.identifier}`,
+        _id: pServer.id,
+        fullId: pServer.uuid,
+      });
+
+      interaction.editReply({
+        content: `Made server ${pClient.panel}/server/${pServer.identifier}`,
+      });
+    } else if (action === "get") {
+      const id = interaction.options.getString("instance", true);
+      const dbEntry = await WhitelabelSchema.findOne({ _id: { $eq: id } });
+      if (!dbEntry) return interaction.editReply({ content: "Not found" });
+
+      try {
+        const fullServer = await uClient.getServer(dbEntry.fullId);
+        const usage = await fullServer.getUsage();
+        const json = {
+          created: dbEntry.createdAt.toISOString(),
+          owner: dbEntry.owner,
+          clientId: dbEntry.clientId,
+          url: dbEntry.url,
+
+          status: await fullServer.getStatus(),
+          usage: usage.resources,
+        };
+
+        interaction.editReply({
+          content: `\`\`\`json\n${JSON.stringify(json, null, 2)}\n\`\`\``,
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(
+              new ButtonBuilder()
+                .setURL(dbEntry.url)
+                .setLabel("View")
+                .setStyle(ButtonStyle.Link)
+            ),
+          ],
+        });
+      } catch (error) {
+        interaction.editReply({ content: error.message });
+      }
+    } else if (action === "delete") {
+      const id = interaction.options.getString("instance", true);
+      const dbEntry = await WhitelabelSchema.findOne({ _id: { $eq: id } });
+      if (!dbEntry) return interaction.editReply({ content: "Not found" });
+
+      const server = await pClient.getServer(dbEntry._id);
+
+      await WhitelabelSchema.findOneAndDelete({ _id: { $eq: id } });
+      interaction.editReply({
+        content: `Deleted from db, please delete the server manually: ${pClient.panel}/admin/servers/view/${server.id}/delete`,
+      });
+      // The package is broken atm so delete ptero server manually
+      // if (server) await server.delete(true);
+
+      // interaction.editReply({
+      //   content: `deleted`,
+      // });
+    } else if (action === "reinstall") {
+      const id = interaction.options.getString("instance", false);
+      if (id) {
+        const dbEntry = await WhitelabelSchema.findOne({ _id: { $eq: id } });
+        if (!dbEntry) return interaction.editReply({ content: "Not found" });
+
+        const server = await pClient.getServer(dbEntry._id);
+        server.reinstall();
+
+        interaction.editReply({
+          content: "Reinstalling 1 server",
+        });
+      } else {
+        const servers = await uClient.getServers();
+        interaction.editReply({
+          content: `Reinstalling ${servers.length} servers`,
+        });
+
+        for (const server of servers) {
+          try {
+            await server.reinstall(); // Trigger reinstall
+
+            // Wait 1 second before the next iteration
+            await wait(1000);
+          } catch (error) {
+            logger.error(`Failed to reinstall ${server.name}:`, error);
+          }
+        }
+
+        interaction.editReply({
+          content: `done`,
+        });
+      }
+    } else if (action === "restart") {
+      const id = interaction.options.getString("instance", false);
+      if (id) {
+        const dbEntry = await WhitelabelSchema.findOne({ _id: { $eq: id } });
+        if (!dbEntry) return interaction.editReply({ content: "Not found" });
+
+        const server = await uClient.getServer(String(dbEntry._id));
+        server.reinstall();
+
+        interaction.editReply({
+          content: "restarting 1 server",
+        });
+      } else {
+        const servers = await uClient.getServers();
+        interaction.editReply({
+          content: `restarting ${servers.length} servers`,
+        });
+
+        for (const server of servers) {
+          try {
+            await server.restart(); // Trigger reinstall
+
+            // Wait 1 second before the next iteration
+            await wait(1000);
+          } catch (error) {
+            logger.error(`Failed to restart ${server.name}:`, error);
+          }
+        }
+
+        interaction.editReply({
+          content: `done`,
+        });
+      }
     }
   },
 };
