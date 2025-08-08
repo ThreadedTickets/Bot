@@ -1,3 +1,4 @@
+import config from "../config";
 import { GuildSchema } from "../database/modals/Guild";
 import { Event } from "../types/Event";
 import logger from "../utils/logger";
@@ -8,6 +9,14 @@ const event: Event<"guildCreate"> = {
     logger.debug(
       `Added to server ${guild.name} - set it to active if it already exists`
     );
+    if (config.isWhiteLabel) {
+      logger.warn("Whitelabel bot added to server, checking if this is ok");
+      if (!config.whiteLabelServerIds.includes(guild.id)) {
+        logger.warn("Bot not allowed in server, leaving");
+        await guild.leave();
+        return;
+      }
+    }
     await GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: true });
   },
 };

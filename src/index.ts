@@ -19,6 +19,8 @@ import { ClusterClient, getInfo } from "discord-hybrid-sharding";
 import logger from "./utils/logger";
 import "./instrument";
 import { awaitReply } from "./utils/tickets/await-reply";
+import config from "./config";
+import setBotStatusFromEnv from "./status";
 
 const isProd = process.env["IS_PROD"] === "true";
 
@@ -42,24 +44,24 @@ const discordClient = new Client({
     ApplicationEmojiManager: 0,
     AutoModerationRuleManager: 0,
     BaseGuildEmojiManager: 0,
-    DMMessageManager: 100,
+    DMMessageManager: 3,
     EntitlementManager: 0,
     GuildBanManager: 0,
     GuildEmojiManager: 0,
     GuildForumThreadManager: 0,
     GuildInviteManager: 0,
-    GuildMemberManager: 100,
-    GuildMessageManager: 100,
+    GuildMemberManager: 3,
+    GuildMessageManager: 3,
     GuildScheduledEventManager: 0,
     GuildStickerManager: 0,
-    GuildTextThreadManager: 100,
-    MessageManager: 100,
+    GuildTextThreadManager: 3,
+    MessageManager: 3,
     PresenceManager: 0,
     ReactionManager: 0,
     ReactionUserManager: 0,
     StageInstanceManager: 0,
-    ThreadManager: 100,
-    ThreadMemberManager: 50,
+    ThreadManager: 3,
+    ThreadMemberManager: 3,
     UserManager: 0,
     VoiceStateManager: 0,
   }),
@@ -93,8 +95,10 @@ loadPrefixCommands();
 deployAppCommands();
 loadEvents(client);
 connectToMongooseDatabase();
-startMetricsServer(parseInt(process.env["METRICS_PORT"]!, 10));
-startApi(parseInt(process.env["API_PORT"]!, 10));
+if (!config.isWhiteLabel) {
+  startMetricsServer(parseInt(process.env["METRICS_PORT"]!, 10));
+  startApi(parseInt(process.env["API_PORT"]!, 10));
+}
 loadInteractionHandlers();
 loadLanguages();
 export const TaskScheduler = new Scheduler();
