@@ -5,6 +5,7 @@ import {
 } from "../bot/getServer";
 import { Application } from "../../types/Application";
 import { getCache } from "../database/getCachedElse";
+import logger from "../logger";
 
 /**
  *
@@ -76,7 +77,11 @@ export async function performApplicationChecks(
   }
 
   // Role checks
-  if (includeRoles) await member.fetch();
+  if (includeRoles && member instanceof GuildMember) {
+    logger.debug("Roles before role check", member.roles.cache.toJSON());
+    member = await member.fetch();
+    logger.debug("Roles after role check", member.roles.cache.toJSON());
+  }
   // Blacklist role check
   if (includeRoles && member instanceof GuildMember) {
     if (
