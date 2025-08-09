@@ -4,3 +4,4 @@ node_modules
 transcripts
 package-lock.json
 logs
+*.map
