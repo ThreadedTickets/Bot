@@ -505,6 +505,35 @@ export function startApi(port: number) {
             key: `triggers:${_id}`,
           });
           break;
+        case "application":
+          const application = await ApplicationTriggerSchema.findOne({
+            _id: { $eq: _id },
+          });
+          if (!application) {
+            res.status(400).json({ message: "That application doesn't exist" });
+            return;
+          }
+          await updateCachedData(`application:${_id}`, 30, application);
+          res.status(200).json({
+            message: `application has been added to the cache. It can be accessed through application:${_id}`,
+            key: `application:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "applications":
+          const applications = await ApplicationTriggerSchema.find({
+            server: { $eq: _id },
+          });
+          await updateCachedData(
+            `applications:${_id}`,
+            30,
+            applications.map((t) => ({ _id: t._id, name: t.name }))
+          );
+          res.status(200).json({
+            message: `applications have been added to the cache. It can be accessed through applications:${_id}`,
+            key: `applications:${_id}`,
+          });
+          break;
         case "interactive":
           const interactive = [
             ...(await TagSchema.find({ server: { $eq: _id } })).map((t) => ({

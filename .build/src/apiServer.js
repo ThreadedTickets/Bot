@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="eeac3227-d345-5023-a170-df4c8b98a4ae")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="d47e61c0-7706-5f64-b481-a638097bdb2b")}catch(e){}}();
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -424,6 +424,31 @@ function startApi(port) {
                         key: `triggers:${_id}`,
                     });
                     break;
+                case "application":
+                    const application = await Panel_1.ApplicationTriggerSchema.findOne({
+                        _id: { $eq: _id },
+                    });
+                    if (!application) {
+                        res.status(400).json({ message: "That application doesn't exist" });
+                        return;
+                    }
+                    await (0, updateCache_1.updateCachedData)(`application:${_id}`, 30, application);
+                    res.status(200).json({
+                        message: `application has been added to the cache. It can be accessed through application:${_id}`,
+                        key: `application:${_id}`,
+                    });
+                    break;
+                // In this case _id is of the server we want the messages of
+                case "applications":
+                    const applications = await Panel_1.ApplicationTriggerSchema.find({
+                        server: { $eq: _id },
+                    });
+                    await (0, updateCache_1.updateCachedData)(`applications:${_id}`, 30, applications.map((t) => ({ _id: t._id, name: t.name })));
+                    res.status(200).json({
+                        message: `applications have been added to the cache. It can be accessed through applications:${_id}`,
+                        key: `applications:${_id}`,
+                    });
+                    break;
                 case "interactive":
                     const interactive = [
                         ...(await Tag_1.TagSchema.find({ server: { $eq: _id } })).map((t) => ({
@@ -482,4 +507,4 @@ function startApi(port) {
     });
 }
 //# sourceMappingURL=/src/apiServer.js.map
-//# debugId=eeac3227-d345-5023-a170-df4c8b98a4ae
+//# debugId=d47e61c0-7706-5f64-b481-a638097bdb2b
