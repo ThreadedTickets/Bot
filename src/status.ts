@@ -22,7 +22,7 @@ export default function setBotStatusFromEnv(client: Client) {
 
   // Only set activity if both type and text are provided
   if (process.env.BOT_ACTIVITY_TYPE && process.env.BOT_ACTIVITY_TEXT) {
-    const activityType = process.env.BOT_ACTIVITY_TYPE.toUpperCase();
+    const activityType = process.env.BOT_ACTIVITY_TYPE;
     const activity: ActivityOptions = {
       name: process.env.BOT_ACTIVITY_TEXT,
       type:
