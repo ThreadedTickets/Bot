@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="e32b4ca8-8b60-5cf7-9f26-6b501a362b6a")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="eeac3227-d345-5023-a170-df4c8b98a4ae")}catch(e){}}();
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -351,12 +351,7 @@ function startApi(port) {
                     const resps = await AutoResponder_1.AutoResponderSchema.find({
                         server: { $eq: _id },
                     });
-                    await (0, updateCache_1.updateCachedData)(`responders:${_id}`, 30, resps.map((m) => {
-                        return {
-                            _id: m._id,
-                            name: m.name,
-                        };
-                    }));
+                    await (0, updateCache_1.updateCachedData)(`responders:${_id}`, 30, resps);
                     res.status(200).json({
                         message: `responders have been added to the cache. It can be accessed through responders:${_id}`,
                         key: `responders:${_id}`,
@@ -398,7 +393,7 @@ function startApi(port) {
                 // In this case _id is of the server we want the messages of
                 case "groups":
                     const groups = await Guild_1.GroupSchema.find({ server: { $eq: _id } });
-                    await (0, updateCache_1.updateCachedData)(`groups:${_id}`, 30, groups);
+                    await (0, updateCache_1.updateCachedData)(`groups:${_id}`, 30, groups.map((g) => ({ _id: g._id, name: g.name })));
                     res.status(200).json({
                         message: `groups have been added to the cache. It can be accessed through groups:${_id}`,
                         key: `groups:${_id}`,
@@ -423,7 +418,7 @@ function startApi(port) {
                     const triggers = await Panel_1.TicketTriggerSchema.find({
                         server: { $eq: _id },
                     });
-                    await (0, updateCache_1.updateCachedData)(`triggers:${_id}`, 30, triggers);
+                    await (0, updateCache_1.updateCachedData)(`triggers:${_id}`, 30, triggers.map((t) => ({ _id: t._id, name: t.label })));
                     res.status(200).json({
                         message: `triggers have been added to the cache. It can be accessed through triggers:${_id}`,
                         key: `triggers:${_id}`,
@@ -487,4 +482,4 @@ function startApi(port) {
     });
 }
 //# sourceMappingURL=/src/apiServer.js.map
-//# debugId=e32b4ca8-8b60-5cf7-9f26-6b501a362b6a
+//# debugId=eeac3227-d345-5023-a170-df4c8b98a4ae

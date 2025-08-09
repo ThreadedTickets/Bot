@@ -424,16 +424,7 @@ export function startApi(port: number) {
           const resps = await AutoResponderSchema.find({
             server: { $eq: _id },
           });
-          await updateCachedData(
-            `responders:${_id}`,
-            30,
-            resps.map((m) => {
-              return {
-                _id: m._id,
-                name: m.name,
-              };
-            })
-          );
+          await updateCachedData(`responders:${_id}`, 30, resps);
           res.status(200).json({
             message: `responders have been added to the cache. It can be accessed through responders:${_id}`,
             key: `responders:${_id}`,
@@ -475,7 +466,11 @@ export function startApi(port: number) {
         // In this case _id is of the server we want the messages of
         case "groups":
           const groups = await GroupSchema.find({ server: { $eq: _id } });
-          await updateCachedData(`groups:${_id}`, 30, groups);
+          await updateCachedData(
+            `groups:${_id}`,
+            30,
+            groups.map((g) => ({ _id: g._id, name: g.name }))
+          );
           res.status(200).json({
             message: `groups have been added to the cache. It can be accessed through groups:${_id}`,
             key: `groups:${_id}`,
@@ -500,7 +495,11 @@ export function startApi(port: number) {
           const triggers = await TicketTriggerSchema.find({
             server: { $eq: _id },
           });
-          await updateCachedData(`triggers:${_id}`, 30, triggers);
+          await updateCachedData(
+            `triggers:${_id}`,
+            30,
+            triggers.map((t) => ({ _id: t._id, name: t.label }))
+          );
           res.status(200).json({
             message: `triggers have been added to the cache. It can be accessed through triggers:${_id}`,
             key: `triggers:${_id}`,
