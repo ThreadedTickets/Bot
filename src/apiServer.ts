@@ -36,6 +36,7 @@ import { formatDuration } from "./utils/formatters/duration";
 import { updateCachedData } from "./utils/database/updateCache";
 import { TagSchema } from "./database/modals/Tag";
 import logger from "./utils/logger";
+import { AutoResponderSchema } from "./database/modals/AutoResponder";
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
@@ -406,6 +407,38 @@ export function startApi(port: number) {
             key: `messages:${_id}`,
           });
           break;
+        case "responder":
+          const resp = await AutoResponderSchema.findOne({ _id: { $eq: _id } });
+          if (!resp) {
+            res.status(400).json({ message: "That responder doesn't exist" });
+            return;
+          }
+          await updateCachedData(`responder:${_id}`, 30, resp);
+          res.status(200).json({
+            message: `Responder has been added to the cache. It can be accessed through responder:${_id}`,
+            key: `responder:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "responders":
+          const resps = await AutoResponderSchema.find({
+            server: { $eq: _id },
+          });
+          await updateCachedData(
+            `responders:${_id}`,
+            30,
+            resps.map((m) => {
+              return {
+                _id: m._id,
+                name: m.name,
+              };
+            })
+          );
+          res.status(200).json({
+            message: `responders have been added to the cache. It can be accessed through responders:${_id}`,
+            key: `responders:${_id}`,
+          });
+          break;
         case "tag":
           const tag = await TagSchema.findOne({ _id: { $eq: _id } });
           if (!tag) {
@@ -425,6 +458,52 @@ export function startApi(port: number) {
           res.status(200).json({
             message: `Tags have been added to the cache. It can be accessed through tags:${_id}`,
             key: `tags:${_id}`,
+          });
+          break;
+        case "group":
+          const group = await GroupSchema.findOne({ _id: { $eq: _id } });
+          if (!group) {
+            res.status(400).json({ message: "That group doesn't exist" });
+            return;
+          }
+          await updateCachedData(`group:${_id}`, 30, group);
+          res.status(200).json({
+            message: `group has been added to the cache. It can be accessed through group:${_id}`,
+            key: `group:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "groups":
+          const groups = await GroupSchema.find({ server: { $eq: _id } });
+          await updateCachedData(`groups:${_id}`, 30, groups);
+          res.status(200).json({
+            message: `groups have been added to the cache. It can be accessed through groups:${_id}`,
+            key: `groups:${_id}`,
+          });
+          break;
+        case "trigger":
+          const trigger = await TicketTriggerSchema.findOne({
+            _id: { $eq: _id },
+          });
+          if (!trigger) {
+            res.status(400).json({ message: "That trigger doesn't exist" });
+            return;
+          }
+          await updateCachedData(`trigger:${_id}`, 30, trigger);
+          res.status(200).json({
+            message: `trigger has been added to the cache. It can be accessed through trigger:${_id}`,
+            key: `trigger:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "triggers":
+          const triggers = await TicketTriggerSchema.find({
+            server: { $eq: _id },
+          });
+          await updateCachedData(`triggers:${_id}`, 30, triggers);
+          res.status(200).json({
+            message: `triggers have been added to the cache. It can be accessed through triggers:${_id}`,
+            key: `triggers:${_id}`,
           });
           break;
         case "interactive":

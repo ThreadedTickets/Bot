@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="0b645743-1c00-5482-91ad-b5e5f74bf479")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="e32b4ca8-8b60-5cf7-9f26-6b501a362b6a")}catch(e){}}();
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -26,6 +26,7 @@ const duration_1 = require("./utils/formatters/duration");
 const updateCache_1 = require("./utils/database/updateCache");
 const Tag_1 = require("./database/modals/Tag");
 const logger_1 = __importDefault(require("./utils/logger"));
+const AutoResponder_1 = require("./database/modals/AutoResponder");
 function authMiddleware(req, res, next) {
     const authHeader = req.headers["authorization"];
     const token = authHeader?.split(" ")[1];
@@ -333,6 +334,34 @@ function startApi(port) {
                         key: `messages:${_id}`,
                     });
                     break;
+                case "responder":
+                    const resp = await AutoResponder_1.AutoResponderSchema.findOne({ _id: { $eq: _id } });
+                    if (!resp) {
+                        res.status(400).json({ message: "That responder doesn't exist" });
+                        return;
+                    }
+                    await (0, updateCache_1.updateCachedData)(`responder:${_id}`, 30, resp);
+                    res.status(200).json({
+                        message: `Responder has been added to the cache. It can be accessed through responder:${_id}`,
+                        key: `responder:${_id}`,
+                    });
+                    break;
+                // In this case _id is of the server we want the messages of
+                case "responders":
+                    const resps = await AutoResponder_1.AutoResponderSchema.find({
+                        server: { $eq: _id },
+                    });
+                    await (0, updateCache_1.updateCachedData)(`responders:${_id}`, 30, resps.map((m) => {
+                        return {
+                            _id: m._id,
+                            name: m.name,
+                        };
+                    }));
+                    res.status(200).json({
+                        message: `responders have been added to the cache. It can be accessed through responders:${_id}`,
+                        key: `responders:${_id}`,
+                    });
+                    break;
                 case "tag":
                     const tag = await Tag_1.TagSchema.findOne({ _id: { $eq: _id } });
                     if (!tag) {
@@ -352,6 +381,52 @@ function startApi(port) {
                     res.status(200).json({
                         message: `Tags have been added to the cache. It can be accessed through tags:${_id}`,
                         key: `tags:${_id}`,
+                    });
+                    break;
+                case "group":
+                    const group = await Guild_1.GroupSchema.findOne({ _id: { $eq: _id } });
+                    if (!group) {
+                        res.status(400).json({ message: "That group doesn't exist" });
+                        return;
+                    }
+                    await (0, updateCache_1.updateCachedData)(`group:${_id}`, 30, group);
+                    res.status(200).json({
+                        message: `group has been added to the cache. It can be accessed through group:${_id}`,
+                        key: `group:${_id}`,
+                    });
+                    break;
+                // In this case _id is of the server we want the messages of
+                case "groups":
+                    const groups = await Guild_1.GroupSchema.find({ server: { $eq: _id } });
+                    await (0, updateCache_1.updateCachedData)(`groups:${_id}`, 30, groups);
+                    res.status(200).json({
+                        message: `groups have been added to the cache. It can be accessed through groups:${_id}`,
+                        key: `groups:${_id}`,
+                    });
+                    break;
+                case "trigger":
+                    const trigger = await Panel_1.TicketTriggerSchema.findOne({
+                        _id: { $eq: _id },
+                    });
+                    if (!trigger) {
+                        res.status(400).json({ message: "That trigger doesn't exist" });
+                        return;
+                    }
+                    await (0, updateCache_1.updateCachedData)(`trigger:${_id}`, 30, trigger);
+                    res.status(200).json({
+                        message: `trigger has been added to the cache. It can be accessed through trigger:${_id}`,
+                        key: `trigger:${_id}`,
+                    });
+                    break;
+                // In this case _id is of the server we want the messages of
+                case "triggers":
+                    const triggers = await Panel_1.TicketTriggerSchema.find({
+                        server: { $eq: _id },
+                    });
+                    await (0, updateCache_1.updateCachedData)(`triggers:${_id}`, 30, triggers);
+                    res.status(200).json({
+                        message: `triggers have been added to the cache. It can be accessed through triggers:${_id}`,
+                        key: `triggers:${_id}`,
                     });
                     break;
                 case "interactive":
@@ -412,4 +487,4 @@ function startApi(port) {
     });
 }
 //# sourceMappingURL=/src/apiServer.js.map
-//# debugId=0b645743-1c00-5482-91ad-b5e5f74bf479
+//# debugId=e32b4ca8-8b60-5cf7-9f26-6b501a362b6a
