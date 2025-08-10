@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="1d294014-90d7-550b-b851-4edc50459359")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="0c105e59-28b3-5df2-bf3b-0555e92e64cc")}catch(e){}}();
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildTicketFormModal = buildTicketFormModal;
@@ -43,16 +43,18 @@ function buildTicketFormModal(questions, customId, title) {
             .setCustomId(`form_${i}`)
             .setLabel(question)
             .setStyle(multilineResponse ? discord_js_1.TextInputStyle.Paragraph : discord_js_1.TextInputStyle.Short)
-            .setRequired(requiredResponse)
-            .setMinLength(min)
-            .setMaxLength(max);
+            .setRequired(requiredResponse);
         if (placeholder)
             input.setPlaceholder(placeholder);
         if (value)
             input.setValue(value);
+        if (minimumCharactersRequired)
+            input.setMinLength(min);
+        if (maximumCharactersRequired)
+            input.setMaxLength(max);
         modal.addComponents(new discord_js_1.ActionRowBuilder().addComponents(input));
     }
     return modal;
 }
 //# sourceMappingURL=/src/utils/tickets/buildFormModal.js.map
-//# debugId=1d294014-90d7-550b-b851-4edc50459359
+//# debugId=0c105e59-28b3-5df2-bf3b-0555e92e64cc
