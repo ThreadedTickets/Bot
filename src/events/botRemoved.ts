@@ -9,7 +9,7 @@ const event: Event<"guildDelete"> = {
   async execute(client, data, guild) {
     logger.debug(`Removed from server ${guild.name} - set it to inactive`);
     await GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: false });
-    if (!config.isWhiteLabel && guild.id) redis.decr("guilds");
+    if (!config.isWhiteLabel && guild.id) await redis.decr("guilds");
   },
 };
 

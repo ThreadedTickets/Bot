@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="91ccb2b8-3852-588f-82a5-57bab7b88fbb")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="cabbd0af-ded3-5ce5-817e-4d9a7601560a")}catch(e){}}();
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -24,9 +24,9 @@ const event = {
             }
         }
         await Guild_1.GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: true });
-        redis_1.default.incr("guilds");
+        await redis_1.default.incr("guilds");
     },
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/botAdded.js.map
-//# debugId=91ccb2b8-3852-588f-82a5-57bab7b88fbb
+//# debugId=cabbd0af-ded3-5ce5-817e-4d9a7601560a

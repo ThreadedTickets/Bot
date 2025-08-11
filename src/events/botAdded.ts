@@ -23,7 +23,7 @@ const event: Event<"guildCreate"> = {
       }
     }
     await GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: true });
-    redis.incr("guilds");
+    await redis.incr("guilds");
   },
 };
 
