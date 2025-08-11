@@ -1,19 +1,23 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="f05e8930-bec6-5c13-8442-1168ef4e9aab")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="58801a16-5a75-5b83-b901-f2741d6ad57d")}catch(e){}}();
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const config_1 = __importDefault(require("../config"));
 const Guild_1 = require("../database/modals/Guild");
 const logger_1 = __importDefault(require("../utils/logger"));
+const redis_1 = __importDefault(require("../utils/redis"));
 const event = {
     name: "guildDelete",
     async execute(client, data, guild) {
         logger_1.default.debug(`Removed from server ${guild.name} - set it to inactive`);
         await Guild_1.GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: false });
+        if (!config_1.default.isWhiteLabel && guild.id)
+            redis_1.default.decr("guilds");
     },
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/botRemoved.js.map
-//# debugId=f05e8930-bec6-5c13-8442-1168ef4e9aab
+//# debugId=58801a16-5a75-5b83-b901-f2741d6ad57d
