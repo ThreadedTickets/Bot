@@ -2,6 +2,7 @@ import config from "../config";
 import { GuildSchema } from "../database/modals/Guild";
 import { Event } from "../types/Event";
 import logger from "../utils/logger";
+import redis from "../utils/redis";
 
 const event: Event<"guildCreate"> = {
   name: "guildCreate",
@@ -22,6 +23,7 @@ const event: Event<"guildCreate"> = {
       }
     }
     await GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: true });
+    redis.incr("guilds");
   },
 };
 
