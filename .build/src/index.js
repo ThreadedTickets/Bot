@@ -1,15 +1,12 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="39a9ef92-d5a6-5026-94db-3b1f8f658574")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.wait = exports.massCloseManager = exports.ticketQueueManager = exports.guildLeaveQueue = exports.InMemoryCache = exports.TaskScheduler = exports.client = exports.clusterClient = void 0;
+exports.wait = exports.massCloseManager = exports.ticketQueueManager = exports.guildLeaveQueue = exports.InMemoryCache = exports.TaskScheduler = exports.client = void 0;
 require("@dotenvx/dotenvx");
 const discord_js_1 = require("discord.js");
 const commandHandler_1 = require("./handlers/commandHandler");
-const interactionCommandHandler_1 = require("./handlers/interactionCommandHandler");
 const eventHandler_1 = require("./handlers/eventHandler");
 const connection_1 = require("./database/connection");
 const metricsServer_1 = require("./metricsServer");
@@ -22,17 +19,19 @@ const p_queue_1 = __importDefault(require("p-queue"));
 const Scheduler_1 = require("./utils/Scheduler");
 const close_1 = require("./utils/tickets/close");
 const QueueManager_1 = require("./utils/bot/QueueManager");
-const discord_hybrid_sharding_1 = require("discord-hybrid-sharding");
 const logger_1 = __importDefault(require("./utils/logger"));
 require("./instrument");
 const await_reply_1 = require("./utils/tickets/await-reply");
 const config_1 = __importDefault(require("./config"));
+const cluster_1 = require("./cluster");
+const worker_threads_1 = require("worker_threads");
+const interactionCommandHandler_1 = require("./handlers/interactionCommandHandler");
+const shardId = parseInt(worker_threads_1.workerData["SHARDS"]);
+const shardCount = parseInt(worker_threads_1.workerData["SHARD_COUNT"]);
 const isProd = process.env["IS_PROD"] === "true";
-const shardList = isProd ? (0, discord_hybrid_sharding_1.getInfo)().SHARD_LIST : [0];
-const totalShards = isProd ? (0, discord_hybrid_sharding_1.getInfo)().TOTAL_SHARDS : 1;
-const discordClient = new discord_js_1.Client({
-    shards: shardList,
-    shardCount: totalShards,
+exports.client = new discord_js_1.Client({
+    shardCount,
+    shards: [shardId],
     intents: [
         discord_js_1.GatewayIntentBits.Guilds,
         discord_js_1.GatewayIntentBits.GuildMessages,
@@ -87,21 +86,6 @@ const discordClient = new discord_js_1.Client({
         },
     },
 });
-exports.clusterClient = isProd
-    ? new discord_hybrid_sharding_1.ClusterClient(discordClient)
-    : discordClient;
-// @ts-ignore
-exports.client = isProd ? exports.clusterClient.client : discordClient;
-(0, commandHandler_1.loadPrefixCommands)();
-(0, interactionCommandHandler_1.deployAppCommands)();
-(0, eventHandler_1.loadEvents)(exports.client);
-(0, connection_1.connectToMongooseDatabase)();
-if (!config_1.default.isWhiteLabel && isProd) {
-    (0, metricsServer_1.startMetricsServer)(parseInt(process.env["METRICS_PORT"], 10));
-    (0, apiServer_1.startApi)(parseInt(process.env["API_PORT"], 10));
-}
-(0, interactionHandlers_1.loadInteractionHandlers)();
-(0, lang_1.loadLanguages)();
 exports.TaskScheduler = new Scheduler_1.TaskScheduler();
 exports.TaskScheduler.registerTaskFunction("closeTicket", (params) => {
     (0, close_1.closeTicket)(params.ticketId, params.locale, params.reason);
@@ -109,7 +93,6 @@ exports.TaskScheduler.registerTaskFunction("closeTicket", (params) => {
 exports.TaskScheduler.registerTaskFunction("awaitingReply", (params) => {
     (0, await_reply_1.awaitReply)(params.serverId, params.ticketId, params.action, params.notify);
 });
-exports.TaskScheduler.loadAndProcessBacklog(1000);
 exports.InMemoryCache = new InMemoryCache_1.InMemoryCache({
     defaultTTL: 1000 * 10 * 60, // 10 minutes
     cleanupInterval: 1000 * 10, // 10 seconds
@@ -126,8 +109,35 @@ exports.ticketQueueManager = new QueueManager_1.AsyncQueueManager();
 exports.massCloseManager = new QueueManager_1.AsyncQueueManager();
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 exports.wait = wait;
-exports.client.login(process.env["DISCORD_TOKEN"]);
+async function main() {
+    const sock = await cluster_1.socket;
+    await (0, commandHandler_1.loadPrefixCommands)();
+    await (0, interactionCommandHandler_1.deployAppCommands)();
+    await (0, eventHandler_1.loadEvents)(exports.client);
+    await (0, connection_1.connectToMongooseDatabase)();
+    if (!config_1.default.isWhiteLabel && isProd) {
+        (0, metricsServer_1.startMetricsServer)(parseInt(worker_threads_1.workerData["METRICS_PORT"], 10));
+        (0, apiServer_1.startApi)(parseInt(worker_threads_1.workerData["API_PORT"], 10));
+    }
+    await (0, interactionHandlers_1.loadInteractionHandlers)();
+    await (0, lang_1.loadLanguages)();
+    sock.emit("shardReady", shardId);
+    sock.on("loginShard", (shard) => {
+        if (shardId === shard) {
+            console.log("Worker token:", worker_threads_1.workerData["DISCORD_TOKEN"]);
+            console.log("Process env token:", process.env["DISCORD_TOKEN"]);
+            console.log("Client token before login:", exports.client.token);
+            exports.client.login(process.env["DISCORD_TOKEN"]);
+        }
+    });
+    sock.on("logoutShard", (shard) => {
+        if (shardId === shard) {
+            logger_1.default.info(`Destroying client on ${shard}`);
+            exports.client.destroy();
+        }
+    });
+}
+main();
 process.on("unhandledRejection", (err) => logger_1.default.error("Unhandled Rejection", err));
 process.on("uncaughtException", (err) => logger_1.default.error("Uncaught Exception", err));
 //# sourceMappingURL=/src/index.js.map
-//# debugId=39a9ef92-d5a6-5026-94db-3b1f8f658574

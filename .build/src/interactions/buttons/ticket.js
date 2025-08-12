@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c23b4c03-dc35-5432-abea-bd3a20e6fda4")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseTicketFormModalResponse = parseTicketFormModalResponse;
 const discord_js_1 = require("discord.js");
@@ -82,4 +80,3 @@ function parseTicketFormModalResponse(interaction, form) {
     return responses;
 }
 //# sourceMappingURL=/src/interactions/buttons/ticket.js.map
-//# debugId=c23b4c03-dc35-5432-abea-bd3a20e6fda4

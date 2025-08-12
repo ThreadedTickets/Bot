@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="aaa714b8-94ea-5664-881c-158972b746ac")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -116,4 +114,3 @@ async function renderTranscriptFromJsonl(jsonlFilePath, users, metadata) {
     return "<!DOCTYPE html>" + html;
 }
 //# sourceMappingURL=/src/transcript/index.js.map
-//# debugId=aaa714b8-94ea-5664-881c-158972b746ac

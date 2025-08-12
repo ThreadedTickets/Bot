@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="04beb0e3-d52c-5019-a61f-e46a59ed5927")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const permissions_1 = require("../../../constants/permissions");
 const discord_js_1 = require("discord.js");
@@ -26,4 +24,3 @@ const command = {
 };
 exports.default = command;
 //# sourceMappingURL=/src/commands/prefix/developer/guilds.js.map
-//# debugId=04beb0e3-d52c-5019-a61f-e46a59ed5927

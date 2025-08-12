@@ -1,48 +1,64 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="f9483ed6-8cbc-5adb-bea5-b5a876072324")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.socket = void 0;
 require("@dotenvx/dotenvx");
-const discord_hybrid_sharding_1 = require("discord-hybrid-sharding");
-const discord_cross_hosting_1 = require("discord-cross-hosting");
 require("./instrument");
+const socket_io_client_1 = require("socket.io-client");
+const discord_js_1 = require("discord.js");
 const logger_1 = __importDefault(require("./utils/logger"));
-const client = new discord_cross_hosting_1.Client({
-    agent: "bot",
-    host: process.env["BRIDGE_HOST"],
-    port: parseInt(process.env["BRIDGE_PORT"]),
-    authToken: process.env["BRIDGE_AUTH"],
-    rollingRestarts: false,
-});
-client.connect();
-const manager = new discord_hybrid_sharding_1.ClusterManager(`${__dirname}/index.js`, {
-    shardsPerClusters: parseInt(process.env["SHARDS_PER_CLUSTER"], 10),
-    totalClusters: parseInt(process.env["TOTAL_CLUSTERS"], 10),
-    mode: "process",
-    token: process.env["DISCORD_TOKEN"],
-});
-manager.extend(new discord_hybrid_sharding_1.HeartbeatManager({
-    interval: 1000 * 60 * 60 * 5,
-    maxMissedHeartbeats: 5,
-}));
-manager.on("clusterCreate", (cluster) => logger_1.default.info(`Launched Cluster ${cluster.id} with shards: ${cluster.shardList.join(", ")}`));
-client.listen(manager);
-client
-    .requestShardData()
-    .then((e) => {
-    if (!e)
-        return;
-    if (!e.shardList)
-        return;
-    manager.totalShards = e.totalShards;
-    manager.totalClusters = e.shardList.length;
-    manager.shardList = e.shardList;
-    manager.clusterList = e.clusterList;
-    manager.spawn({ timeout: -1 });
-})
-    .catch((e) => logger_1.default.error("Cluster Error", e));
+const redis_1 = __importDefault(require("./utils/redis"));
+let socketInstance;
+exports.socket = (async () => {
+    const guildCountStr = await redis_1.default.get("guilds");
+    const guildCount = guildCountStr ? parseInt(guildCountStr) : 0;
+    const totalShards = Math.max(1, Math.ceil(guildCount / 1000));
+    logger_1.default.info(`Calculated total shards: ${totalShards}`);
+    socketInstance = (0, socket_io_client_1.io)(`${process.env["BRIDGE_URL"]}`, {
+        auth: { token: process.env["BRIDGE_AUTH"] },
+        reconnection: true,
+        reconnectionDelay: 2000,
+        reconnectionAttempts: Infinity,
+    });
+    const manager = new discord_js_1.ShardingManager("./.build/src/index.js", {
+        token: process.env["DISCORD_TOKEN"],
+        mode: "worker",
+        respawn: true,
+        totalShards,
+    });
+    return new Promise((resolve, reject) => {
+        socketInstance.on("connect", () => {
+            logger_1.default.info("Socket connected");
+            socketInstance.emit("identify", {
+                ip: process.env["PUBLIC_IP"],
+                port: process.env["PUBLIC_PORT"],
+            });
+            resolve(socketInstance);
+        });
+        socketInstance.on("connect_error", (err) => {
+            logger_1.default.error("Socket connection error:", err);
+            reject(err);
+        });
+        socketInstance.on("readyUpShard", (shardId) => {
+            logger_1.default.debug(`Spawning new shard: ${shardId}`);
+            manager.createShard(shardId).spawn();
+        });
+        socketInstance.on("killShard", (shardId) => {
+            const shard = manager.shards.get(shardId);
+            if (shard) {
+                shard.kill();
+                logger_1.default.info(`Killed shard ${shardId}`);
+                manager.shards.delete(shardId);
+            }
+        });
+        manager.on("shardCreate", (shard) => {
+            logger_1.default.info(`Spawned shard ${shard.id}`);
+            shard.on("death", (proc) => {
+                logger_1.default.warn(`Shard ${shard.id} died`);
+            });
+        });
+    });
+})();
 //# sourceMappingURL=/src/cluster.js.map
-//# debugId=f9483ed6-8cbc-5adb-bea5-b5a876072324

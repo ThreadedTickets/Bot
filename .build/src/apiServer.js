@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="d47e61c0-7706-5f64-b481-a638097bdb2b")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -19,10 +17,6 @@ const Guild_1 = require("./database/modals/Guild");
 const Panel_1 = require("./database/modals/Panel");
 const ApplicationCreator_1 = require("./database/modals/ApplicationCreator");
 const TicketTriggerCreator_1 = require("./database/modals/TicketTriggerCreator");
-const _1 = require(".");
-const os_1 = __importDefault(require("os"));
-const discord_hybrid_sharding_1 = require("discord-hybrid-sharding");
-const duration_1 = require("./utils/formatters/duration");
 const updateCache_1 = require("./utils/database/updateCache");
 const Tag_1 = require("./database/modals/Tag");
 const logger_1 = __importDefault(require("./utils/logger"));
@@ -477,34 +471,34 @@ function startApi(port) {
             });
         }
     });
-    app.get("/api/health", async (req, res) => {
-        const uptime = process.uptime();
-        const memoryUsageMB = process.memoryUsage().rss / 1024 / 1024;
-        // Get CPU usage over 100ms
-        const cpuUsageStart = process.cpuUsage();
-        const timeStart = Date.now();
-        await new Promise((r) => setTimeout(r, 100));
-        const cpuUsageEnd = process.cpuUsage(cpuUsageStart);
-        const elapsedMs = Date.now() - timeStart;
-        const cpuPercent = ((cpuUsageEnd.user + cpuUsageEnd.system) /
-            1000 /
-            elapsedMs /
-            os_1.default.cpus().length) *
-            100;
-        // Guild count across all shards this cluster handles
-        const guildCount = _1.client.guilds.cache.size;
-        res.json({
-            clusterId: (0, discord_hybrid_sharding_1.getInfo)().CLUSTER,
-            shardIds: (0, discord_hybrid_sharding_1.getInfo)().SHARD_LIST,
-            uptime: (0, duration_1.formatDuration)(uptime * 1000),
-            guildCount,
-            ramUsage: memoryUsageMB,
-            cpuUsage: cpuPercent,
-        });
-    });
+    // app.get("/api/health", async (req, res) => {
+    //   const uptime = process.uptime();
+    //   const memoryUsageMB = process.memoryUsage().rss / 1024 / 1024;
+    //   // Get CPU usage over 100ms
+    //   const cpuUsageStart = process.cpuUsage();
+    //   const timeStart = Date.now();
+    //   await new Promise((r) => setTimeout(r, 100));
+    //   const cpuUsageEnd = process.cpuUsage(cpuUsageStart);
+    //   const elapsedMs = Date.now() - timeStart;
+    //   const cpuPercent =
+    //     ((cpuUsageEnd.user + cpuUsageEnd.system) /
+    //       1000 /
+    //       elapsedMs /
+    //       os.cpus().length) *
+    //     100;
+    //   // Guild count across all shards this cluster handles
+    //   const guildCount = client.guilds.cache.size;
+    //   res.json({
+    //     clusterId: "Unknown",
+    //     shardIds: ,
+    //     uptime: formatDuration(uptime * 1000),
+    //     guildCount,
+    //     ramUsage: memoryUsageMB,
+    //     cpuUsage: cpuPercent,
+    //   });
+    // });
     app.listen(port || 10002, () => {
         logger_1.default.info(`API server running at http://localhost:${port}`);
     });
 }
 //# sourceMappingURL=/src/apiServer.js.map
-//# debugId=d47e61c0-7706-5f64-b481-a638097bdb2b

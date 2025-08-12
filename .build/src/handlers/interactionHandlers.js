@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="d807d5d3-b7c6-5a7c-bd4c-a9a1e71bdf8c")}catch(e){}}();
-
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -67,4 +65,3 @@ const loadInteractionHandlers = async () => {
 };
 exports.loadInteractionHandlers = loadInteractionHandlers;
 //# sourceMappingURL=/src/handlers/interactionHandlers.js.map
-//# debugId=d807d5d3-b7c6-5a7c-bd4c-a9a1e71bdf8c

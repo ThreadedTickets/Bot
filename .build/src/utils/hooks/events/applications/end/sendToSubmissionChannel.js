@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="ef520e0f-0384-5c2a-a03c-8c8a0abe3622")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -130,4 +128,3 @@ function truncate(str, max) {
     }
 });
 //# sourceMappingURL=/src/utils/hooks/events/applications/end/sendToSubmissionChannel.js.map
-//# debugId=ef520e0f-0384-5c2a-a03c-8c8a0abe3622

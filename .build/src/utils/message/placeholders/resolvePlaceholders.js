@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="7c47d89d-7299-5a9c-bdc3-d8a31998e909")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -71,4 +69,3 @@ function resolveDiscordMessagePlaceholders(message, context) {
     return walkAndResolvePlaceholders(message, context);
 }
 //# sourceMappingURL=/src/utils/message/placeholders/resolvePlaceholders.js.map
-//# debugId=7c47d89d-7299-5a9c-bdc3-d8a31998e909

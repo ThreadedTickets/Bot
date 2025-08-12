@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="451fda57-8848-5ac5-9c08-202ed97710d2")}catch(e){}}();
-
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -115,4 +113,3 @@ const reloadAppCommands = async () => {
 };
 exports.reloadAppCommands = reloadAppCommands;
 //# sourceMappingURL=/src/handlers/interactionCommandHandler.js.map
-//# debugId=451fda57-8848-5ac5-9c08-202ed97710d2

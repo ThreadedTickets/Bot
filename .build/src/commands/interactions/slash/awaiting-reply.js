@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="78b4fcb4-40f3-5c54-a3b2-ca14695cf3f2")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -192,4 +190,3 @@ const command = {
 };
 exports.default = command;
 //# sourceMappingURL=/src/commands/interactions/slash/awaiting-reply.js.map
-//# debugId=78b4fcb4-40f3-5c54-a3b2-ca14695cf3f2

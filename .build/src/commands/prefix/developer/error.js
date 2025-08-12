@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c1425f3a-38fb-5c61-ab2f-1e5de8b271e1")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const permissions_1 = require("../../../constants/permissions");
 const Error_1 = require("../../../database/modals/Error");
@@ -22,4 +20,3 @@ const cmd = {
 };
 exports.default = cmd;
 //# sourceMappingURL=/src/commands/prefix/developer/error.js.map
-//# debugId=c1425f3a-38fb-5c61-ab2f-1e5de8b271e1

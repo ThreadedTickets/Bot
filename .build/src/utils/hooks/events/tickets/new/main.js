@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="264d0506-4be5-503f-ac31-7b548775b606")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -302,4 +300,3 @@ function buildChannelPermissionOverwrites(groups, guildId, ticketOwner, defaultE
     return overwrites;
 }
 //# sourceMappingURL=/src/utils/hooks/events/tickets/new/main.js.map
-//# debugId=264d0506-4be5-503f-ac31-7b548775b606

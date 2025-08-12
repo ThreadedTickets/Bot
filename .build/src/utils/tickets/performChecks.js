@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="6150d852-527c-5305-bd88-881aef924ea4")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.performTicketChecks = performTicketChecks;
 exports.canCreateTicketTarget = canCreateTicketTarget;
@@ -102,4 +100,3 @@ async function canCreateTicketTarget(guild, type, parentId) {
     return { allowed: true };
 }
 //# sourceMappingURL=/src/utils/tickets/performChecks.js.map
-//# debugId=6150d852-527c-5305-bd88-881aef924ea4

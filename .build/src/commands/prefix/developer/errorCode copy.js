@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="159bdecf-f8b3-5122-bf85-f8e2f57172df")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -24,4 +22,3 @@ const cmd = {
 };
 exports.default = cmd;
 //# sourceMappingURL=/src/commands/prefix/developer/errorCode%20copy.js.map
-//# debugId=159bdecf-f8b3-5122-bf85-f8e2f57172df

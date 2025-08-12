@@ -7,7 +7,7 @@ type Messages = Record<string, string>;
 const languages: Record<string, Messages> = {};
 
 // Load all language files into memory
-export function loadLanguages() {
+export async function loadLanguages() {
   const langDir = path.join(__dirname);
   const locales = fs.readdirSync(langDir, { withFileTypes: true });
 
@@ -20,6 +20,8 @@ export function loadLanguages() {
     languages[locale.name] = require(messagesPath).lang;
     logger.info(`Loaded locale ${locale.name}`);
   }
+
+  return true;
 }
 
 // Get a localized string with placeholder replacement

@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="0b2a1756-34f0-5eeb-b182-0e1acfd903f0")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -164,4 +162,3 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/handleIncommingApplicationDm.js.map
-//# debugId=0b2a1756-34f0-5eeb-b182-0e1acfd903f0

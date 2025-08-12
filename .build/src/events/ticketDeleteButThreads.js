@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c28ccdac-4fa4-5015-9a0c-d5b2cb21f121")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -21,4 +19,3 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/ticketDeleteButThreads.js.map
-//# debugId=c28ccdac-4fa4-5015-9a0c-d5b2cb21f121

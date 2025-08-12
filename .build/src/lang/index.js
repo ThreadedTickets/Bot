@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="74b8933f-9ad0-5a5b-a7eb-7f14892ea4b8")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -12,7 +10,7 @@ const fs_1 = __importDefault(require("fs"));
 const logger_1 = __importDefault(require("../utils/logger"));
 const languages = {};
 // Load all language files into memory
-function loadLanguages() {
+async function loadLanguages() {
     const langDir = path_1.default.join(__dirname);
     const locales = fs_1.default.readdirSync(langDir, { withFileTypes: true });
     for (const locale of locales) {
@@ -24,6 +22,7 @@ function loadLanguages() {
         languages[locale.name] = require(messagesPath).lang;
         logger_1.default.info(`Loaded locale ${locale.name}`);
     }
+    return true;
 }
 // Get a localized string with placeholder replacement
 function t(locale, key, variables = {}) {
@@ -36,4 +35,3 @@ function t(locale, key, variables = {}) {
     return template;
 }
 //# sourceMappingURL=/src/lang/index.js.map
-//# debugId=74b8933f-9ad0-5a5b-a7eb-7f14892ea4b8

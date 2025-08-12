@@ -1,7 +1,6 @@
 import "@dotenvx/dotenvx";
 import { Client, GatewayIntentBits, Options, Partials } from "discord.js";
 import { loadPrefixCommands } from "./handlers/commandHandler";
-import { deployAppCommands } from "./handlers/interactionCommandHandler";
 import { loadEvents } from "./handlers/eventHandler";
 import { connectToMongooseDatabase } from "./database/connection";
 import { startMetricsServer } from "./metricsServer";
@@ -15,21 +14,22 @@ import { TaskScheduler as Scheduler } from "./utils/Scheduler";
 import { closeTicket } from "./utils/tickets/close";
 import { Locale } from "./types/Locale";
 import { AsyncQueueManager } from "./utils/bot/QueueManager";
-import { ClusterClient, getInfo } from "discord-hybrid-sharding";
 import logger from "./utils/logger";
 import "./instrument";
 import { awaitReply } from "./utils/tickets/await-reply";
 import config from "./config";
+import { socket } from "./cluster";
+import { workerData } from "worker_threads";
+import { deployAppCommands } from "./handlers/interactionCommandHandler";
+
+const shardId = parseInt(workerData["SHARDS"]);
+const shardCount = parseInt(workerData["SHARD_COUNT"]);
 
 const isProd = process.env["IS_PROD"] === "true";
 
-const shardList = isProd ? getInfo().SHARD_LIST : [0];
-const totalShards = isProd ? getInfo().TOTAL_SHARDS : 1;
-
-const discordClient = new Client({
-  shards: shardList,
-  shardCount: totalShards,
-
+export const client = new Client({
+  shardCount,
+  shards: [shardId],
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
@@ -84,22 +84,6 @@ const discordClient = new Client({
     },
   },
 });
-export const clusterClient = isProd
-  ? new ClusterClient(discordClient)
-  : discordClient;
-// @ts-ignore
-export const client = isProd ? clusterClient.client : discordClient;
-
-loadPrefixCommands();
-deployAppCommands();
-loadEvents(client);
-connectToMongooseDatabase();
-if (!config.isWhiteLabel && isProd) {
-  startMetricsServer(parseInt(process.env["METRICS_PORT"], 10));
-  startApi(parseInt(process.env["API_PORT"], 10));
-}
-loadInteractionHandlers();
-loadLanguages();
 export const TaskScheduler = new Scheduler();
 TaskScheduler.registerTaskFunction(
   "closeTicket",
@@ -118,7 +102,6 @@ TaskScheduler.registerTaskFunction(
     awaitReply(params.serverId, params.ticketId, params.action, params.notify);
   }
 );
-TaskScheduler.loadAndProcessBacklog(1000);
 export const InMemoryCache = new MemCache({
   defaultTTL: 1000 * 10 * 60, // 10 minutes
   cleanupInterval: 1000 * 10, // 10 seconds
@@ -136,7 +119,36 @@ export const massCloseManager = new AsyncQueueManager();
 
 export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-client.login(process.env["DISCORD_TOKEN"]);
+async function main() {
+  const sock = await socket;
+  await loadPrefixCommands();
+  await deployAppCommands();
+  await loadEvents(client);
+  await connectToMongooseDatabase();
+  if (!config.isWhiteLabel && isProd) {
+    startMetricsServer(parseInt(workerData["METRICS_PORT"], 10));
+    startApi(parseInt(workerData["API_PORT"], 10));
+  }
+  await loadInteractionHandlers();
+  await loadLanguages();
+  sock.emit("shardReady", shardId);
+
+  sock.on("loginShard", (shard: number) => {
+    if (shardId === shard) {
+      console.log("Worker token:", workerData["DISCORD_TOKEN"]);
+      console.log("Process env token:", process.env["DISCORD_TOKEN"]);
+      console.log("Client token before login:", client.token);
+      client.login(process.env["DISCORD_TOKEN"]);
+    }
+  });
+  sock.on("logoutShard", (shard: number) => {
+    if (shardId === shard) {
+      logger.info(`Destroying client on ${shard}`);
+      client.destroy();
+    }
+  });
+}
+main();
 
 process.on("unhandledRejection", (err: Error) =>
   logger.error("Unhandled Rejection", err)

@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="77d5f32e-9ed0-5893-aeb8-d436c55c2dfc")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toTimeUnit = toTimeUnit;
 /**
@@ -41,4 +39,3 @@ function toTimeUnit(unit, seconds = 0, minutes = 0, hours = 0, days = 0, weeks =
     }
 }
 //# sourceMappingURL=/src/utils/formatters/toTimeUnit.js.map
-//# debugId=77d5f32e-9ed0-5893-aeb8-d436c55c2dfc

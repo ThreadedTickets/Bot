@@ -28,9 +28,7 @@
     "ajv": "^8.17.1",
     "axios": "^1.8.4",
     "colorette": "^2.0.20",
-    "discord-cross-hosting": "^2.3.8",
-    "discord-hybrid-sharding": "^2.2.6",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.21.0",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "fast-glob": "^3.3.3",
@@ -46,6 +44,7 @@
     "react": "^18.3.1",
     "safe-regex": "^2.1.1",
     "sharp": "^0.34.2",
+    "socket.io-client": "^4.8.1",
     "topgg-autoposter": "^2.0.2",
     "ulid": "^3.0.0",
     "uuid": "^11.1.0"

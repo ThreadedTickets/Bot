@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="adaf49f0-0fa4-5be6-94f7-9d2e8a506e38")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -161,4 +159,3 @@ async function handleGuildMemberRemove(client, data, member) {
 }
 exports.default = event;
 //# sourceMappingURL=/src/events/handleUserAppsOnLeave.js.map
-//# debugId=adaf49f0-0fa4-5be6-94f7-9d2e8a506e38
