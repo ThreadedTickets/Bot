@@ -21,6 +21,7 @@ import config from "./config";
 import { socket } from "./cluster";
 import { workerData } from "worker_threads";
 import { deployAppCommands } from "./handlers/interactionCommandHandler";
+import { io } from "socket.io-client";
 
 const shardId = parseInt(workerData["SHARDS"]);
 const shardCount = parseInt(workerData["SHARD_COUNT"]);
@@ -120,7 +121,10 @@ export const massCloseManager = new AsyncQueueManager();
 export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 async function main() {
-  const sock = await socket;
+  const sock = io(`${workerData["BRIDGE_URL"]}`, {
+    auth: { token: workerData["BRIDGE_AUTH"] },
+  });
+  sock.emit("identify");
   await loadPrefixCommands();
   await deployAppCommands();
   await loadEvents(client);
@@ -135,9 +139,6 @@ async function main() {
 
   sock.on("loginShard", (shard: number) => {
     if (shardId === shard) {
-      console.log("Worker token:", workerData["DISCORD_TOKEN"]);
-      console.log("Process env token:", process.env["DISCORD_TOKEN"]);
-      console.log("Client token before login:", client.token);
       client.login(process.env["DISCORD_TOKEN"]);
     }
   });

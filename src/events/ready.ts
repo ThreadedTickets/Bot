@@ -8,7 +8,7 @@ import logger from "../utils/logger";
 
 const event: Event<"ready"> = {
   name: "ready",
-  async execute(client) {
+  async execute(a, b, client) {
     logger.info(`${client.user?.username} is running`);
     setBotStatusFromEnv(client);
     TaskScheduler.loadAndProcessBacklog(1000);
@@ -16,13 +16,6 @@ const event: Event<"ready"> = {
       statPoster(client);
     }
     (await socket).emit("shardRunning", workerData["SHARDS"]);
-    console.log(
-      "READY",
-      client.token,
-      client.isReady(),
-      client.ws.status,
-      client.user.username
-    );
   },
 };
 

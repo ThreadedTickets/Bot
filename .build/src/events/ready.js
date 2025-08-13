@@ -11,7 +11,7 @@ const status_1 = __importDefault(require("../status"));
 const logger_1 = __importDefault(require("../utils/logger"));
 const event = {
     name: "ready",
-    async execute(client) {
+    async execute(a, b, client) {
         logger_1.default.info(`${client.user?.username} is running`);
         (0, status_1.default)(client);
         __1.TaskScheduler.loadAndProcessBacklog(1000);

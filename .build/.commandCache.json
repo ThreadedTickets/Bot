@@ -1,110 +1,110 @@
 {
   "Translate Message": {
-    "mtime": 1755034306640.232,
+    "mtime": 1755107011658.756,
     "isGuild": false
   },
   "application_history": {
-    "mtime": 1755034306648.2322,
+    "mtime": 1755107011666.7559,
     "isGuild": false
   },
   "applications": {
-    "mtime": 1755034306656.2324,
+    "mtime": 1755107011670.7559,
     "isGuild": false
   },
   "apply": {
-    "mtime": 1755034306661.2324,
+    "mtime": 1755107011674.7556,
     "isGuild": false
   },
   "autoresponders": {
-    "mtime": 1755034306669.2327,
+    "mtime": 1755107011682.7554,
     "isGuild": false
   },
   "awaiting-reply": {
-    "mtime": 1755034306673.2327,
+    "mtime": 1755107011685.7554,
     "isGuild": false
   },
   "close": {
-    "mtime": 1755034306675.2327,
+    "mtime": 1755107011687.7551,
     "isGuild": false
   },
   "debug": {
-    "mtime": 1755034306678.233,
+    "mtime": 1755107011689.7551,
     "isGuild": false
   },
   "get_trigger_id": {
-    "mtime": 1755034306679.233,
+    "mtime": 1755107011690.7551,
     "isGuild": false
   },
   "groups": {
-    "mtime": 1755034306683.233,
+    "mtime": 1755107011693.7551,
     "isGuild": false
   },
   "language": {
-    "mtime": 1755034306684.233,
+    "mtime": 1755107011694.7551,
     "isGuild": false
   },
   "lock": {
-    "mtime": 1755034306685.233,
+    "mtime": 1755107011695.755,
     "isGuild": false
   },
   "logging": {
-    "mtime": 1755034306537.2295,
+    "mtime": 1755107011571.759,
     "isGuild": false
   },
   "lower": {
-    "mtime": 1755034306688.2332,
+    "mtime": 1755107011698.755,
     "isGuild": false
   },
   "messages": {
-    "mtime": 1755034306695.2332,
+    "mtime": 1755107011702.7546,
     "isGuild": false
   },
   "move": {
-    "mtime": 1755034306699.2334,
+    "mtime": 1755107011705.7546,
     "isGuild": false
   },
   "panel": {
-    "mtime": 1755034306707.2336,
+    "mtime": 1755107011712.7544,
     "isGuild": false
   },
   "raise": {
-    "mtime": 1755034306713.2336,
+    "mtime": 1755107011715.7544,
     "isGuild": false
   },
   "reopen": {
-    "mtime": 1755034306716.2336,
+    "mtime": 1755107011718.7542,
     "isGuild": false
   },
   "tag": {
-    "mtime": 1755034306718.234,
+    "mtime": 1755107011719.7542,
     "isGuild": false
   },
   "tags": {
-    "mtime": 1755034306722.234,
+    "mtime": 1755107011723.7542,
     "isGuild": false
   },
   "ticket": {
-    "mtime": 1755034306729.2341,
+    "mtime": 1755107011728.754,
     "isGuild": false
   },
   "transcript": {
-    "mtime": 1755034306733.2341,
+    "mtime": 1755107011732.754,
     "isGuild": false
   },
   "ticket_triggers": {
-    "mtime": 1755034306736.2341,
+    "mtime": 1755107011735.7537,
     "isGuild": false
   },
   "unlock": {
-    "mtime": 1755034306741.2344,
+    "mtime": 1755107011738.7537,
     "isGuild": false
   },
   "update": {
-    "mtime": 1755034306743.2344,
+    "mtime": 1755107011740.7537,
     "isGuild": false
   },
   "whitelabel_bot": {
-    "mtime": 1755034306748.2346,
+    "mtime": 1755107011745.7534,
     "isGuild": true
   }
 }

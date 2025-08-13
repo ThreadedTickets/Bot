@@ -27,6 +27,7 @@
     "@skyra/discord-components-react": "^3.6.1",
     "ajv": "^8.17.1",
     "axios": "^1.8.4",
+    "bufferutil": "^4.0.9",
     "colorette": "^2.0.20",
     "discord.js": "^14.21.0",
     "express": "^5.1.0",
@@ -47,7 +48,8 @@
     "socket.io-client": "^4.8.1",
     "topgg-autoposter": "^2.0.2",
     "ulid": "^3.0.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zlib-sync": "^0.1.10"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
