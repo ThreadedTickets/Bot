@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="a4121dae-87ae-5429-95fe-d0dece66e204")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -45,4 +43,3 @@ async function runHooks(event, data) {
     }
 }
 //# sourceMappingURL=/src/utils/hooks/index.js.map
-//# debugId=a4121dae-87ae-5429-95fe-d0dece66e204

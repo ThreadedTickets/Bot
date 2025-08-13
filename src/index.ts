@@ -1,13 +1,8 @@
 import "@dotenvx/dotenvx";
 import { Client, GatewayIntentBits, Options, Partials } from "discord.js";
-import { loadPrefixCommands } from "./handlers/commandHandler";
-import { deployAppCommands } from "./handlers/interactionCommandHandler";
 import { loadEvents } from "./handlers/eventHandler";
 import { connectToMongooseDatabase } from "./database/connection";
-import { startMetricsServer } from "./metricsServer";
-import { loadInteractionHandlers } from "./handlers/interactionHandlers";
 import "./utils/hooks/register";
-import { loadLanguages } from "./lang";
 import { startApi } from "./apiServer";
 import { InMemoryCache as MemCache } from "./utils/database/InMemoryCache";
 import PQueue from "p-queue";
@@ -84,22 +79,20 @@ const discordClient = new Client({
     },
   },
 });
-export const clusterClient = isProd
-  ? new ClusterClient(discordClient)
-  : discordClient;
+
+// @ts-ignore
+if (isProd) discordClient.cluster = new ClusterClient(discordClient);
+
 // @ts-ignore
 export const client = isProd ? clusterClient.client : discordClient;
 
-loadPrefixCommands();
-deployAppCommands();
-loadEvents(client);
 connectToMongooseDatabase();
+loadEvents(client);
 if (!config.isWhiteLabel && isProd) {
-  startMetricsServer(parseInt(process.env["METRICS_PORT"], 10));
+  // The metrics server is not currently used
+  //startMetricsServer(parseInt(process.env["METRICS_PORT"], 10));
   startApi(parseInt(process.env["API_PORT"], 10));
 }
-loadInteractionHandlers();
-loadLanguages();
 export const TaskScheduler = new Scheduler();
 TaskScheduler.registerTaskFunction(
   "closeTicket",

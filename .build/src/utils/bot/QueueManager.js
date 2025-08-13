@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="82adeec8-a2cc-5340-95c9-5255af7630d6")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AsyncQueueManager = void 0;
 class AsyncQueue {
@@ -66,4 +64,3 @@ class AsyncQueueManager {
 }
 exports.AsyncQueueManager = AsyncQueueManager;
 //# sourceMappingURL=/src/utils/bot/QueueManager.js.map
-//# debugId=82adeec8-a2cc-5340-95c9-5255af7630d6

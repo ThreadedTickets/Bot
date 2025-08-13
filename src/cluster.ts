@@ -1,17 +1,30 @@
 import "@dotenvx/dotenvx";
-import { ClusterManager, HeartbeatManager } from "discord-hybrid-sharding";
+import {
+  ClusterManager,
+  HeartbeatManager,
+  ReClusterManager,
+} from "discord-hybrid-sharding";
 import { Client } from "discord-cross-hosting";
 import "./instrument";
 import logger from "./utils/logger";
+import { loadPrefixCommands } from "./handlers/commandHandler";
+import { deployAppCommands } from "./handlers/interactionCommandHandler";
+import { loadInteractionHandlers } from "./handlers/interactionHandlers";
+import { loadLanguages } from "./lang";
 
 const client = new Client({
   agent: "bot",
   host: process.env["BRIDGE_HOST"],
   port: parseInt(process.env["BRIDGE_PORT"]!),
   authToken: process.env["BRIDGE_AUTH"]!,
-  rollingRestarts: false,
+  rollingRestarts: true,
 });
 client.connect();
+
+loadPrefixCommands();
+deployAppCommands();
+loadInteractionHandlers();
+loadLanguages();
 
 const manager = new ClusterManager(`${__dirname}/index.js`, {
   shardsPerClusters: parseInt(process.env["SHARDS_PER_CLUSTER"]!, 10),
@@ -35,6 +48,8 @@ manager.on("clusterCreate", (cluster) =>
   )
 );
 client.listen(manager);
+
+manager.extend(new ReClusterManager({}));
 client
   .requestShardData()
   .then((e) => {

@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="058e54a3-a97a-5ac7-90c7-d75bfe6d6495")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -160,4 +158,3 @@ function getAvailableLogChannel(logConfig, event) {
     return null;
 }
 //# sourceMappingURL=/src/utils/bot/sendLogToWebhook.js.map
-//# debugId=058e54a3-a97a-5ac7-90c7-d75bfe6d6495

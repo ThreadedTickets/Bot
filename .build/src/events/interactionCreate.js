@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="d675e4b6-a5dd-57fa-9582-f0db98e03768")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -173,4 +171,3 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/interactionCreate.js.map
-//# debugId=d675e4b6-a5dd-57fa-9582-f0db98e03768

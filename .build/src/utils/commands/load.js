@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="93d58c38-b7bb-51a1-9d57-fc249271d367")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -24,4 +22,3 @@ const loadFilesRecursively = (dir) => {
 };
 exports.loadFilesRecursively = loadFilesRecursively;
 //# sourceMappingURL=/src/utils/commands/load.js.map
-//# debugId=93d58c38-b7bb-51a1-9d57-fc249271d367

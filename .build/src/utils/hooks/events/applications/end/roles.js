@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="40f15c0a-7394-5476-ab3c-bc05b80f2202")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -47,4 +45,3 @@ async function updateMemberRoles(client, member, rolesToAdd, rolesToRemove) {
     }
 }
 //# sourceMappingURL=/src/utils/hooks/events/applications/end/roles.js.map
-//# debugId=40f15c0a-7394-5476-ab3c-bc05b80f2202

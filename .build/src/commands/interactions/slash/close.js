@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="e5fd3ec7-ccad-552e-9a87-424d3fb0f5a4")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const TicketChannelManager_1 = require("../../../utils/bot/TicketChannelManager");
@@ -60,4 +58,3 @@ const command = {
 };
 exports.default = command;
 //# sourceMappingURL=/src/commands/interactions/slash/close.js.map
-//# debugId=e5fd3ec7-ccad-552e-9a87-424d3fb0f5a4

@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="a0d25a82-8cb6-52ad-b86f-f13d5dfb9dbf")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -90,4 +88,3 @@ const schema = new mongoose_1.default.Schema({
 });
 exports.TicketSchema = mongoose_1.default.model("Tickets", schema);
 //# sourceMappingURL=/src/database/modals/Ticket.js.map
-//# debugId=a0d25a82-8cb6-52ad-b86f-f13d5dfb9dbf

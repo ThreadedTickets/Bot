@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="23e34950-be6f-56e6-ba4a-451fd23cca20")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 require("@dotenvx/dotenvx");
 exports.default = {
@@ -32,4 +30,3 @@ exports.default = {
     admins: (process.env["DISCORD_ADMINS"] ?? "").split(", "),
 };
 //# sourceMappingURL=/src/config.js.map
-//# debugId=23e34950-be6f-56e6-ba4a-451fd23cca20

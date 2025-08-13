@@ -1,5 +1,3 @@
-
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c52c8f3f-413e-570e-90ba-49ce1f4c2020")}catch(e){}}();
 module.exports = [
     {
         languageOptions: {
@@ -51,4 +49,3 @@ module.exports = [
     },
 ];
 //# sourceMappingURL=/eslint.config.js.map
-//# debugId=c52c8f3f-413e-570e-90ba-49ce1f4c2020

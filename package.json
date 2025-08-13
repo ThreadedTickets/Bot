@@ -30,7 +30,7 @@
     "colorette": "^2.0.20",
     "discord-cross-hosting": "^2.3.8",
     "discord-hybrid-sharding": "^2.2.6",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.21.0",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "fast-glob": "^3.3.3",

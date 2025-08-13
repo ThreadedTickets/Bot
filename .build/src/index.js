@@ -1,21 +1,14 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="39a9ef92-d5a6-5026-94db-3b1f8f658574")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.wait = exports.massCloseManager = exports.ticketQueueManager = exports.guildLeaveQueue = exports.InMemoryCache = exports.TaskScheduler = exports.client = exports.clusterClient = void 0;
+exports.wait = exports.massCloseManager = exports.ticketQueueManager = exports.guildLeaveQueue = exports.InMemoryCache = exports.TaskScheduler = exports.client = void 0;
 require("@dotenvx/dotenvx");
 const discord_js_1 = require("discord.js");
-const commandHandler_1 = require("./handlers/commandHandler");
-const interactionCommandHandler_1 = require("./handlers/interactionCommandHandler");
 const eventHandler_1 = require("./handlers/eventHandler");
 const connection_1 = require("./database/connection");
-const metricsServer_1 = require("./metricsServer");
-const interactionHandlers_1 = require("./handlers/interactionHandlers");
 require("./utils/hooks/register");
-const lang_1 = require("./lang");
 const apiServer_1 = require("./apiServer");
 const InMemoryCache_1 = require("./utils/database/InMemoryCache");
 const p_queue_1 = __importDefault(require("p-queue"));
@@ -87,21 +80,18 @@ const discordClient = new discord_js_1.Client({
         },
     },
 });
-exports.clusterClient = isProd
-    ? new discord_hybrid_sharding_1.ClusterClient(discordClient)
-    : discordClient;
 // @ts-ignore
-exports.client = isProd ? exports.clusterClient.client : discordClient;
-(0, commandHandler_1.loadPrefixCommands)();
-(0, interactionCommandHandler_1.deployAppCommands)();
-(0, eventHandler_1.loadEvents)(exports.client);
+if (isProd)
+    discordClient.cluster = new discord_hybrid_sharding_1.ClusterClient(discordClient);
+// @ts-ignore
+exports.client = isProd ? clusterClient.client : discordClient;
 (0, connection_1.connectToMongooseDatabase)();
+(0, eventHandler_1.loadEvents)(exports.client);
 if (!config_1.default.isWhiteLabel && isProd) {
-    (0, metricsServer_1.startMetricsServer)(parseInt(process.env["METRICS_PORT"], 10));
+    // The metrics server is not currently used
+    //startMetricsServer(parseInt(process.env["METRICS_PORT"], 10));
     (0, apiServer_1.startApi)(parseInt(process.env["API_PORT"], 10));
 }
-(0, interactionHandlers_1.loadInteractionHandlers)();
-(0, lang_1.loadLanguages)();
 exports.TaskScheduler = new Scheduler_1.TaskScheduler();
 exports.TaskScheduler.registerTaskFunction("closeTicket", (params) => {
     (0, close_1.closeTicket)(params.ticketId, params.locale, params.reason);
@@ -130,4 +120,3 @@ exports.client.login(process.env["DISCORD_TOKEN"]);
 process.on("unhandledRejection", (err) => logger_1.default.error("Unhandled Rejection", err));
 process.on("uncaughtException", (err) => logger_1.default.error("Uncaught Exception", err));
 //# sourceMappingURL=/src/index.js.map
-//# debugId=39a9ef92-d5a6-5026-94db-3b1f8f658574

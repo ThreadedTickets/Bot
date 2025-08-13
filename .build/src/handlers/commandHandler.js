@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="9cbaa722-7c60-579a-95db-ca788ee1fde7")}catch(e){}}();
-
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -201,4 +199,3 @@ const handlePrefixMessage = async (client, data, message) => {
 };
 exports.handlePrefixMessage = handlePrefixMessage;
 //# sourceMappingURL=/src/handlers/commandHandler.js.map
-//# debugId=9cbaa722-7c60-579a-95db-ca788ee1fde7

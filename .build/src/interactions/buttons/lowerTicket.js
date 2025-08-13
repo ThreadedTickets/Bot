@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="57a2491b-ea40-5dcd-b944-ae5ac0d84fb8")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const lang_1 = require("../../lang");
@@ -34,4 +32,3 @@ const button = {
 };
 exports.default = button;
 //# sourceMappingURL=/src/interactions/buttons/lowerTicket.js.map
-//# debugId=57a2491b-ea40-5dcd-b944-ae5ac0d84fb8

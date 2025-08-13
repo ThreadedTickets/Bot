@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="51935b21-2ad1-561a-b47f-ed7199c445ee")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const TicketChannelManager_1 = require("../utils/bot/TicketChannelManager");
 const TranscriptManager_1 = require("../utils/tickets/TranscriptManager");
@@ -35,4 +33,3 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/writeEditsToTranscripts.js.map
-//# debugId=51935b21-2ad1-561a-b47f-ed7199c445ee
