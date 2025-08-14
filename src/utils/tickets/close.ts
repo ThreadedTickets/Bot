@@ -40,6 +40,7 @@ import serverMessageToDiscordMessage from "../formatters/serverMessageToDiscordM
 import { resolveDiscordMessagePlaceholders } from "../message/placeholders/resolvePlaceholders";
 import { generateBasePlaceholderContext } from "../message/placeholders/generateBaseContext";
 import logger from "../logger";
+import config from "../../config";
 
 export async function closeTicket(
   ticketId: string,
@@ -260,16 +261,18 @@ export async function closeTicket(
     const guild = await fetchGuildById(client, ticket.server);
     if (owner && message && guild) {
       owner.send({
-        components: [
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-              new ButtonBuilder()
-                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                .setStyle(ButtonStyle.Link)
-                .setLabel(t(locale, "TICKET_CLOSE_DM_BUTTON"))
-            )
-            .toJSON(),
-        ],
+        components: config.isWhiteLabel
+          ? []
+          : [
+              new ActionRowBuilder<ButtonBuilder>()
+                .addComponents(
+                  new ButtonBuilder()
+                    .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                    .setStyle(ButtonStyle.Link)
+                    .setLabel(t(locale, "TICKET_CLOSE_DM_BUTTON"))
+                )
+                .toJSON(),
+            ],
         ...resolveDiscordMessagePlaceholders(
           serverMessageToDiscordMessage(message),
           generateBasePlaceholderContext({
