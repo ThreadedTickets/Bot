@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="f4c69b37-8c31-571e-808f-8fddd3ff580c")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="89186802-e281-50a6-9451-93722a0246d4")}catch(e){}}();
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -32,6 +32,7 @@ const serverMessageToDiscordMessage_1 = __importDefault(require("../formatters/s
 const resolvePlaceholders_1 = require("../message/placeholders/resolvePlaceholders");
 const generateBaseContext_1 = require("../message/placeholders/generateBaseContext");
 const logger_1 = __importDefault(require("../logger"));
+const config_1 = __importDefault(require("../../config"));
 async function closeTicket(ticketId, locale, reason, repliable, schedule) {
     const ticket = await Ticket_1.TicketSchema.findOneAndUpdate({ _id: ticketId }, {
         status: "Closed",
@@ -158,14 +159,16 @@ async function closeTicket(ticketId, locale, reason, repliable, schedule) {
         const guild = await (0, fetchMessage_1.fetchGuildById)(__1.client, ticket.server);
         if (owner && message && guild) {
             owner.send({
-                components: [
-                    new discord_js_1.ActionRowBuilder()
-                        .addComponents(new discord_js_1.ButtonBuilder()
-                        .setURL(process.env["DISCORD_APPLICATION_INVITE"])
-                        .setStyle(discord_js_1.ButtonStyle.Link)
-                        .setLabel((0, lang_1.t)(locale, "TICKET_CLOSE_DM_BUTTON")))
-                        .toJSON(),
-                ],
+                components: config_1.default.isWhiteLabel
+                    ? []
+                    : [
+                        new discord_js_1.ActionRowBuilder()
+                            .addComponents(new discord_js_1.ButtonBuilder()
+                            .setURL(process.env["DISCORD_APPLICATION_INVITE"])
+                            .setStyle(discord_js_1.ButtonStyle.Link)
+                            .setLabel((0, lang_1.t)(locale, "TICKET_CLOSE_DM_BUTTON")))
+                            .toJSON(),
+                    ],
                 ...(0, resolvePlaceholders_1.resolveDiscordMessagePlaceholders)((0, serverMessageToDiscordMessage_1.default)(message), (0, generateBaseContext_1.generateBasePlaceholderContext)({
                     server: guild,
                 })),
@@ -174,4 +177,4 @@ async function closeTicket(ticketId, locale, reason, repliable, schedule) {
     }
 }
 //# sourceMappingURL=/src/utils/tickets/close.js.map
-//# debugId=f4c69b37-8c31-571e-808f-8fddd3ff580c
+//# debugId=89186802-e281-50a6-9451-93722a0246d4

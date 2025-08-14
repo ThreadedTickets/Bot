@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c23b4c03-dc35-5432-abea-bd3a20e6fda4")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="28b90a98-e2f9-55c4-bcec-c3b3ab944e18")}catch(e){}}();
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseTicketFormModalResponse = parseTicketFormModalResponse;
@@ -59,10 +59,12 @@ const modal = {
                 guild: interaction.guild,
                 lang: data.lang,
                 messageOrInteraction: interaction,
-                owner: interaction.user.id,
+                owner: applicationId ? ownerId : interaction.user.id,
                 responses: responses,
                 trigger: triggerTyped,
-                user: interaction.user,
+                user: applicationId
+                    ? await client.users.fetch(ownerId)
+                    : interaction.user,
             });
         }, interaction.guildId);
     },
@@ -82,4 +84,4 @@ function parseTicketFormModalResponse(interaction, form) {
     return responses;
 }
 //# sourceMappingURL=/src/interactions/buttons/ticket.js.map
-//# debugId=c23b4c03-dc35-5432-abea-bd3a20e6fda4
+//# debugId=28b90a98-e2f9-55c4-bcec-c3b3ab944e18
