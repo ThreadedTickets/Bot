@@ -111,7 +111,9 @@ const modal: ButtonHandler = {
         owner: applicationId ? ownerId : interaction.user.id,
         responses: responses,
         trigger: triggerTyped,
-        user: interaction.user,
+        user: applicationId
+          ? await client.users.fetch(ownerId)
+          : interaction.user,
       });
     }, interaction.guildId);
   },
