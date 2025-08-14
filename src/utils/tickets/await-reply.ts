@@ -5,6 +5,7 @@ import { getTicket } from "../bot/getServer";
 import logger from "../logger";
 import { lockTicket } from "./lock";
 import { closeTicket } from "./close";
+import isGuildOnShard from "../getGuildShard";
 
 export async function awaitReply(
   serverId: string,
@@ -12,6 +13,7 @@ export async function awaitReply(
   action: "nothing" | "lock" | "close",
   notify: string | null
 ) {
+  if (!isGuildOnShard(serverId)) return;
   logger.debug(`Running await-reply on ${ticketId}`);
   const ticket = await getTicket(ticketId, serverId);
   if (!ticket) return;

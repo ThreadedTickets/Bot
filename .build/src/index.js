@@ -23,9 +23,9 @@ const logger_1 = __importDefault(require("./utils/logger"));
 require("./instrument");
 const await_reply_1 = require("./utils/tickets/await-reply");
 const config_1 = __importDefault(require("./config"));
-const cluster_1 = require("./cluster");
 const worker_threads_1 = require("worker_threads");
 const interactionCommandHandler_1 = require("./handlers/interactionCommandHandler");
+const socket_io_client_1 = require("socket.io-client");
 const shardId = parseInt(worker_threads_1.workerData["SHARDS"]);
 const shardCount = parseInt(worker_threads_1.workerData["SHARD_COUNT"]);
 const isProd = process.env["IS_PROD"] === "true";
@@ -109,8 +109,17 @@ exports.ticketQueueManager = new QueueManager_1.AsyncQueueManager();
 exports.massCloseManager = new QueueManager_1.AsyncQueueManager();
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 exports.wait = wait;
+const socket = (0, socket_io_client_1.io)(`${worker_threads_1.workerData["BRIDGE_URL"]}`, {
+    auth: { token: worker_threads_1.workerData["BRIDGE_AUTH"] },
+});
+socket.on("connect", () => {
+    socket.emit("identify", {
+        ip: worker_threads_1.workerData["PUBLIC_IP"],
+        port: worker_threads_1.workerData["PUBLIC_PORT"],
+        noCluster: true,
+    });
+});
 async function main() {
-    const sock = await cluster_1.socket;
     await (0, commandHandler_1.loadPrefixCommands)();
     await (0, interactionCommandHandler_1.deployAppCommands)();
     await (0, eventHandler_1.loadEvents)(exports.client);
@@ -121,16 +130,13 @@ async function main() {
     }
     await (0, interactionHandlers_1.loadInteractionHandlers)();
     await (0, lang_1.loadLanguages)();
-    sock.emit("shardReady", shardId);
-    sock.on("loginShard", (shard) => {
+    socket.emit("shardReady", shardId);
+    socket.on("loginShard", (shard) => {
         if (shardId === shard) {
-            console.log("Worker token:", worker_threads_1.workerData["DISCORD_TOKEN"]);
-            console.log("Process env token:", process.env["DISCORD_TOKEN"]);
-            console.log("Client token before login:", exports.client.token);
             exports.client.login(process.env["DISCORD_TOKEN"]);
         }
     });
-    sock.on("logoutShard", (shard) => {
+    socket.on("logoutShard", (shard) => {
         if (shardId === shard) {
             logger_1.default.info(`Destroying client on ${shard}`);
             exports.client.destroy();

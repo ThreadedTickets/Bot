@@ -18,7 +18,6 @@ import logger from "./utils/logger";
 import "./instrument";
 import { awaitReply } from "./utils/tickets/await-reply";
 import config from "./config";
-import { socket } from "./cluster";
 import { workerData } from "worker_threads";
 import { deployAppCommands } from "./handlers/interactionCommandHandler";
 import { io } from "socket.io-client";
@@ -88,8 +87,20 @@ export const client = new Client({
 export const TaskScheduler = new Scheduler();
 TaskScheduler.registerTaskFunction(
   "closeTicket",
-  (params: { ticketId: string; locale: Locale; reason: string }) => {
-    closeTicket(params.ticketId, params.locale, params.reason);
+  (params: {
+    ticketId: string;
+    locale: Locale;
+    reason: string;
+    guildId: string;
+  }) => {
+    closeTicket(
+      params.ticketId,
+      params.locale,
+      params.reason,
+      undefined,
+      undefined,
+      params.guildId
+    );
   }
 );
 TaskScheduler.registerTaskFunction(
@@ -119,12 +130,19 @@ export const ticketQueueManager = new AsyncQueueManager();
 export const massCloseManager = new AsyncQueueManager();
 
 export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
+const socket = io(`${workerData["BRIDGE_URL"]}`, {
+  auth: { token: workerData["BRIDGE_AUTH"] },
+});
+
+socket.on("connect", () => {
+  socket.emit("identify", {
+    ip: workerData["PUBLIC_IP"],
+    port: workerData["PUBLIC_PORT"],
+    noCluster: true,
+  });
+});
 
 async function main() {
-  const sock = io(`${workerData["BRIDGE_URL"]}`, {
-    auth: { token: workerData["BRIDGE_AUTH"] },
-  });
-  sock.emit("identify");
   await loadPrefixCommands();
   await deployAppCommands();
   await loadEvents(client);
@@ -135,14 +153,14 @@ async function main() {
   }
   await loadInteractionHandlers();
   await loadLanguages();
-  sock.emit("shardReady", shardId);
+  socket.emit("shardReady", shardId);
 
-  sock.on("loginShard", (shard: number) => {
+  socket.on("loginShard", (shard: number) => {
     if (shardId === shard) {
       client.login(process.env["DISCORD_TOKEN"]);
     }
   });
-  sock.on("logoutShard", (shard: number) => {
+  socket.on("logoutShard", (shard: number) => {
     if (shardId === shard) {
       logger.info(`Destroying client on ${shard}`);
       client.destroy();

@@ -19,7 +19,6 @@ const event = {
             (0, statPoster_1.default)(client);
         }
         (await cluster_1.socket).emit("shardRunning", worker_threads_1.workerData["SHARDS"]);
-        console.log("READY", client.token, client.isReady(), client.ws.status, client.user.username);
     },
 };
 exports.default = event;

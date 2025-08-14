@@ -40,14 +40,18 @@ import serverMessageToDiscordMessage from "../formatters/serverMessageToDiscordM
 import { resolveDiscordMessagePlaceholders } from "../message/placeholders/resolvePlaceholders";
 import { generateBasePlaceholderContext } from "../message/placeholders/generateBaseContext";
 import logger from "../logger";
+import isGuildOnShard from "../getGuildShard";
 
 export async function closeTicket(
   ticketId: string,
   locale: Locale,
   reason?: string,
   repliable?: ModalSubmitInteraction | ChatInputCommandInteraction | Message,
-  schedule?: string | null
+  schedule?: string | null,
+  guildId?: string
 ) {
+  if (guildId && !isGuildOnShard(guildId)) return;
+
   const ticket = await TicketSchema.findOneAndUpdate(
     { _id: ticketId },
     {
@@ -148,7 +152,7 @@ export async function closeTicket(
     const formattedDuration = formatDuration(ms);
     TaskScheduler.scheduleTask(
       "closeTicket",
-      { ticketId, locale, reason },
+      { ticketId, locale, reason, guildId },
       ms,
       `CLOSE-${ticketId}`
     );
