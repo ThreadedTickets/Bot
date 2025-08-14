@@ -108,7 +108,7 @@ const modal: ButtonHandler = {
         guild: interaction.guild!,
         lang: data.lang!,
         messageOrInteraction: interaction,
-        owner: interaction.user.id,
+        owner: ownerId ? ownerId : interaction.user.id,
         responses: responses,
         trigger: triggerTyped,
         user: interaction.user,
