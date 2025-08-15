@@ -1,5 +1,5 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="6150d852-527c-5305-bd88-881aef924ea4")}catch(e){}}();
+!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="fae1f73f-ecd2-5995-91f2-693bebd5bb04")}catch(e){}}();
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.performTicketChecks = performTicketChecks;
@@ -94,12 +94,15 @@ async function canCreateTicketTarget(guild, type, parentId) {
         }
     }
     // Permissions to create regular channels
-    const permissions = guild.members.me?.permissions;
-    if (type === "channel" &&
-        !permissions?.has(discord_js_1.PermissionsBitField.Flags.ManageChannels)) {
-        return { allowed: false, error: "2012" };
-    }
+    // Not using this cause it causes issues
+    // const permissions = guild.members.me?.permissions;
+    // if (
+    //   type === "channel" &&
+    //   !permissions?.has(PermissionsBitField.Flags.ManageChannels)
+    // ) {
+    //   return { allowed: false, error: "2012" };
+    // }
     return { allowed: true };
 }
 //# sourceMappingURL=/src/utils/tickets/performChecks.js.map
-//# debugId=6150d852-527c-5305-bd88-881aef924ea4
+//# debugId=fae1f73f-ecd2-5995-91f2-693bebd5bb04
