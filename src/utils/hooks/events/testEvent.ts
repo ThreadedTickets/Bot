@@ -1,6 +1,6 @@
-import { logger } from "../../logger";
+import logger from "../../logger";
 import { registerHook } from "../index";
 
 registerHook("TestEvent", async (message) => {
-  logger("Hooks", "Info", `Message: ${message}`);
+  logger.info(`Message: ${message}`);
 });

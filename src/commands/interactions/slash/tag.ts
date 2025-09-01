@@ -85,13 +85,13 @@ const command: AppCommand = {
     const tag = await getServerTag(tagId, interaction.guildId);
     if (!tag)
       return interaction.reply(
-        (await onError("Commands", t(lang, "TAG_NOT_FOUND"))).discordMsg
+        (await onError(new Error("Tag not found"))).discordMsg
       );
 
     const message = await getServerMessage(tag.message, interaction.guildId);
     if (!message)
       return interaction.reply(
-        (await onError("Commands", t(lang, "TAG_MESSAGE_NOT_FOUND"))).discordMsg
+        (await onError(new Error("Tag message not found"))).discordMsg
       );
 
     interaction.reply({

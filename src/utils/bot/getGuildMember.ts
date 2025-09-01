@@ -1,5 +1,5 @@
 import { Client, GuildMember } from "discord.js";
-import { logger } from "../logger";
+import logger from "../logger";
 
 export async function getGuildMember(
   client: Client,
@@ -13,11 +13,7 @@ export async function getGuildMember(
     const member = await guild.members.fetch(userId);
     return member;
   } catch (error) {
-    logger(
-      "API",
-      "Warn",
-      `Failed to fetch member ${userId} in guild ${guildId}: ${error}`
-    );
+    logger.warn(`Failed to fetch member ${userId} in guild ${guildId}`, error);
     return null;
   }
 }

@@ -1,8 +1,9 @@
+import config from "../../config";
 import redis from "../redis";
 
 export class TicketChannelManager {
-  private key = "tickets:channels"; // Redis set key for storing all ticket channel IDs
-  private prefix = "tickets:channel:"; // Prefix for channel-specific keys
+  private key = `${config.redis.prefix}tickets:channels`; // Redis set key for storing all ticket channel IDs
+  private prefix = `${config.redis.prefix}tickets:channel:`; // Prefix for channel-specific keys
   private redis;
 
   constructor() {
@@ -17,7 +18,8 @@ export class TicketChannelManager {
     ticketId: string,
     takeTranscript: boolean,
     anonymise: boolean,
-    allowAutoresponders: boolean
+    allowAutoresponders: boolean,
+    owner: string
   ): Promise<void> {
     await this.redis.sadd(this.key, channelId);
     await this.redis.set(
@@ -27,6 +29,7 @@ export class TicketChannelManager {
         takeTranscript,
         anonymise,
         allowAutoresponders,
+        owner,
       })
     );
   }
@@ -59,6 +62,7 @@ export class TicketChannelManager {
     takeTranscript: boolean;
     anonymise: boolean;
     allowAutoresponders: boolean;
+    owner: string;
   } | null> {
     const data = await this.redis.get(`${this.prefix}${channelId}`);
     return data ? JSON.parse(data) : null;

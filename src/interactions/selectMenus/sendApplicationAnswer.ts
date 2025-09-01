@@ -14,6 +14,7 @@ import { updateCachedData } from "../../utils/database/updateCache";
 import { toTimeUnit } from "../../utils/formatters/toTimeUnit";
 import { resolveDiscordMessagePlaceholders } from "../../utils/message/placeholders/resolvePlaceholders";
 import { onError } from "../../utils/onError";
+import config from "../../config";
 
 const select: SelectMenuHandler = {
   customId: "appSubmit",
@@ -25,23 +26,18 @@ const select: SelectMenuHandler = {
     );
     if (!activeApplication.cached)
       return interaction.reply(
-        (await onError("Commands", t(data.lang!, `ERROR_CODE_1008`))).discordMsg
+        (await onError(new Error(t(data.lang!, `ERROR_CODE_1008`)))).discordMsg
       );
 
     const appJson = activeApplication.data;
     if (applicationId !== appJson.applicationId)
       return interaction.reply(
-        (await onError("Commands", t(data.lang!, `ERROR_CODE_1008`))).discordMsg
+        (await onError(new Error(t(data.lang!, `ERROR_CODE_1008`)))).discordMsg
       );
     const application = await getServerApplication(applicationId, guildId);
     if (!application)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, `CONFIG_CREATE_APPLICATION_NOT_FOUND`)
-          )
-        ).discordMsg
+        (await onError(new Error("Application not found"))).discordMsg
       );
 
     const selection = interaction.values.join(", ");
@@ -110,21 +106,26 @@ const select: SelectMenuHandler = {
       }
 
       interaction.user.send({
-        components: [
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(
-              new ButtonBuilder()
-                .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
-                .setStyle(ButtonStyle.Link)
-                .setLabel(
-                  t(data?.lang!, "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON")
-                )
-            )
-            .toJSON(),
-        ],
         ...resolveDiscordMessagePlaceholders(baseMessage, {
           applicationName: application.name,
         }),
+        components: config.isWhiteLabel
+          ? []
+          : [
+              new ActionRowBuilder<ButtonBuilder>()
+                .addComponents(
+                  new ButtonBuilder()
+                    .setURL(process.env["DISCORD_APPLICATION_INVITE"]!)
+                    .setStyle(ButtonStyle.Link)
+                    .setLabel(
+                      t(
+                        data?.lang!,
+                        "APPLICATION_DEFAULT_MESSAGE_SUBMITTED_BUTTON"
+                      )
+                    )
+                )
+                .toJSON(),
+            ],
       });
 
       return handleApplicationSubmit(

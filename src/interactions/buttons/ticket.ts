@@ -32,12 +32,7 @@ const modal: ButtonHandler = {
     );
     if (!trigger)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_TICKET_TRIGGER_NOT_FOUND")
-          )
-        ).discordMsg
+        (await onError(new Error("Trigger not found"))).discordMsg
       );
 
     const triggerObject = trigger.toObject();
@@ -55,7 +50,7 @@ const modal: ButtonHandler = {
       if (modal instanceof Error)
         return await interaction.reply({
           ...(
-            await onError("Tickets", modal.message, { stack: modal.stack })
+            await onError(new Error(modal.message), { stack: modal.stack })
           ).discordMsg,
           flags: [MessageFlags.Ephemeral],
         });
@@ -84,8 +79,7 @@ const modal: ButtonHandler = {
         return interaction.editReply(
           (
             await onError(
-              "Commands",
-              t(data.lang!, `ERROR_CODE_${checks.error}`)
+              new Error(t(data.lang!, `ERROR_CODE_${checks.error}`))
             )
           ).discordMsg
         );
@@ -100,8 +94,7 @@ const modal: ButtonHandler = {
         return interaction.editReply(
           (
             await onError(
-              "Commands",
-              t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`)
+              new Error(t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`))
             )
           ).discordMsg
         );
@@ -115,10 +108,12 @@ const modal: ButtonHandler = {
         guild: interaction.guild!,
         lang: data.lang!,
         messageOrInteraction: interaction,
-        owner: interaction.user.id,
+        owner: applicationId ? ownerId : interaction.user.id,
         responses: responses,
         trigger: triggerTyped,
-        user: interaction.user,
+        user: applicationId
+          ? await client.users.fetch(ownerId)
+          : interaction.user,
       });
     }, interaction.guildId);
   },

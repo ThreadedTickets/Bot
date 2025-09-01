@@ -21,12 +21,7 @@ const button: ButtonHandler = {
     const application = await getServerApplication(applicationId, guildId);
     if (!application)
       return interaction.editReply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_APPLICATION_NOT_FOUND")
-          )
-        ).discordMsg
+        (await onError(new Error("Application not found"))).discordMsg
       );
 
     const appObject = application.toObject();
@@ -50,7 +45,7 @@ const button: ButtonHandler = {
 
     if (!checks.allowed) {
       return interaction.editReply(
-        (await onError("Commands", t(data.lang!, `ERROR_CODE_${checks.error}`)))
+        (await onError(new Error(t(data.lang!, `ERROR_CODE_${checks.error}`))))
           .discordMsg
       );
     }

@@ -1,4 +1,4 @@
-import { logger } from "../logger";
+import logger from "../logger";
 
 export function formatDuration(ms: number): string {
   const seconds = Math.floor(ms / 1000);
@@ -18,8 +18,8 @@ export function parseDurationToMs(
   throwOnInvalid: boolean = false
 ) {
   if (!input || typeof input !== "string") {
-    logger("Parse Duration MS", "Warn", `Invalid input, returned 0ms: ${input}`);
-    return 0;
+    logger.warn(`Invalid duration input, returned 60s: ${input}`);
+    return 60 * 1000;
   }
 
   const units = {
@@ -69,7 +69,7 @@ export function parseDurationToMs(
     }
 
     if (multiplier === null) {
-      logger("Parse Duration MS", "Error", `Unknown time unit: ${unitStr}`);
+      logger.error(`Unknown time unit in parsing duration: ${unitStr}`);
       if (throwOnInvalid) throw new Error(`Unknown time unit: ${unitStr}`);
       continue;
     }
@@ -84,13 +84,17 @@ export function parseDurationToMs(
   if (bareNumberMatch) {
     const fallbackValue = parseFloat(bareNumberMatch[0]);
     const fallbackMs = fallbackValue * multipliers.m;
-    logger("Parse Duration MS", "Info", `Defaulted bare value "${fallbackValue}" to minutes = ${fallbackMs}ms`);
+    logger.debug(
+      `Defaulted bare value "${fallbackValue}" to minutes = ${fallbackMs}ms when parsing duration`
+    );
     totalMs += fallbackMs;
   } else if (!matchedAny) {
-    logger("Parse Duration MS", "Warn", `No valid duration parts found in: "${input}"`);
+    logger.debug(
+      `No valid duration parts found when parsing duration: "${input}"`
+    );
     if (throwOnInvalid) throw new Error(`Invalid duration string: "${input}"`);
   }
 
-  logger("Parse Duration MS", "Info", `Total duration parsed: ${totalMs}ms`);
+  logger.debug(`Total duration parsed: ${totalMs}ms`);
   return totalMs;
 }

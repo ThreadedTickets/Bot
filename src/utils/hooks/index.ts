@@ -1,9 +1,9 @@
 import { Client, Guild, Interaction, Message, User } from "discord.js";
 import { Application, ApplicationQuestion } from "../../types/Application";
 import { Locale } from "../../types/Locale";
-import { logger } from "../logger";
 import { TicketFormResponse, TicketTrigger } from "../../types/Ticket";
 import { onError } from "../onError";
+import logger from "../logger";
 
 // hooks/index.ts
 type HookHandler = (data: any) => Promise<void> | void;
@@ -107,8 +107,8 @@ export async function runHooks<K extends keyof HookEventMap>(
     try {
       await handler(data);
     } catch (err: any) {
-      logger("Hooks", "Error", `Error with hook ${event}: ${err}`);
-      onError("Hooks", `Hook error: ${event}`, { stack: err.stack });
+      logger.error(`Error with hook ${event}`, err);
+      onError(err, { event: event, data: data });
     }
   }
 }

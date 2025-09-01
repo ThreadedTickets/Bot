@@ -69,12 +69,12 @@ export function buildTicketFormModal(
       .setStyle(
         multilineResponse ? TextInputStyle.Paragraph : TextInputStyle.Short
       )
-      .setRequired(requiredResponse)
-      .setMinLength(min)
-      .setMaxLength(max);
+      .setRequired(requiredResponse);
 
     if (placeholder) input.setPlaceholder(placeholder);
     if (value) input.setValue(value);
+    if (minimumCharactersRequired) input.setMinLength(min);
+    if (maximumCharactersRequired) input.setMaxLength(max);
 
     modal.addComponents(
       new ActionRowBuilder<TextInputBuilder>().addComponents(input)

@@ -3,7 +3,6 @@ import {
   Guild,
   GuildBasedChannel,
   GuildMember,
-  PermissionsBitField,
   User,
 } from "discord.js";
 import { TicketTrigger } from "../../types/Ticket";
@@ -122,13 +121,14 @@ export async function canCreateTicketTarget(
   }
 
   // Permissions to create regular channels
-  const permissions = guild.members.me?.permissions;
-  if (
-    type === "channel" &&
-    !permissions?.has(PermissionsBitField.Flags.ManageChannels)
-  ) {
-    return { allowed: false, error: "2012" };
-  }
+  // Not using this cause it causes issues
+  // const permissions = guild.members.me?.permissions;
+  // if (
+  //   type === "channel" &&
+  //   !permissions?.has(PermissionsBitField.Flags.ManageChannels)
+  // ) {
+  //   return { allowed: false, error: "2012" };
+  // }
 
   return { allowed: true };
 }

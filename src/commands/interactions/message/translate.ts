@@ -9,7 +9,6 @@ import { t } from "../../../lang";
 import translate from "google-translate-api-x";
 import colours from "../../../constants/colours";
 import { onError } from "../../../utils/onError";
-import { Locale } from "../../../types/Locale";
 
 const command: AppCommand = {
   type: "message",
@@ -25,14 +24,7 @@ const command: AppCommand = {
     const lang = data.lang!;
     if (!interaction.targetMessage.content)
       return interaction.reply(
-        (
-          await onError(
-            "Commands",
-            t(lang, "COMMANDS_TRANSLATE_NO_CONTENT_TO_TRANSLATE"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg
+        (await onError(new Error("No content"))).discordMsg
       );
     interaction.reply({
       flags: [MessageFlags.Ephemeral],

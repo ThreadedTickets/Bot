@@ -1,4 +1,4 @@
-import { logger } from "../../logger";
+import logger from "../../logger";
 
 export const placeholderFunctions: Record<string, (...args: any[]) => string> =
   {
@@ -31,11 +31,7 @@ export function resolvePlaceholders(
           const result = fn(...args);
           return result ?? fallback ?? `{${expression}}`;
         } catch (err) {
-          logger(
-            "System",
-            "Warn",
-            `Error in placeholder function '${funcName}': ${err}`
-          );
+          logger.warn(`Error in placeholder function '${funcName}'`, err);
           return fallback ?? `{${expression}}`;
         }
       }

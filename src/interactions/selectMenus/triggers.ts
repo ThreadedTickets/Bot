@@ -39,12 +39,7 @@ const modal: SelectMenuHandler = {
       );
       if (!application)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(data.lang!, "CONFIG_CREATE_APPLICATION_NOT_FOUND")
-            )
-          ).discordMsg
+          (await onError(new Error("Application not found"))).discordMsg
         );
 
       const appObject = application.toObject();
@@ -69,8 +64,7 @@ const modal: SelectMenuHandler = {
         return interaction.editReply(
           (
             await onError(
-              "Commands",
-              t(data.lang!, `ERROR_CODE_${checks.error}`)
+              new Error(t(data.lang!, `ERROR_CODE_${checks.error}`))
             )
           ).discordMsg
         );
@@ -95,12 +89,7 @@ const modal: SelectMenuHandler = {
       );
       if (!trigger)
         return interaction.reply(
-          (
-            await onError(
-              "Commands",
-              t(data.lang!, "CONFIG_CREATE_TICKET_TRIGGER_NOT_FOUND")
-            )
-          ).discordMsg
+          (await onError(new Error("Trigger not found"))).discordMsg
         );
 
       const triggerObject = trigger.toObject();
@@ -118,7 +107,7 @@ const modal: SelectMenuHandler = {
         if (modal instanceof Error)
           return await interaction.reply({
             ...(
-              await onError("Tickets", modal.message, { stack: modal.stack })
+              await onError(new Error(modal.message), { stack: modal.stack })
             ).discordMsg,
             flags: [MessageFlags.Ephemeral],
           });
@@ -143,8 +132,7 @@ const modal: SelectMenuHandler = {
           return interaction.editReply(
             (
               await onError(
-                "Commands",
-                t(data.lang!, `ERROR_CODE_${checks.error}`)
+                new Error(t(data.lang!, `ERROR_CODE_${checks.error}`))
               )
             ).discordMsg
           );
@@ -159,8 +147,9 @@ const modal: SelectMenuHandler = {
           return interaction.editReply(
             (
               await onError(
-                "Commands",
-                t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`)
+                new Error(
+                  t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`)
+                )
               )
             ).discordMsg
           );

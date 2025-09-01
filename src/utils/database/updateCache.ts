@@ -1,4 +1,5 @@
-import { logger } from "../logger";
+import config from "../../config";
+import logger from "../logger";
 import redis from "../redis";
 
 /**
@@ -15,10 +16,15 @@ export const updateCachedData = async (
   data: any
 ): Promise<boolean> => {
   try {
-    await redis.set(key, JSON.stringify(data), "EX", ttl);
+    await redis.set(
+      `${!key.includes("Creators:") ? config.redis.prefix : ""}${key}`,
+      JSON.stringify(data),
+      "EX",
+      ttl
+    );
     return true;
   } catch (error) {
-    logger("Redis", "Error", `${error}`);
+    logger.error("Cache update error", error);
     return false;
   }
 };

@@ -186,14 +186,7 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing view permission"))).discordMsg
         );
       const message = interaction.options.getString("message", true);
       const svrMsg = await getServerMessage(message, interaction.guildId);
@@ -205,14 +198,8 @@ const cmd: AppCommand = {
       interaction
         .editReply(serverMessageToDiscordMessage(svrMsg))
         .catch(async (err) => {
-          const error = (
-            await onError(
-              "Commands",
-              t(lang, "MESSAGE_CANNOT_SEND_AS_INVALID"),
-              { message: err.message, stack: err.stack },
-              lang as Locale
-            )
-          ).discordMsg;
+          const error = (await onError(new Error("Invalid message")))
+            .discordMsg;
 
           if (!interaction.replied) {
             interaction.editReply(error);
@@ -226,25 +213,11 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing create permission"))).discordMsg
         );
       const name = interaction.options.getString("name", true).trim();
       if (!new RegExp(/^[0-9a-zA-Z-_ ]{2,100}$/, "g").test(name)) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "MESSAGE_NAME_NOT_VALID"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Invalid name"))).discordMsg;
 
         interaction.editReply(error);
       }
@@ -286,26 +259,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing edit permission"))).discordMsg
         );
       const id = interaction.options.getString("message", true);
       const message = await getServerMessage(id, interaction.guildId);
       if (!message) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_MESSAGE_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Message not found")))
+          .discordMsg;
 
         interaction.editReply(error);
         return;
@@ -316,14 +276,7 @@ const cmd: AppCommand = {
         .trim();
 
       if (!new RegExp(/^[0-9a-zA-Z-_ ]{2,100}$/, "g").test(name)) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "MESSAGE_NAME_NOT_VALID"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Invalid name"))).discordMsg;
 
         interaction.editReply(error);
       }
@@ -367,26 +320,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.Administrator)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing delete permission"))).discordMsg
         );
       const id = interaction.options.getString("message", true);
       const message = await getServerMessage(id, interaction.guildId);
       if (!message) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_MESSAGE_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Message not found")))
+          .discordMsg;
 
         interaction.editReply(error);
         return;

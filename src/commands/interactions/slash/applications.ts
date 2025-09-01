@@ -110,14 +110,7 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing manage permission"))).discordMsg
         );
 
       const document = await ApplicationCreatorSchema.create({
@@ -174,26 +167,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing manage permission"))).discordMsg
         );
       const id = interaction.options.getString("application", true);
       const application = await getServerApplication(id, interaction.guildId);
       if (!application) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_APPLICATION_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Application not found")))
+          .discordMsg;
 
         interaction.editReply(error);
         return;
@@ -255,26 +235,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing manage permission"))).discordMsg
         );
       const id = interaction.options.getString("application", true);
       const application = await getServerApplication(id, interaction.guildId);
       if (!application) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_APPLICATION_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Application not found")))
+          .discordMsg;
 
         interaction.editReply(error);
         return;

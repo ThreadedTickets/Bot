@@ -5,7 +5,6 @@ import { parseArgs } from "../utils/commands/message/argumentParser";
 import config from "../config";
 import { loadFilesRecursively } from "../utils/commands/load";
 import { checkCommandPermissions } from "../utils/commands/permissions";
-import { logger } from "../utils/logger";
 import colours from "../constants/colours";
 import { commandErrors, commandsRun } from "../metricsServer";
 import { onError } from "../utils/onError";
@@ -13,6 +12,7 @@ import { permissionLevels } from "../constants/permissions";
 import { t } from "../lang";
 import { getCache } from "../utils/database/getCachedElse";
 import { EventData } from "./eventHandler";
+import logger from "../utils/logger";
 
 const prefix = config.prefix;
 
@@ -33,7 +33,7 @@ export const loadPrefixCommands = async () => {
 
     command.aliases?.forEach((alias) => {
       if (prefixCommands.has(alias)) {
-        logger("Handlers", "Warn", `${alias} has already been registered`);
+        logger.warn(`${alias} has already been registered`);
         return;
       }
       prefixCommands.set(alias, command);
@@ -41,9 +41,7 @@ export const loadPrefixCommands = async () => {
     });
   }
 
-  logger(
-    "Handlers",
-    "Info",
+  logger.info(
     `Loaded ${totalCommands} prefix commands (${totalAliases} aliases)`
   );
 };
@@ -55,41 +53,40 @@ export const handlePrefixMessage = async (
 ) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-  const blacklists = await Promise.all([
-    getCache(`blacklists:${message.author.id}`),
-    getCache(`blacklists:${message.guildId}`),
-  ]);
+  if (!config.isWhiteLabel) {
+    const blacklists = await Promise.all([
+      getCache(`blacklists:${message.author.id}`),
+      getCache(`blacklists:${message.guildId}`),
+    ]);
 
-  if (blacklists[0].cached || blacklists[1].cached) {
-    // We know the user is blacklisted, im gonna just use en as locale as this is per-user not server
-    message.author
-      .send(
-        (
-          await onError(
-            "Commands",
-            t(
-              // (
-              //   await getServer(interaction.guildId)
-              // ).preferredLanguage,
-              "en",
-              `BLACKLISTED_${blacklists[0].cached ? "USER" : "SERVER"}`,
-              {
-                reason:
-                  (blacklists[0].data as string) ||
-                  (blacklists[1].data as string),
-              }
+    if (blacklists[0].cached || blacklists[1].cached) {
+      // We know the user is blacklisted, im gonna just use en as locale as this is per-user not server
+      message.author
+        .send(
+          (
+            await onError(
+              new Error(
+                t(
+                  // (
+                  //   await getServer(interaction.guildId)
+                  // ).preferredLanguage,
+                  "en",
+                  `BLACKLISTED_${blacklists[0].cached ? "USER" : "SERVER"}`,
+                  {
+                    reason:
+                      (blacklists[0].data as string) ||
+                      (blacklists[1].data as string),
+                  }
+                )
+              )
             )
-          )
-        ).discordMsg
-      )
-      .catch((e) => {
-        logger(
-          "Commands",
-          "Warn",
-          `Failed to DM user ${message.author.id}: ${error}`
-        );
-      });
-    return;
+          ).discordMsg
+        )
+        .catch((e) => {
+          logger.warn(`Failed to DM user ${message.author.id}`, e);
+        });
+      return;
+    }
   }
 
   const args = message.content.slice(prefix.length).trim().split(/ +/);
@@ -203,10 +200,10 @@ export const handlePrefixMessage = async (
   try {
     command.execute(client, data, message, parsedArgs);
   } catch (err: any) {
-    logger("Commands", "Error", `${err}`);
+    logger.error("Command error", err);
     message.reply(
       (
-        await onError("Commands", `${err}`, {
+        await onError(err, {
           command: commandName,
           args,
           user: message.author.id,

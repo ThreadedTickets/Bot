@@ -112,14 +112,7 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing manage permission"))).discordMsg
         );
 
       const document = await TicketTriggerCreatorSchema.create({
@@ -180,26 +173,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing manage permission"))).discordMsg
         );
       const id = interaction.options.getString("ticket_trigger", true);
       const trigger = await getServerTicketTrigger(id, interaction.guildId);
       if (!trigger) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_TICKET_TRIGGER_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Trigger not found")))
+          .discordMsg;
 
         interaction.editReply(error);
         return;
@@ -265,26 +245,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing manage permission"))).discordMsg
         );
       const id = interaction.options.getString("ticket_trigger", true);
       const trigger = await getServerTicketTrigger(id, interaction.guildId);
       if (!trigger) {
-        const error = (
-          await onError(
-            "Commands",
-            t(lang, "CONFIG_CREATE_TICKET_TRIGGER_NOT_FOUND"),
-            {},
-            lang as Locale
-          )
-        ).discordMsg;
+        const error = (await onError(new Error("Trigger not found")))
+          .discordMsg;
 
         interaction.editReply(error);
         return;

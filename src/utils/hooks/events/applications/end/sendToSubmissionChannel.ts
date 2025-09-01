@@ -14,8 +14,8 @@ import colours from "../../../../../constants/colours";
 import { sendMessageToChannel } from "../../../../bot/sendMessageToChannel";
 import { t } from "../../../../../lang";
 import { formatDuration } from "../../../../formatters/duration";
-import { logger } from "../../../../logger";
 import { CompletedApplicationSchema } from "../../../../../database/modals/CompletedApplications";
+import logger from "../../../../logger";
 type QA = { question: string; response: string };
 
 const EMBED_TOTAL_CHAR_LIMIT = 6000;
@@ -183,10 +183,8 @@ registerHook(
     );
 
     if (!message)
-      return logger(
-        "System",
-        "Warn",
-        "Failed to send application submission message"
+      return logger.warn(
+        "Failed to send application submission message after completed application"
       );
 
     const thread = await message.startThread({
@@ -203,7 +201,11 @@ registerHook(
     if (!thread) return;
     const QAMessages = buildQAMessages(responses.responses);
     for (const message of QAMessages) {
-      thread.send(message).catch(() => {});
+      thread
+        .send(message)
+        .catch((err) =>
+          logger.warn("Failed to send QA message to application thread", err)
+        );
     }
   }
 );

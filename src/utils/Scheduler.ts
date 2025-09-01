@@ -1,11 +1,7 @@
 import { formatDuration } from "./formatters/duration";
+import logger from "./logger";
 import redis from "./redis";
 
-type Logger = (
-  source: string,
-  level: "Info" | "Warn" | "Error",
-  message: string
-) => void;
 type TaskFunction = (params?: any) => Promise<void> | void;
 
 interface StoredTask {
@@ -26,15 +22,9 @@ export class TaskScheduler {
   private tasks: Map<string, ScheduledTask> = new Map();
   private taskRegistry: Map<string, TaskFunction> = new Map();
   private processingBacklog = false;
-  private logger: Logger;
 
-  constructor(
-    logger: Logger = (source, level, message) => {
-      console.log(`[${source}] [${level}] ${message}`);
-    }
-  ) {
+  constructor() {
     this.redis = redis;
-    this.logger = logger;
   }
 
   /** Register a named task function */
@@ -79,6 +69,57 @@ export class TaskScheduler {
     return removed > 0;
   }
 
+  /**
+   * Check if a task exists and optionally return its details
+   * @param taskId The ID of the task to check
+   * @param returnTask If true, returns the task details when found
+   * @returns boolean or the task details if returnTask is true and task exists
+   */
+  async taskExists(taskId: string, returnTask?: false): Promise<boolean>;
+  async taskExists(
+    taskId: string,
+    returnTask: true
+  ): Promise<{
+    taskId: string;
+    runAt: number;
+    functionKey: string;
+    params?: any;
+  } | null>;
+  async taskExists(
+    taskId: string,
+    returnTask = false
+  ): Promise<
+    | boolean
+    | { taskId: string; runAt: number; functionKey: string; params?: any }
+    | null
+  > {
+    // Check in-memory tasks first
+    const inMemoryTask = this.tasks.get(taskId);
+    if (inMemoryTask) {
+      return returnTask
+        ? {
+            taskId,
+            runAt: inMemoryTask.runAt,
+            functionKey: inMemoryTask.functionKey,
+            params: inMemoryTask.params,
+          }
+        : true;
+    }
+
+    // Check Redis if not found in memory
+    const taskData = await this.redis.hget("scheduled_tasks", taskId);
+    if (taskData) {
+      try {
+        const parsed: StoredTask = JSON.parse(taskData);
+        return returnTask ? { taskId, ...parsed } : true;
+      } catch {
+        return returnTask ? null : false;
+      }
+    }
+
+    return returnTask ? null : false;
+  }
+
   /** List all tasks */
   async listTasks(): Promise<
     Array<{ taskId: string; runAt: number; functionKey: string; params?: any }>
@@ -100,7 +141,7 @@ export class TaskScheduler {
     this.processingBacklog = true;
 
     const start = Date.now();
-    this.logger("System", "Info", "Starting to process backlog tasks...");
+    logger.info("Starting to process backlog tasks...");
 
     const allTasks = await this.listTasks();
     const now = Date.now();
@@ -108,9 +149,7 @@ export class TaskScheduler {
     for (const task of allTasks) {
       const fn = this.taskRegistry.get(task.functionKey);
       if (!fn) {
-        this.logger(
-          "System",
-          "Info",
+        logger.debug(
           `No registered function for task ${task.taskId} with key ${task.functionKey}. Removing task.`
         );
         await this.redis.hdel("scheduled_tasks", task.taskId);
@@ -139,9 +178,7 @@ export class TaskScheduler {
     }
 
     const elapsed = Date.now() - start;
-    this.logger(
-      "System",
-      "Info",
+    logger.info(
       `Finished processing backlog tasks in ${formatDuration(elapsed)}`
     );
     this.processingBacklog = false;
@@ -159,11 +196,7 @@ export class TaskScheduler {
 
       await fn(params);
     } catch (err: any) {
-      this.logger(
-        "System",
-        "Info",
-        `Error running task ${taskId}: ${err.message ?? err}`
-      );
+      logger.error(`Error running task ${taskId}`, err);
     }
     this.tasks.delete(taskId);
     await this.redis.hdel("scheduled_tasks", taskId);

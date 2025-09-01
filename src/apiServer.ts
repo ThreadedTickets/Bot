@@ -1,6 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
-import { logger } from "./utils/logger";
 import { MessageCreatorSchema } from "./database/modals/MessageCreator";
 import { validateDiscordMessage } from "./utils/bot/validateMessage";
 import {
@@ -19,6 +18,7 @@ import { GroupCreatorSchema } from "./database/modals/GroupCreator";
 import {
   GroupSchema,
   GroupSchemaValidator,
+  GuildSchema,
   MessageSchema,
 } from "./database/modals/Guild";
 import {
@@ -33,6 +33,10 @@ import { client } from ".";
 import os from "os";
 import { getInfo } from "discord-hybrid-sharding";
 import { formatDuration } from "./utils/formatters/duration";
+import { updateCachedData } from "./utils/database/updateCache";
+import { TagSchema } from "./database/modals/Tag";
+import logger from "./utils/logger";
+import { AutoResponderSchema } from "./database/modals/AutoResponder";
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
@@ -60,6 +64,8 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
+app.use(limiter);
+
 type Body = {
   _id?: string;
   server?: string;
@@ -68,7 +74,7 @@ type Body = {
 
 // Exportable function to start the metrics server
 export function startApi(port: number) {
-  app.get(`/`, limiter, async (req: Request, res: Response) => {
+  app.get(`/`, async (req: Request, res: Response) => {
     res.json({
       message: `Welcome to the Threaded API! The time for me is ${new Date().toISOString()}`,
     });
@@ -76,11 +82,12 @@ export function startApi(port: number) {
 
   app.post("/create/message/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { content, embeds, attachments, components } = (req.body as Body);
+    const { content, embeds, attachments, components } = req.body as Body;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
-        message: "Please provide a creatorId ID (?id=) and data in the body",
+        message:
+          "Please provide a valid creatorId (?id=) as a string and data in the body",
       });
       return;
     }
@@ -157,9 +164,9 @@ export function startApi(port: number) {
 
   app.post("/create/group/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
-    const { name, roles, extraMembers, permissions } =(req.body as Body);
+    const { name, roles, extraMembers, permissions } = req.body as Body;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
         message: "Please provide a creatorId ID (?id=) and data in the body",
       });
@@ -230,7 +237,7 @@ export function startApi(port: number) {
   app.post("/create/application/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
         message: "Please provide a creatorId ID (?id=) and data in the body",
       });
@@ -269,7 +276,7 @@ export function startApi(port: number) {
           throw new Error("Application to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = (req.body as Body);
+        const { _id, server, ...safeBody } = req.body as Body;
 
         // Apply safe updates
         application.set(safeBody);
@@ -291,7 +298,7 @@ export function startApi(port: number) {
   app.post("/create/ticket/save", async (req: Request, res: Response) => {
     const creatorId = req.query.id;
 
-    if (!creatorId) {
+    if (!creatorId || typeof creatorId !== "string") {
       res.status(400).json({
         message: "Please provide a creatorId ID (?id=) and data in the body",
       });
@@ -330,7 +337,7 @@ export function startApi(port: number) {
           throw new Error("Trigger to update not found: 0001");
         }
 
-        const { _id, server, ...safeBody } = (req.body as Body);
+        const { _id, server, ...safeBody } = req.body as Body;
 
         // Apply safe updates
         trigger.set(safeBody);
@@ -346,6 +353,215 @@ export function startApi(port: number) {
     } catch (error: any) {
       res.status(500).json({
         message: `Error when saving ticket trigger: ${error.message}`,
+      });
+    }
+  });
+
+  app.post("/forceCache", async (req: Request, res: Response) => {
+    try {
+      const { type, _id } = req.body as Body;
+      if (!_id || !type) {
+        res.status(400).json({ message: "Not all fields were provided" });
+        return;
+      }
+      switch (type) {
+        case "server":
+          const server = await GuildSchema.findOne({ _id: { $eq: _id } });
+          if (!server) {
+            res.status(400).json({ message: "That server doesn't exist" });
+            return;
+          }
+          await updateCachedData(`guilds:${_id}`, 30, server);
+          res.status(200).json({
+            message: `Server has been added to the cache. It can be accessed through guilds:${_id}`,
+            key: `guilds:${_id}`,
+          });
+          break;
+        case "message":
+          const msg = await MessageSchema.findOne({ _id: { $eq: _id } });
+          if (!msg) {
+            res.status(400).json({ message: "That message doesn't exist" });
+            return;
+          }
+          await updateCachedData(`message:${_id}`, 30, msg);
+          res.status(200).json({
+            message: `Message has been added to the cache. It can be accessed through message:${_id}`,
+            key: `message:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "messages":
+          const msgs = await MessageSchema.find({ server: { $eq: _id } });
+          await updateCachedData(
+            `messages:${_id}`,
+            30,
+            msgs.map((m) => {
+              return {
+                _id: m._id,
+                name: m.name,
+              };
+            })
+          );
+          res.status(200).json({
+            message: `Messages have been added to the cache. It can be accessed through messages:${_id}`,
+            key: `messages:${_id}`,
+          });
+          break;
+        case "responder":
+          const resp = await AutoResponderSchema.findOne({ _id: { $eq: _id } });
+          if (!resp) {
+            res.status(400).json({ message: "That responder doesn't exist" });
+            return;
+          }
+          await updateCachedData(`responder:${_id}`, 30, resp);
+          res.status(200).json({
+            message: `Responder has been added to the cache. It can be accessed through responder:${_id}`,
+            key: `responder:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "responders":
+          const resps = await AutoResponderSchema.find({
+            server: { $eq: _id },
+          });
+          await updateCachedData(`responders:${_id}`, 30, resps);
+          res.status(200).json({
+            message: `responders have been added to the cache. It can be accessed through responders:${_id}`,
+            key: `responders:${_id}`,
+          });
+          break;
+        case "tag":
+          const tag = await TagSchema.findOne({ _id: { $eq: _id } });
+          if (!tag) {
+            res.status(400).json({ message: "That tag doesn't exist" });
+            return;
+          }
+          await updateCachedData(`tag:${_id}`, 30, tag);
+          res.status(200).json({
+            message: `Tag has been added to the cache. It can be accessed through tag:${_id}`,
+            key: `tag:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "tags":
+          const tags = await TagSchema.find({ server: { $eq: _id } });
+          await updateCachedData(`tags:${_id}`, 30, tags);
+          res.status(200).json({
+            message: `Tags have been added to the cache. It can be accessed through tags:${_id}`,
+            key: `tags:${_id}`,
+          });
+          break;
+        case "group":
+          const group = await GroupSchema.findOne({ _id: { $eq: _id } });
+          if (!group) {
+            res.status(400).json({ message: "That group doesn't exist" });
+            return;
+          }
+          await updateCachedData(`group:${_id}`, 30, group);
+          res.status(200).json({
+            message: `group has been added to the cache. It can be accessed through group:${_id}`,
+            key: `group:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "groups":
+          const groups = await GroupSchema.find({ server: { $eq: _id } });
+          await updateCachedData(
+            `groups:${_id}`,
+            30,
+            groups.map((g) => ({ _id: g._id, name: g.name }))
+          );
+          res.status(200).json({
+            message: `groups have been added to the cache. It can be accessed through groups:${_id}`,
+            key: `groups:${_id}`,
+          });
+          break;
+        case "trigger":
+          const trigger = await TicketTriggerSchema.findOne({
+            _id: { $eq: _id },
+          });
+          if (!trigger) {
+            res.status(400).json({ message: "That trigger doesn't exist" });
+            return;
+          }
+          await updateCachedData(`trigger:${_id}`, 30, trigger);
+          res.status(200).json({
+            message: `trigger has been added to the cache. It can be accessed through trigger:${_id}`,
+            key: `trigger:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "triggers":
+          const triggers = await TicketTriggerSchema.find({
+            server: { $eq: _id },
+          });
+          await updateCachedData(
+            `triggers:${_id}`,
+            30,
+            triggers.map((t) => ({ _id: t._id, name: t.label }))
+          );
+          res.status(200).json({
+            message: `triggers have been added to the cache. It can be accessed through triggers:${_id}`,
+            key: `triggers:${_id}`,
+          });
+          break;
+        case "application":
+          const application = await ApplicationTriggerSchema.findOne({
+            _id: { $eq: _id },
+          });
+          if (!application) {
+            res.status(400).json({ message: "That application doesn't exist" });
+            return;
+          }
+          await updateCachedData(`application:${_id}`, 30, application);
+          res.status(200).json({
+            message: `application has been added to the cache. It can be accessed through application:${_id}`,
+            key: `application:${_id}`,
+          });
+          break;
+        // In this case _id is of the server we want the messages of
+        case "applications":
+          const applications = await ApplicationTriggerSchema.find({
+            server: { $eq: _id },
+          });
+          await updateCachedData(
+            `applications:${_id}`,
+            30,
+            applications.map((t) => ({ _id: t._id, name: t.name }))
+          );
+          res.status(200).json({
+            message: `applications have been added to the cache. It can be accessed through applications:${_id}`,
+            key: `applications:${_id}`,
+          });
+          break;
+        case "interactive":
+          const interactive = [
+            ...(await TagSchema.find({ server: { $eq: _id } })).map((t) => ({
+              _id: t._id,
+              name: t.name,
+            })),
+            ...(
+              await ApplicationTriggerSchema.find({ server: { $eq: _id } })
+            ).map((t) => ({ _id: t._id, name: t.name })),
+            ...(await TicketTriggerSchema.find({ server: { $eq: _id } })).map(
+              (t) => ({
+                _id: t._id,
+                name: t.label,
+              })
+            ),
+          ];
+          await updateCachedData(`interactive:${_id}`, 30, interactive);
+          res.status(200).json({
+            message: `Interactive components have been added to the cache. It can be accessed through interactive:${_id}`,
+            key: `interactive:${_id}`,
+          });
+          break;
+        default:
+          break;
+      }
+    } catch (error: any) {
+      res.status(500).json({
+        message: `Error when caching: ${error.message}`,
       });
     }
   });
@@ -380,7 +596,7 @@ export function startApi(port: number) {
     });
   });
 
-  app.listen(port, () => {
-    logger("API", "Info", `API server running at http://localhost:${port}`);
+  app.listen(port || 10002, () => {
+    logger.info(`API server running at http://localhost:${port}`);
   });
 }

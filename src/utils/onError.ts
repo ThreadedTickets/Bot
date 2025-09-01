@@ -1,12 +1,12 @@
 import { APIEmbed } from "discord.js";
 import { ErrorSchema } from "../database/modals/Error";
-import { logger, LogLocation } from "./logger";
 import colours from "../constants/colours";
 import { postToWebhook } from "./message/webhookPoster";
 import { WebhookTypes } from "../constants/webhooks";
 import { errors } from "../metricsServer";
 import { t } from "../lang";
 import { Locale } from "../types/Locale";
+import logger from "./logger";
 
 const formatDiscordMessage = (
   id: string,
@@ -35,15 +35,18 @@ const formatDiscordMessage = (
 };
 
 export const onError = async (
-  location: LogLocation,
-  content: string,
+  error: any | string,
   context?: object,
   locale?: Locale
 ) => {
-  const errorDocument = await ErrorSchema.create({ content, context });
+  const errorDocument = await ErrorSchema.create({
+    content: error.message,
+    context,
+  });
+  if (typeof error === "string") error = new Error(error);
   const id = errorDocument._id.toString();
-  logger(location, "Error", content, `Error ${id}`);
-  errors.inc({ location: location, error: content });
+  logger.error(`Error ${id}`, error);
+  errors.inc({ error: error.message });
 
   postToWebhook(WebhookTypes.ErrorLog, {
     username: id,
@@ -51,7 +54,7 @@ export const onError = async (
       {
         color: parseInt(colours.error, 16),
         title: `Error ${id}`,
-        description: `${content}\n\`\`\`\n${
+        description: `${error.message}\n\`\`\`\n${
           context ? JSON.stringify(context, null, 2) : "No context"
         }\n\`\`\``,
       },
@@ -62,6 +65,6 @@ export const onError = async (
     /**
      * A message formatted so that it can be posted to Discord
      */
-    discordMsg: formatDiscordMessage(id, content, context, locale),
+    discordMsg: formatDiscordMessage(id, error.message, context, locale),
   };
 };

@@ -1,5 +1,5 @@
 import { Client, MessageCreateOptions, MessagePayload, User } from "discord.js";
-import { logger } from "../logger";
+import logger from "../logger";
 
 /**
  * Sends a DM to a user by their ID with full message options.
@@ -20,7 +20,7 @@ export async function sendDirectMessage(
     const sent = await user.send(message);
     return sent;
   } catch (err) {
-    logger("System", "Info", `Failed to DM user: ${err}`);
+    logger.warn(`Failed to DM user ${userId}`, err);
     return null;
   }
 }

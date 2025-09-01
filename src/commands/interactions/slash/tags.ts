@@ -9,13 +9,13 @@ import { AppCommand } from "../../../types/Command";
 import {
   getServerGroups,
   getServerMessage,
+  getServerMessages,
   getServerTag,
   getServerTags,
 } from "../../../utils/bot/getServer";
 import { t } from "../../../lang";
 import { getUserPermissions } from "../../../utils/calculateUserPermissions";
 import { onError } from "../../../utils/onError";
-import { Locale } from "../../../types/Locale";
 import limits from "../../../constants/limits";
 import { generateId } from "../../../utils/database/generateId";
 import { TagSchema } from "../../../database/modals/Tag";
@@ -128,6 +128,31 @@ const cmd: AppCommand = {
           }))
           .slice(0, 25)
       );
+    } else if (focused === "message") {
+      const focusedValue = interaction.options.getString("message", true);
+      const message = await getServerMessages(interaction.guildId);
+      if (!message.length) {
+        interaction.respond([
+          {
+            name: "You don't have any message!",
+            value: "",
+          },
+        ]);
+        return;
+      }
+
+      const filtered = message.filter((m) =>
+        m.name.toLowerCase().includes(focusedValue.toLowerCase())
+      );
+
+      interaction.respond(
+        filtered
+          .map((m) => ({
+            name: m.name,
+            value: m._id,
+          }))
+          .slice(0, 25)
+      );
     }
   },
   async execute(client, data, interaction) {
@@ -152,27 +177,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing create permission"))).discordMsg
         );
 
       const tags = await getServerTags(interaction.guildId);
       if (tags.length >= limits.free.tags.amount)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "TAGS_LIMIT_REACHED"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Tag limit reached"))).discordMsg
         );
 
       const id = generateId("GT");
@@ -182,14 +193,7 @@ const cmd: AppCommand = {
 
       if (!message)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "CONFIG_CREATE_MESSAGE_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Message not found"))).discordMsg
         );
 
       const tag = await TagSchema.create({
@@ -216,40 +220,19 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing view permission"))).discordMsg
         );
       const tagId = interaction.options.getString("tag", true);
       const tag = await getServerTag(tagId, interaction.guildId);
       if (!tag)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "TAG_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Tag not found"))).discordMsg
         );
 
       const message = await getServerMessage(tag.message, interaction.guildId);
       if (!message)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "TAG_MESSAGE_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Tag message not found"))).discordMsg
         );
 
       interaction.editReply({
@@ -261,41 +244,20 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing edit permission"))).discordMsg
         );
       const tagId = interaction.options.getString("tag", true);
       const name = interaction.options.getString("name");
       const messageId = interaction.options.getString("message");
       if (!name && !messageId)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "TAG_UPDATE_NO_OPTIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Invalid usage"))).discordMsg
         );
 
       const tag = await getServerTag(tagId, interaction.guildId);
       if (!tag)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "TAG_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Tag not found"))).discordMsg
         );
 
       const message = await getServerMessage(
@@ -304,14 +266,7 @@ const cmd: AppCommand = {
       );
       if (!message)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "CONFIG_CREATE_MESSAGE_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Message not found"))).discordMsg
         );
 
       interaction.editReply({
@@ -335,27 +290,13 @@ const cmd: AppCommand = {
         !interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)
       )
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "MISSING_PERMISSIONS"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Missing delete permission"))).discordMsg
         );
       const tagId = interaction.options.getString("tag", true);
       const tag = await getServerTag(tagId, interaction.guildId);
       if (!tag)
         return interaction.editReply(
-          (
-            await onError(
-              "Commands",
-              t(lang, "TAG_NOT_FOUND"),
-              {},
-              lang as Locale
-            )
-          ).discordMsg
+          (await onError(new Error("Tag not found"))).discordMsg
         );
 
       await TagSchema.findOneAndDelete({ _id: tagId });

@@ -4,8 +4,9 @@ import path from "path";
 import { AppCommand } from "../types/Command";
 import { CommandCache } from "../types/CommandCache";
 import { loadFilesRecursively } from "../utils/commands/load";
-import { logger } from "../utils/logger";
 import "@dotenvx/dotenvx";
+import logger from "../utils/logger";
+import config from "../config";
 
 const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 const clientId = process.env.DISCORD_CLIENT_ID!;
@@ -41,6 +42,8 @@ export const deployAppCommands = async () => {
   for (const file of files) {
     const command: AppCommand = (await import(file)).default;
 
+    if (config.isWhiteLabel && command.testGuild) continue;
+
     const stats = fs.statSync(file);
     const mtime = stats.mtimeMs;
     const isGuild = command.testGuild ?? false;
@@ -67,22 +70,14 @@ export const deployAppCommands = async () => {
     await rest.put(Routes.applicationGuildCommands(clientId, testGuildId), {
       body: guildToRegister,
     });
-    logger(
-      "Handlers",
-      "Info",
-      `Updated ${guildToRegister.length} guild commands`
-    );
+    logger.info(`Updated ${guildToRegister.length} guild commands`);
   }
 
   if (globalToRegister.length > 0) {
     await rest.put(Routes.applicationCommands(clientId), {
       body: globalToRegister,
     });
-    logger(
-      "Handlers",
-      "Info",
-      `Updated ${globalToRegister.length} global commands`
-    );
+    logger.info(`Updated ${globalToRegister.length} global commands`);
   }
 
   saveCache(newCache);
@@ -91,8 +86,8 @@ export const deployAppCommands = async () => {
 // Function to reload commands, clearing the current ones in memory
 export const reloadAppCommands = async () => {
   appCommands.clear();
-  logger("Handlers", "Info", "Cleared existing commands from memory");
+  logger.info("Cleared existing commands from memory");
 
   await deployAppCommands();
-  logger("Handlers", "Info", "Re-deployed commands");
+  logger.info("Re-deployed commands");
 };

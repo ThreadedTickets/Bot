@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import { collectDefaultMetrics, Registry, Gauge, Counter } from "prom-client";
-import { logger } from "./utils/logger";
+import logger from "./utils/logger";
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
@@ -113,10 +113,8 @@ export function startMetricsServer(port: number) {
     }
   );
 
-  app.listen(port, () => {
-    logger(
-      "API",
-      "Info",
+  app.listen(port || "10001", () => {
+    logger.info(
       `Metrics server running at http://localhost:${port}/${process.env["METRICS_URL"]}`
     );
   });

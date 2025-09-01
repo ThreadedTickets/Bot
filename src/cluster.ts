@@ -1,7 +1,8 @@
 import "@dotenvx/dotenvx";
 import { ClusterManager, HeartbeatManager } from "discord-hybrid-sharding";
-import { logger } from "./utils/logger";
 import { Client } from "discord-cross-hosting";
+import "./instrument";
+import logger from "./utils/logger";
 
 const client = new Client({
   agent: "bot",
@@ -27,9 +28,7 @@ manager.extend(
 );
 
 manager.on("clusterCreate", (cluster) =>
-  logger(
-    "Clusters",
-    "Info",
+  logger.info(
     `Launched Cluster ${cluster.id} with shards: ${cluster.shardList.join(
       ", "
     )}`
@@ -47,4 +46,4 @@ client
     manager.clusterList = e.clusterList;
     manager.spawn({ timeout: -1 });
   })
-  .catch((e) => logger("Clusters", "Error", e));
+  .catch((e) => logger.error("Cluster Error", e));

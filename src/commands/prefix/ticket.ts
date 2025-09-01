@@ -25,24 +25,19 @@ const cmd: PrefixCommand<{
 
     if (!user)
       return message.reply(
-        (await onError("Commands", t(data.lang!, "ERROR_CODE_2013"))).discordMsg
+        (await onError(new Error(t(data.lang!, "ERROR_CODE_2013")))).discordMsg
       );
 
     const trigger = await getServerTicketTrigger(triggerId, message.guildId);
     if (!trigger)
       return message.reply(
-        (
-          await onError(
-            "Commands",
-            t(data.lang!, "CONFIG_CREATE_TICKET_TRIGGER_NOT_FOUND")
-          )
-        ).discordMsg
+        (await onError(new Error("Trigger not found"))).discordMsg
       );
 
     const member = await getGuildMember(client, message.guildId, user.id);
     if (!member)
       return message.reply(
-        (await onError("Commands", t(data.lang!, "ERROR_CODE_2014"))).discordMsg
+        (await onError(new Error(t(data.lang!, "ERROR_CODE_2014")))).discordMsg
       );
 
     const triggerObject = trigger.toObject();
@@ -58,7 +53,7 @@ const cmd: PrefixCommand<{
 
     if (!checks.allowed) {
       return msg.edit(
-        (await onError("Commands", t(data.lang!, `ERROR_CODE_${checks.error}`)))
+        (await onError(new Error(t(data.lang!, `ERROR_CODE_${checks.error}`))))
           .discordMsg
       );
     }
@@ -72,8 +67,7 @@ const cmd: PrefixCommand<{
       return msg.edit(
         (
           await onError(
-            "Commands",
-            t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`)
+            new Error(t(data.lang!, `ERROR_CODE_${checkTargetChannel.error}`))
           )
         ).discordMsg
       );

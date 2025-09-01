@@ -76,25 +76,31 @@ export async function performApplicationChecks(
   }
 
   // Role checks
-  if (
-    includeRoles &&
-    "roles" in member &&
-    member.roles.cache.hasAny(...blacklistRoles)
-  )
-    return {
-      allowed: false,
-      error: "1001",
-    };
+  // Blacklist role check
+  if (includeRoles && "roles" in member) {
+    if (
+      blacklistRoles.length > 0 &&
+      member.roles.cache.hasAny(...blacklistRoles)
+    ) {
+      return {
+        allowed: false,
+        error: "1001",
+      };
+    }
+  }
 
-  if (
-    includeRoles &&
-    "roles" in member &&
-    !member.roles.cache.hasAll(...requiredRoles)
-  )
-    return {
-      allowed: false,
-      error: "1002",
-    };
+  // Required roles check
+  if (includeRoles && "roles" in member) {
+    if (
+      requiredRoles.length > 0 &&
+      !member.roles.cache.hasAll(...requiredRoles)
+    ) {
+      return {
+        allowed: false,
+        error: "1002",
+      };
+    }
+  }
 
   // Global application limit (Pending only)
   const completedApplications = await getCompletedApplications(

@@ -69,14 +69,7 @@ const command: AppCommand = {
       interaction.guildId
     );
     if (!trigger) {
-      const error = (
-        await onError(
-          "Commands",
-          t(data.lang!, "CONFIG_CREATE_TICKET_TRIGGER_NOT_FOUND"),
-          {},
-          data.lang! as Locale
-        )
-      ).discordMsg;
+      const error = (await onError(new Error("Trigger not found"))).discordMsg;
 
       interaction.reply(error);
       return;

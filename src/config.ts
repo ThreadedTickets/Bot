@@ -7,7 +7,11 @@ export default {
     cache: {} as CacheWithLimitsOptions,
   },
 
-  prefix: ">",
+  prefix: process.env["PREFIX"] ?? ">",
+  isWhiteLabel: process.env["IS_WHITELABEL"] === "true",
+  whiteLabelServerIds: (process.env["WHITELABEL_SERVER_IDS"] ?? "")
+    .split(", ")
+    .filter(Boolean),
 
   mongoose: {
     uri: process.env["MONGOOSE_URI"] ?? null,
@@ -24,6 +28,7 @@ export default {
     host: process.env["REDIS_HOST"] ?? null,
     port: parseInt(process.env["REDIS_PORT"] ?? "", 10),
     password: process.env["REDIS_PASSWORD"] ?? "",
+    prefix: process.env["REDIS_PREFIX"] ?? "",
   },
 
   owner: process.env["DISCORD_OWNER"] ?? "",

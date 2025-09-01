@@ -10,6 +10,8 @@ reviews:
   poem: false
   review_status: true
   collapse_walkthrough: false
+  path_filters:
+    - "!.build/"
   auto_review:
     enabled: true
     ignore_title_keywords:
