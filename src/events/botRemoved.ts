@@ -10,7 +10,38 @@ const event: Event<"guildDelete"> = {
       "Info",
       `Removed from server ${guild.name} - set it to inactive`
     );
-    await GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: false });
+    await GuildSchema.findOneAndUpdate(
+      { _id: guild.id },
+      {
+        active: false,
+        settings: {
+          logging: {
+            general: { enabled: true, channel: null, webhook: null },
+            tickets: {
+              type: {
+                feedback: { enabled: true, channel: null, webhook: null },
+                open: { enabled: true, channel: null, webhook: null },
+                close: { enabled: true, channel: null, webhook: null },
+                lock: { enabled: true, channel: null, webhook: null },
+                unlock: { enabled: true, channel: null, webhook: null },
+                raise: { enabled: true, channel: null, webhook: null },
+                lower: { enabled: true, channel: null, webhook: null },
+                move: { enabled: true, channel: null, webhook: null },
+                transcripts: { enabled: true, channel: null, webhook: null },
+              },
+            },
+            applications: {
+              type: {
+                create: { enabled: true, channel: null, webhook: null },
+                approve: { enabled: true, channel: null, webhook: null },
+                reject: { enabled: true, channel: null, webhook: null },
+                delete: { enabled: true, channel: null, webhook: null },
+              },
+            },
+          },
+        },
+      }
+    );
   },
 };
 
