@@ -1,7 +1,7 @@
 import config from "../config";
 import { GuildSchema } from "../database/modals/Guild";
 import { Event } from "../types/Event";
-import logger from "../utils/logger";
+import { logger } from "../utils/logger";
 import redis from "../utils/redis";
 
 const event: Event<"guildDelete"> = {
