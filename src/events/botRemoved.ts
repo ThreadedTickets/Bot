@@ -7,11 +7,7 @@ import redis from "../utils/redis";
 const event: Event<"guildDelete"> = {
   name: "guildDelete",
   async execute(client, data, guild) {
-    logger(
-      "System",
-      "Info",
-      `Removed from server ${guild.name} - set it to inactive`
-    );
+    logger.debug(`Removed from server ${guild.name} - set it to inactive`);
     await GuildSchema.findOneAndUpdate(
       { _id: guild.id },
       {$set: {
