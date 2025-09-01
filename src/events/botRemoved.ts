@@ -14,7 +14,7 @@ const event: Event<"guildDelete"> = {
     );
     await GuildSchema.findOneAndUpdate(
       { _id: guild.id },
-      {
+      {$set: {
         active: false,
         settings: {
           logging: {
@@ -41,7 +41,7 @@ const event: Event<"guildDelete"> = {
               },
             },
           },
-        },
+        },}
       }
     );
     logger.debug(`Removed from server ${guild.name} - set it to inactive`);
