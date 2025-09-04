@@ -32,7 +32,7 @@
     "discord-hybrid-sharding": "^2.2.6",
     "discord.js": "^14.14.1",
     "express": "^5.1.0",
-    "express-rate-limit": "^7.5.0",
+    "express-rate-limit": "^8.1.0",
     "fast-glob": "^3.3.3",
     "google-translate-api-x": "^10.7.2",
     "ioredis": "^5.6.1",
