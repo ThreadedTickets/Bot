@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="89186802-e281-50a6-9451-93722a0246d4")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -24,10 +22,6 @@ const everyoneTicketPermissions_1 = __importDefault(require("../../constants/eve
 const botTicketPermissions_1 = __importDefault(require("../../constants/botTicketPermissions"));
 const roles_1 = require("../hooks/events/applications/end/roles");
 const getGuildMember_1 = require("../bot/getGuildMember");
-const TranscriptManager_1 = require("./TranscriptManager");
-const render_1 = require("./render");
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
 const serverMessageToDiscordMessage_1 = __importDefault(require("../formatters/serverMessageToDiscordMessage"));
 const resolvePlaceholders_1 = require("../message/placeholders/resolvePlaceholders");
 const generateBaseContext_1 = require("../message/placeholders/generateBaseContext");
@@ -117,33 +111,15 @@ async function closeTicket(ticketId, locale, reason, repliable, schedule) {
         }
         return;
     }
+    __1.transcriptService.tag(ticket.server, ticketId, "add", `closedby:${repliable.member.user.id}`);
     if (ticket.takeTranscripts) {
-        const writer = new TranscriptManager_1.TranscriptWriter(ticketId);
-        writer.setMeta("name", ticketId);
-        const html = await (0, render_1.renderTranscriptFromJsonl)(writer.getFilePath(), writer.getMeta().users, writer.getMeta().metadata);
-        const transcriptPath = path_1.default.join(process.cwd(), "transcripts", `${ticket.isRaised ? "LOCKED_" : ""}${ticketId}.html`);
-        fs_1.default.writeFileSync(transcriptPath, html);
-        writer.deleteTranscript();
-        const logChannel = (0, sendLogToWebhook_1.getAvailableLogChannel)(server.settings.logging, "tickets.transcripts");
-        if (logChannel)
-            await (0, sendLogToWebhook_1.postLogToWebhook)(__1.client, {
-                channel: logChannel.channel,
-                enabled: logChannel.enabled,
-                webhook: logChannel.webhook,
-            }, {
-                embeds: [
-                    {
-                        color: parseInt(colours_1.default.info, 16),
-                        title: (0, lang_1.t)(server.preferredLanguage, "TICKET_CLOSE_WITH_TRANSCRIPT_LOG_TITLE"),
-                        description: (0, lang_1.t)(server.preferredLanguage, `TICKET_CLOSE_WITH_TRANSCRIPT_LOG_BODY`, {
-                            user: `<@${ticket.owner}>`,
-                            id: ticketId,
-                            reason: reason || "No reason provided",
-                        }),
-                    },
-                ],
-                files: [transcriptPath],
-            });
+        __1.TaskScheduler.scheduleTask("completeTranscript", {
+            serverId: ticket.server,
+            transcriptId: ticketId,
+            closedAt: new Date(),
+            closedBy: `${repliable.member.user.username} (${repliable.member.user.id})`,
+        }, 1000 * 60 * 30 // generate 30 mins after close
+        );
     }
     await new TicketChannelManager_1.TicketChannelManager().remove(ticket.channel);
     (0, invalidateCache_1.invalidateCache)(`tickets:${ticket.server}:${ticket.owner}:Open`);
@@ -177,4 +153,3 @@ async function closeTicket(ticketId, locale, reason, repliable, schedule) {
     }
 }
 //# sourceMappingURL=/src/utils/tickets/close.js.map
-//# debugId=89186802-e281-50a6-9451-93722a0246d4

@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="31653c59-f7aa-5a4d-aa41-4376ff16d490")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -50,6 +48,7 @@ async function lowerTicket(ticketId, locale, repliable) {
             ],
         });
     repliable?.editReply((0, lang_1.t)(locale, "TICKET_LOWERED"));
+    __1.transcriptService.raise(ticketId, "0");
     if (ticketChannel?.isTextBased())
         ticketChannel
             .send({
@@ -64,4 +63,3 @@ async function lowerTicket(ticketId, locale, repliable) {
             .catch((err) => logger_1.default.warn(`Failed to send message to ticket channel on lower`, err));
 }
 //# sourceMappingURL=/src/utils/tickets/lower.js.map
-//# debugId=31653c59-f7aa-5a4d-aa41-4376ff16d490

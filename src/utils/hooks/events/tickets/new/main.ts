@@ -26,17 +26,10 @@ import {
   resolvePlaceholders,
 } from "../../../../message/placeholders/resolvePlaceholders";
 import { generateBasePlaceholderContext } from "../../../../message/placeholders/generateBaseContext";
-import {
-  getServer,
-  getServerGroupsByIds,
-  getServerMessage,
-} from "../../../../bot/getServer";
+import { getServer, getServerGroupsByIds, getServerMessage } from "../../../../bot/getServer";
 import serverMessageToDiscordMessage from "../../../../formatters/serverMessageToDiscordMessage";
 import { buildQAMessages } from "../../applications/end/sendToSubmissionChannel";
-import {
-  getAvailableLogChannel,
-  postLogToWebhook,
-} from "../../../../bot/sendLogToWebhook";
+import { getAvailableLogChannel, postLogToWebhook } from "../../../../bot/sendLogToWebhook";
 import colours from "../../../../../constants/colours";
 import { TicketChannelManager } from "../../../../bot/TicketChannelManager";
 import ticketOwnerPermissions from "../../../../../constants/ticketOwnerPermissions";
@@ -45,6 +38,8 @@ import botTicketPermissions from "../../../../../constants/botTicketPermissions"
 import { invalidateCache } from "../../../../database/invalidateCache";
 import { getGuildMember } from "../../../../bot/getGuildMember";
 import logger from "../../../../logger";
+import { transcriptWriterManager } from "../../../../tickets/TranscriptManager";
+import { transcriptService } from "../../../../..";
 
 registerHook(
   "TicketCreate",
@@ -70,11 +65,7 @@ registerHook(
     const id = generateId("TK");
     const parentChannel = await fetchChannelById(
       client,
-      trigger.openChannel
-        ? trigger.openChannel
-        : trigger.isThread
-        ? messageOrInteraction.channelId
-        : null
+      trigger.openChannel ? trigger.openChannel : trigger.isThread ? messageOrInteraction.channelId : null
     );
 
     // We know this wont be an issue as the components make it non-empty
@@ -94,38 +85,22 @@ registerHook(
     if (trigger.allowRaising) {
       components.push(
         new ButtonBuilder()
-          .setLabel(
-            t(
-              lang,
-              `TICKET_PIN_MESSAGE_COMPONENTS_${
-                trigger.defaultToRaised ? "LOWER" : "RAISE"
-              }`
-            )
-          )
+          .setLabel(t(lang, `TICKET_PIN_MESSAGE_COMPONENTS_${trigger.defaultToRaised ? "LOWER" : "RAISE"}`))
           .setCustomId(`${trigger.defaultToRaised ? "lower" : "raise"}:${id}`)
           .setStyle(ButtonStyle.Secondary)
       );
     }
 
-    const actionRow = new ActionRowBuilder<ButtonBuilder>()
-      .setComponents(...components)
-      .toJSON();
+    const actionRow = new ActionRowBuilder<ButtonBuilder>().setComponents(...components).toJSON();
 
     const startMessage = {
-      ...(fetchedMessage
-        ? { ...serverMessageToDiscordMessage(fetchedMessage) }
-        : {}),
+      ...(fetchedMessage ? { ...serverMessageToDiscordMessage(fetchedMessage) } : {}),
       components: [actionRow],
     };
 
     const groups = await getServerGroupsByIds(trigger.groups, guild.id);
     const groupMentionableString = groups
-      .map((g) =>
-        [
-          ...g.roles.map((r) => `<@&${r}>`),
-          ...g.extraMembers.map((m) => `<@${m}>`),
-        ].join(", ")
-      )
+      .map((g) => [...g.roles.map((r) => `<@&${r}>`), ...g.extraMembers.map((m) => `<@${m}>`)].join(", "))
       .join(", ");
 
     let ticketChannel = null;
@@ -148,11 +123,7 @@ registerHook(
           type: ChannelType.PrivateThread,
           reason: `Creating ticket: ${trigger._id}`,
         });
-      } else if (
-        !trigger.isThread &&
-        parentChannel &&
-        parentChannel.type !== ChannelType.GuildCategory
-      ) {
+      } else if (!trigger.isThread && parentChannel && parentChannel.type !== ChannelType.GuildCategory) {
         return returnError(
           new Error("Incorrect channel type for channel tickets"),
           messageOrInteraction,
@@ -188,12 +159,7 @@ registerHook(
       );
     }
     if (!ticketChannel)
-      return returnError(
-        new Error("Failed to create ticket channel"),
-        messageOrInteraction,
-        "ERROR_CODE_2015",
-        lang
-      );
+      return returnError(new Error("Failed to create ticket channel"), messageOrInteraction, "ERROR_CODE_2015", lang);
 
     // Next most important thing is the DB
     await TicketSchema.create({
@@ -209,8 +175,7 @@ registerHook(
       addRolesOnClose: trigger.addRolesOnClose,
       addRolesOnOpen: trigger.addRolesOnOpen,
       allowAutoResponders: trigger.allowAutoresponders,
-      categoriesAvailableToMoveTicketsTo:
-        trigger.categoriesAvailableToMoveTicketsTo,
+      categoriesAvailableToMoveTicketsTo: trigger.categoriesAvailableToMoveTicketsTo,
       closeChannel: trigger.closeChannel,
       closeOnLeave: trigger.closeOnLeave,
       groups: trigger.groups,
@@ -222,6 +187,9 @@ registerHook(
       createdAt: new Date(),
       dmOnClose: trigger.dmOnClose ?? null,
     });
+
+    await transcriptWriterManager.get(id, false).startTranscript(guild.id, trigger.defaultToRaised);
+    transcriptService.tag(trigger.server, id, "add", `openedby:${owner}`);
 
     invalidateCache(`tickets:${trigger.server}:${owner}:Open`);
     invalidateCache(`tickets:${trigger.server}:Open`);
@@ -245,12 +213,14 @@ registerHook(
       const QAMessages = buildQAMessages(responses);
       for (const message of QAMessages) {
         ticketChannel.send(message).catch((err) => {
-          logger.warn(
-            `Failed to send form response message on ticket open`,
-            err
-          );
+          logger.warn(`Failed to send form response message on ticket open`, err);
         });
       }
+
+      transcriptService.systemMessage(
+        id,
+        `Form responses:\n${responses.map((r) => `${r.question}\n${r.response}`).join("\n\n")}`
+      );
     }
     const infoHeader = await ticketChannel
       .send(
@@ -296,24 +266,17 @@ registerHook(
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder()
-            .setURL(
-              `discord://discord.com/channels/${guild.id}/${ticketChannel.id}`
-            )
+            .setURL(`discord://discord.com/channels/${guild.id}/${ticketChannel.id}`)
             .setStyle(ButtonStyle.Link)
             .setLabel(t(lang, "TICKET_CREATE_BUTTON_LABEL"))
         ),
       ],
     };
-    if ("edit" in messageOrInteraction)
-      messageOrInteraction.edit(confirmContent).catch(() => {});
-    else if ("editReply" in messageOrInteraction)
-      messageOrInteraction.editReply(confirmContent).catch(() => {});
+    if ("edit" in messageOrInteraction) messageOrInteraction.edit(confirmContent).catch(() => {});
+    else if ("editReply" in messageOrInteraction) messageOrInteraction.editReply(confirmContent).catch(() => {});
 
     const server = await getServer(guild.id);
-    const logChannel = getAvailableLogChannel(
-      server.settings.logging,
-      "tickets.open"
-    );
+    const logChannel = getAvailableLogChannel(server.settings.logging, "tickets.open");
     if (!logChannel) return;
 
     await postLogToWebhook(
@@ -339,12 +302,7 @@ registerHook(
   }
 );
 
-async function returnError(
-  error: Error,
-  replyable: Message | Interaction,
-  key: string,
-  locale: Locale
-) {
+async function returnError(error: Error, replyable: Message | Interaction, key: string, locale: Locale) {
   const message = (
     await onError(error, {
       stack: error.stack,
@@ -471,9 +429,7 @@ export function buildChannelPermissionOverwrites(
 
   const dropped = sorted.length - overwrites.length;
   if (dropped > 0) {
-    logger.warn(
-      `Dropped ${dropped} permission overwrites due to Discord's 100-overwrite limit on ticket open`
-    );
+    logger.warn(`Dropped ${dropped} permission overwrites due to Discord's 100-overwrite limit on ticket open`);
   }
 
   return overwrites;

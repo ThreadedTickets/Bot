@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="788995c1-156d-54bf-a3a5-69e4e549b226")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.formatDate = void 0;
 /**
@@ -123,4 +121,3 @@ const formatDate = (dateInput, format) => {
 };
 exports.formatDate = formatDate;
 //# sourceMappingURL=/src/utils/formatters/date.js.map
-//# debugId=788995c1-156d-54bf-a3a5-69e4e549b226

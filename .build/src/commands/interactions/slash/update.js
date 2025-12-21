@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="8263001f-b73b-517e-9e7c-d2239161d3a9")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const viewAnnouncement_1 = require("../../../utils/bot/viewAnnouncement");
@@ -30,4 +28,3 @@ const command = {
 };
 exports.default = command;
 //# sourceMappingURL=/src/commands/interactions/slash/update.js.map
-//# debugId=8263001f-b73b-517e-9e7c-d2239161d3a9

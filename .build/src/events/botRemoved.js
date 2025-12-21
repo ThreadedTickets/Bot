@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="a04dac12-2728-544a-9b3c-808a6f52cdc6")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -13,6 +11,37 @@ const event = {
     name: "guildDelete",
     async execute(client, data, guild) {
         logger_1.default.debug(`Removed from server ${guild.name} - set it to inactive`);
+        await Guild_1.GuildSchema.findOneAndUpdate({ _id: guild.id }, { $set: {
+                active: false,
+                settings: {
+                    logging: {
+                        general: { enabled: true, channel: null, webhook: null },
+                        tickets: {
+                            type: {
+                                feedback: { enabled: true, channel: null, webhook: null },
+                                open: { enabled: true, channel: null, webhook: null },
+                                close: { enabled: true, channel: null, webhook: null },
+                                lock: { enabled: true, channel: null, webhook: null },
+                                unlock: { enabled: true, channel: null, webhook: null },
+                                raise: { enabled: true, channel: null, webhook: null },
+                                lower: { enabled: true, channel: null, webhook: null },
+                                move: { enabled: true, channel: null, webhook: null },
+                                transcripts: { enabled: true, channel: null, webhook: null },
+                            },
+                        },
+                        applications: {
+                            type: {
+                                create: { enabled: true, channel: null, webhook: null },
+                                approve: { enabled: true, channel: null, webhook: null },
+                                reject: { enabled: true, channel: null, webhook: null },
+                                delete: { enabled: true, channel: null, webhook: null },
+                            },
+                        },
+                    },
+                },
+            }
+        });
+        logger_1.default.debug(`Removed from server ${guild.name} - set it to inactive`);
         await Guild_1.GuildSchema.findOneAndUpdate({ _id: guild.id }, { active: false });
         if (!config_1.default.isWhiteLabel && guild.id)
             await redis_1.default.decr("guilds");
@@ -20,4 +49,3 @@ const event = {
 };
 exports.default = event;
 //# sourceMappingURL=/src/events/botRemoved.js.map
-//# debugId=a04dac12-2728-544a-9b3c-808a6f52cdc6

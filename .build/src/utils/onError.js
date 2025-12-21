@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="39a00456-4bed-5b52-929b-dba6a11083bc")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -61,4 +59,3 @@ const onError = async (error, context, locale) => {
 };
 exports.onError = onError;
 //# sourceMappingURL=/src/utils/onError.js.map
-//# debugId=39a00456-4bed-5b52-929b-dba6a11083bc

@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="74b8933f-9ad0-5a5b-a7eb-7f14892ea4b8")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -36,4 +34,3 @@ function t(locale, key, variables = {}) {
     return template;
 }
 //# sourceMappingURL=/src/lang/index.js.map
-//# debugId=74b8933f-9ad0-5a5b-a7eb-7f14892ea4b8

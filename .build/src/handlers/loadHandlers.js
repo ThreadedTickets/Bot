@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="ce5501bf-9cec-5fa6-a85e-4f23fd9ab3cc")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -21,4 +19,3 @@ const loadHandlersRecursively = (dir) => {
 };
 exports.loadHandlersRecursively = loadHandlersRecursively;
 //# sourceMappingURL=/src/handlers/loadHandlers.js.map
-//# debugId=ce5501bf-9cec-5fa6-a85e-4f23fd9ab3cc

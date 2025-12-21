@@ -6,14 +6,11 @@ import {
   ChatInputCommandInteraction,
   TextChannel,
 } from "discord.js";
-import { client } from "../..";
+import { client, transcriptService } from "../..";
 import { t } from "../../lang";
 import { Locale } from "../../types/Locale";
 import { getServer, getTicketTrust } from "../bot/getServer";
-import {
-  getAvailableLogChannel,
-  postLogToWebhook,
-} from "../bot/sendLogToWebhook";
+import { getAvailableLogChannel, postLogToWebhook } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
 import { fetchChannelById } from "../bot/fetchMessage";
 import { onError } from "../onError";
@@ -35,10 +32,8 @@ export async function raiseTicket(
         })
       ).discordMsg
     );
-  if (!ticket.allowRaising)
-    return repliable?.editReply(t(locale, "TICKET_DOES_NOT_ALLOW_RAISE"));
-  if (ticket.isRaised)
-    return repliable?.editReply(t(locale, "TICKET_ALREADY_RAISED"));
+  if (!ticket.allowRaising) return repliable?.editReply(t(locale, "TICKET_DOES_NOT_ALLOW_RAISE"));
+  if (ticket.isRaised) return repliable?.editReply(t(locale, "TICKET_ALREADY_RAISED"));
 
   await TicketSchema.findOneAndUpdate({ _id: ticketId }, { isRaised: true });
   await invalidateCache(`ticket:${ticketId}`);
@@ -47,10 +42,7 @@ export async function raiseTicket(
   const ticketChannel = await fetchChannelById(client, ticket.channel);
 
   const server = await getServer(ticket.server);
-  const logChannel = getAvailableLogChannel(
-    server.settings.logging,
-    "tickets.raise"
-  );
+  const logChannel = getAvailableLogChannel(server.settings.logging, "tickets.raise");
   if (logChannel)
     await postLogToWebhook(
       client,
@@ -73,6 +65,7 @@ export async function raiseTicket(
     );
 
   repliable?.editReply(t(locale, "TICKET_RAISED"));
+  transcriptService.raise(ticketId, "1");
 
   if (ticketChannel?.isTextBased())
     (ticketChannel as TextChannel)
@@ -87,7 +80,5 @@ export async function raiseTicket(
           ),
         ],
       })
-      .catch((err) =>
-        logger.warn(`Failed to send message to ticket channel on raise`, err)
-      );
+      .catch((err) => logger.warn(`Failed to send message to ticket channel on raise`, err));
 }

@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="5e3b5464-016e-5b3f-b83f-430a3eafb4a1")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -50,4 +48,3 @@ const schema = new mongoose_1.default.Schema({
 });
 exports.MessageCreatorSchema = mongoose_1.default.model("Message Creators", schema);
 //# sourceMappingURL=/src/database/modals/MessageCreator.js.map
-//# debugId=5e3b5464-016e-5b3f-b83f-430a3eafb4a1

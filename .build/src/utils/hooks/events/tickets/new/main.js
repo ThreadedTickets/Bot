@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="264d0506-4be5-503f-ac31-7b548775b606")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -27,13 +25,11 @@ const botTicketPermissions_1 = __importDefault(require("../../../../../constants
 const invalidateCache_1 = require("../../../../database/invalidateCache");
 const getGuildMember_1 = require("../../../../bot/getGuildMember");
 const logger_1 = __importDefault(require("../../../../logger"));
+const TranscriptManager_1 = require("../../../../tickets/TranscriptManager");
+const __2 = require("../../../../..");
 (0, __1.registerHook)("TicketCreate", async ({ trigger, guild, owner, responses, messageOrInteraction, client, lang, user, }) => {
     const id = (0, generateId_1.generateId)("TK");
-    const parentChannel = await (0, fetchMessage_1.fetchChannelById)(client, trigger.openChannel
-        ? trigger.openChannel
-        : trigger.isThread
-            ? messageOrInteraction.channelId
-            : null);
+    const parentChannel = await (0, fetchMessage_1.fetchChannelById)(client, trigger.openChannel ? trigger.openChannel : trigger.isThread ? messageOrInteraction.channelId : null);
     // We know this wont be an issue as the components make it non-empty
     const fetchedMessage = await (0, getServer_1.getServerMessage)(trigger.message, guild.id);
     const components = [
@@ -52,21 +48,14 @@ const logger_1 = __importDefault(require("../../../../logger"));
             .setCustomId(`${trigger.defaultToRaised ? "lower" : "raise"}:${id}`)
             .setStyle(discord_js_1.ButtonStyle.Secondary));
     }
-    const actionRow = new discord_js_1.ActionRowBuilder()
-        .setComponents(...components)
-        .toJSON();
+    const actionRow = new discord_js_1.ActionRowBuilder().setComponents(...components).toJSON();
     const startMessage = {
-        ...(fetchedMessage
-            ? { ...(0, serverMessageToDiscordMessage_1.default)(fetchedMessage) }
-            : {}),
+        ...(fetchedMessage ? { ...(0, serverMessageToDiscordMessage_1.default)(fetchedMessage) } : {}),
         components: [actionRow],
     };
     const groups = await (0, getServer_1.getServerGroupsByIds)(trigger.groups, guild.id);
     const groupMentionableString = groups
-        .map((g) => [
-        ...g.roles.map((r) => `<@&${r}>`),
-        ...g.extraMembers.map((m) => `<@${m}>`),
-    ].join(", "))
+        .map((g) => [...g.roles.map((r) => `<@&${r}>`), ...g.extraMembers.map((m) => `<@${m}>`)].join(", "))
         .join(", ");
     let ticketChannel = null;
     try {
@@ -81,9 +70,7 @@ const logger_1 = __importDefault(require("../../../../logger"));
                 reason: `Creating ticket: ${trigger._id}`,
             });
         }
-        else if (!trigger.isThread &&
-            parentChannel &&
-            parentChannel.type !== discord_js_1.ChannelType.GuildCategory) {
+        else if (!trigger.isThread && parentChannel && parentChannel.type !== discord_js_1.ChannelType.GuildCategory) {
             return returnError(new Error("Incorrect channel type for channel tickets"), messageOrInteraction, "ERROR_CODE_2015", lang);
         }
         else if (!trigger.isThread) {
@@ -129,6 +116,8 @@ const logger_1 = __importDefault(require("../../../../logger"));
         createdAt: new Date(),
         dmOnClose: trigger.dmOnClose ?? null,
     });
+    await TranscriptManager_1.transcriptWriterManager.get(id, false).startTranscript(guild.id, trigger.defaultToRaised);
+    __2.transcriptService.tag(trigger.server, id, "add", `openedby:${owner}`);
     (0, invalidateCache_1.invalidateCache)(`tickets:${trigger.server}:${owner}:Open`);
     (0, invalidateCache_1.invalidateCache)(`tickets:${trigger.server}:Open`);
     await new TicketChannelManager_1.TicketChannelManager().add(ticketChannel.id, id, trigger.takeTranscripts, trigger.hideUsersInTranscript, trigger.allowAutoresponders, owner);
@@ -145,6 +134,7 @@ const logger_1 = __importDefault(require("../../../../logger"));
                 logger_1.default.warn(`Failed to send form response message on ticket open`, err);
             });
         }
+        __2.transcriptService.systemMessage(id, `Form responses:\n${responses.map((r) => `${r.question}\n${r.response}`).join("\n\n")}`);
     }
     const infoHeader = await ticketChannel
         .send((0, resolvePlaceholders_1.resolveDiscordMessagePlaceholders)(startMessage, {
@@ -302,4 +292,3 @@ function buildChannelPermissionOverwrites(groups, guildId, ticketOwner, defaultE
     return overwrites;
 }
 //# sourceMappingURL=/src/utils/hooks/events/tickets/new/main.js.map
-//# debugId=264d0506-4be5-503f-ac31-7b548775b606

@@ -1,39 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="67c1e2e6-10b4-54bb-b8e5-5019511d47c2")}catch(e){}}();
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -43,7 +8,7 @@ exports.transcriptWriterManager = exports.TranscriptWriter = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const discord_js_1 = require("discord.js");
-const readline = __importStar(require("readline"));
+const __1 = require("../..");
 function numberToWords(n) {
     const words = [
         "Zero",
@@ -174,109 +139,76 @@ class TranscriptWriter {
             isBot: user.bot,
         };
     }
-    deleteTranscript() {
-        if (this.closed)
-            throw new Error("Transcript already closed or deleted.");
-        if (fs_1.default.existsSync(this.filePath)) {
-            fs_1.default.unlinkSync(this.filePath);
-        }
-        if (fs_1.default.existsSync(this.metaPath)) {
-            fs_1.default.unlinkSync(this.metaPath);
-        }
-        this.closed = true;
+    async startTranscript(guildId, isRaised) {
+        __1.transcriptService.create(this.ticketId, guildId, isRaised);
     }
-    appendMessage(msg) {
+    async addMessage(msg) {
         const user = msg.author;
         const userId = this.assignUserId(user);
         if (!this.users[userId]) {
             this.users[userId] = this.captureUserMeta(user, msg.member ?? undefined);
             this.saveMeta();
         }
-        const serialized = {
-            messageId: msg.id,
-            userId,
-            type: msg.type,
-            content: msg.content,
-            embeds: msg.embeds.map((e) => discord_js_1.EmbedBuilder.from(e).toJSON()),
-            replyTo: msg.reference?.messageId ?? [1, 2].includes(msg.type)
-                ? msg.mentions.users.first()?.id
-                : undefined,
-            edited: !!msg.editedTimestamp,
-            timestamp: msg.createdAt.toISOString(),
-        };
-        fs_1.default.appendFileSync(this.filePath, JSON.stringify(serialized) + "\n");
-    }
-    setMeta(path, value) {
-        const parts = path.split(".");
-        let current = this.metadata;
-        for (let i = 0; i < parts.length - 1; i++) {
-            if (parts[i] === "__proto__" || parts[i] === "constructor") {
-                throw new Error("Invalid property name detected.");
+        let content = msg.content;
+        if (msg.mentions.channels) {
+            for (const channel of msg.mentions.channels.values()) {
+                content = content.replaceAll(`<#${channel.id}>`, `#${"name" in channel ? channel.name : "Unknown Channel"} (${channel.id})`);
             }
-            if (!current[parts[i]])
-                current[parts[i]] = {};
-            current = current[parts[i]];
         }
-        const lastPart = parts[parts.length - 1];
-        if (lastPart === "__proto__" || lastPart === "constructor") {
-            throw new Error("Invalid property name detected.");
+        if (msg.mentions.users) {
+            for (const user of msg.mentions.users.values()) {
+                content = content.replaceAll(`<@${user.id}>`, `@${this.users[userId]?.username ?? user.username}${this.allowAnonymity ? "" : ` (${user.id})`}`);
+            }
         }
-        current[lastPart] = value;
-        this.saveMeta();
+        if (msg.mentions.roles) {
+            for (const role of msg.mentions.roles.values()) {
+                content = content.replaceAll(`<@&${role.id}>`, `@${role.name} (${role.id})`);
+            }
+        }
+        __1.transcriptService.write(this.ticketId, this.allowAnonymity ? this.users[userId].username : user.id, this.users[userId]?.username ?? user.username, msg.id, content, msg.createdAt, msg.attachments.map((a) => {
+            return {
+                filename: a.name,
+                size: `${Math.round((a.size / 1024) * 100) / 100}kb`,
+                url: a.url,
+            };
+        }));
+        if (msg.reference?.messageId && msg.type === discord_js_1.MessageType.Reply) {
+            const referencedMessage = await msg.channel.messages.fetch(msg.reference.messageId);
+            if (referencedMessage)
+                __1.transcriptService.event(this.ticketId, "reply", msg.id, `${referencedMessage.content}${referencedMessage.attachments.size > 0 ? ` (+${referencedMessage.attachments.size} files)` : ""}`, `${referencedMessage.author.username} (${referencedMessage.author.id})`);
+        }
+    }
+    async editMessage(msg) {
+        const user = msg.author;
+        const userId = this.assignUserId(user);
+        if (!this.users[userId]) {
+            this.users[userId] = this.captureUserMeta(user, msg.member ?? undefined);
+            this.saveMeta();
+        }
+        let content = msg.content;
+        if (msg.mentions.channels) {
+            for (const channel of msg.mentions.channels.values()) {
+                content = content.replaceAll(`<#${channel.id}>`, `#${"name" in channel ? channel.name : "Unknown Channel"} (${channel.id})`);
+            }
+        }
+        if (msg.mentions.users) {
+            for (const user of msg.mentions.users.values()) {
+                console.log(user, `@${this.users[userId]?.username ?? user.username}${this.allowAnonymity ? "" : ` (${user.id})`}`, content);
+                content = content.replaceAll(`<@${user.id}>`, `@${this.users[userId]?.username ?? user.username}${this.allowAnonymity ? "" : ` (${user.id})`}`);
+            }
+        }
+        if (msg.mentions.roles) {
+            for (const role of msg.mentions.roles.values()) {
+                content = content.replaceAll(`<@&${role.id}>`, `@${role.name} (${role.id})`);
+            }
+        }
+        __1.transcriptService.event(this.ticketId, "edit", msg.id, content);
+    }
+    async deleteMessage(msgId) {
+        __1.transcriptService.event(this.ticketId, "delete", msgId);
     }
     getFilePath() {
         return this.filePath;
-    }
-    getMeta() {
-        return {
-            users: this.users,
-            anonCounter: this.anonCounter,
-            anonMap: Object.fromEntries(this.anonMap.entries()),
-            metadata: this.metadata,
-        };
-    }
-    async editMessage(messageId, newMessage) {
-        if (this.closed)
-            throw new Error("Cannot edit a closed transcript.");
-        const serialized = {
-            messageId: newMessage.id,
-            userId: newMessage.author.id,
-            type: newMessage.type ?? -1,
-            content: newMessage.content,
-            embeds: newMessage.embeds.map((e) => discord_js_1.EmbedBuilder.from(e).toJSON()),
-            replyTo: newMessage.reference?.messageId ?? undefined,
-            edited: !!newMessage.editedTimestamp,
-            timestamp: newMessage.createdAt.toISOString(),
-        };
-        const tempPath = this.filePath + ".tmp";
-        const rl = readline.createInterface({
-            input: fs_1.default.createReadStream(this.filePath),
-            crlfDelay: Infinity,
-        });
-        const tempStream = fs_1.default.createWriteStream(tempPath);
-        let found = false;
-        for await (const line of rl) {
-            try {
-                const msg = JSON.parse(line);
-                if (msg.messageId === newMessage.id) {
-                    // Write the updated serialized message instead of the old one
-                    tempStream.write(JSON.stringify(serialized) + "\n");
-                    found = true;
-                }
-                else {
-                    // Write the original line unchanged
-                    tempStream.write(line + "\n");
-                }
-            }
-            catch {
-                // If a line is malformed, write it back as-is to keep file intact
-                tempStream.write(line + "\n");
-            }
-        }
-        await new Promise((res) => tempStream.end(res));
-        if (!found)
-            throw new Error(`Message ID ${newMessage.id} not found.`);
-        fs_1.default.renameSync(tempPath, this.filePath);
     }
 }
 exports.TranscriptWriter = TranscriptWriter;
@@ -327,4 +259,3 @@ class TranscriptWriterManager {
 }
 exports.transcriptWriterManager = new TranscriptWriterManager();
 //# sourceMappingURL=/src/utils/tickets/TranscriptManager.js.map
-//# debugId=67c1e2e6-10b4-54bb-b8e5-5019511d47c2

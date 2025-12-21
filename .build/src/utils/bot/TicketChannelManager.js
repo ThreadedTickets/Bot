@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="b806cb34-2a97-56e7-b3d5-639e11a345c0")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -60,4 +58,3 @@ class TicketChannelManager {
 }
 exports.TicketChannelManager = TicketChannelManager;
 //# sourceMappingURL=/src/utils/bot/TicketChannelManager.js.map
-//# debugId=b806cb34-2a97-56e7-b3d5-639e11a345c0

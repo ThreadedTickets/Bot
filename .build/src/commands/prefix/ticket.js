@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="6cdb98a6-76b3-5977-acd3-f8603e470453")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const lang_1 = require("../../lang");
 const getServer_1 = require("../../utils/bot/getServer");
@@ -58,4 +56,3 @@ const cmd = {
 };
 exports.default = cmd;
 //# sourceMappingURL=/src/commands/prefix/ticket.js.map
-//# debugId=6cdb98a6-76b3-5977-acd3-f8603e470453

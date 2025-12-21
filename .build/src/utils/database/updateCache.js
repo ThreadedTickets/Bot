@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="1e8ef6fe-5354-56b2-b120-6aed1b1a4ff4")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -29,4 +27,3 @@ const updateCachedData = async (key, ttl, data) => {
 };
 exports.updateCachedData = updateCachedData;
 //# sourceMappingURL=/src/utils/database/updateCache.js.map
-//# debugId=1e8ef6fe-5354-56b2-b120-6aed1b1a4ff4

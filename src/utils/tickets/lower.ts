@@ -6,14 +6,11 @@ import {
   ChatInputCommandInteraction,
   TextChannel,
 } from "discord.js";
-import { client } from "../..";
+import { client, transcriptService } from "../..";
 import { t } from "../../lang";
 import { Locale } from "../../types/Locale";
 import { getServer, getTicketTrust } from "../bot/getServer";
-import {
-  getAvailableLogChannel,
-  postLogToWebhook,
-} from "../bot/sendLogToWebhook";
+import { getAvailableLogChannel, postLogToWebhook } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
 import { fetchChannelById } from "../bot/fetchMessage";
 import { onError } from "../onError";
@@ -35,10 +32,8 @@ export async function lowerTicket(
         })
       ).discordMsg
     );
-  if (!ticket.isRaised)
-    return repliable?.editReply(t(locale, "TICKET_ALREADY_LOWERED"));
-  if (!ticket.allowRaising)
-    return repliable?.editReply(t(locale, "TICKET_DOES_NOT_ALLOW_RAISE"));
+  if (!ticket.isRaised) return repliable?.editReply(t(locale, "TICKET_ALREADY_LOWERED"));
+  if (!ticket.allowRaising) return repliable?.editReply(t(locale, "TICKET_DOES_NOT_ALLOW_RAISE"));
 
   await TicketSchema.findOneAndUpdate({ _id: ticketId }, { isRaised: false });
   await invalidateCache(`ticket:${ticketId}`);
@@ -47,10 +42,7 @@ export async function lowerTicket(
   const ticketChannel = await fetchChannelById(client, ticket.channel);
 
   const server = await getServer(ticket.server);
-  const logChannel = getAvailableLogChannel(
-    server.settings.logging,
-    "tickets.lower"
-  );
+  const logChannel = getAvailableLogChannel(server.settings.logging, "tickets.lower");
   if (logChannel)
     await postLogToWebhook(
       client,
@@ -73,6 +65,7 @@ export async function lowerTicket(
     );
 
   repliable?.editReply(t(locale, "TICKET_LOWERED"));
+  transcriptService.raise(ticketId, "0");
 
   if (ticketChannel?.isTextBased())
     (ticketChannel as TextChannel)
@@ -87,7 +80,5 @@ export async function lowerTicket(
           ),
         ],
       })
-      .catch((err) =>
-        logger.warn(`Failed to send message to ticket channel on lower`, err)
-      );
+      .catch((err) => logger.warn(`Failed to send message to ticket channel on lower`, err));
 }

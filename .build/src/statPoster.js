@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="d356a672-638a-5a68-841d-f0df3269125c")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -14,4 +12,3 @@ function statPoster(client) {
     topGgPost.on("error", (error) => logger_1.default.debug("Failed to post top.gg stats", error));
 }
 //# sourceMappingURL=/src/statPoster.js.map
-//# debugId=d356a672-638a-5a68-841d-f0df3269125c

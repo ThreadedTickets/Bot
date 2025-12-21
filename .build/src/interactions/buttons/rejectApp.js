@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="bb0201fd-1527-5400-ae96-fe27112148b5")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const getServer_1 = require("../../utils/bot/getServer");
 const onError_1 = require("../../utils/onError");
@@ -32,4 +30,3 @@ const button = {
 };
 exports.default = button;
 //# sourceMappingURL=/src/interactions/buttons/rejectApp.js.map
-//# debugId=bb0201fd-1527-5400-ae96-fe27112148b5

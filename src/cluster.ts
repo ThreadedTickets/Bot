@@ -28,11 +28,7 @@ manager.extend(
 );
 
 manager.on("clusterCreate", (cluster) =>
-  logger.info(
-    `Launched Cluster ${cluster.id} with shards: ${cluster.shardList.join(
-      ", "
-    )}`
-  )
+  logger.info(`Launched Cluster ${cluster.id} with shards: ${cluster.shardList.join(", ")}`)
 );
 client.listen(manager);
 client

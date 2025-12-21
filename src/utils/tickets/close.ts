@@ -7,20 +7,13 @@ import {
   ModalSubmitInteraction,
   TextChannel,
 } from "discord.js";
-import { client, TaskScheduler } from "../..";
+import { client, TaskScheduler, transcriptService } from "../..";
 import { formatDuration, parseDurationToMs } from "../formatters/duration";
 import { t } from "../../lang";
 import { Locale } from "../../types/Locale";
 import { TicketSchema } from "../../database/modals/Ticket";
-import {
-  getServer,
-  getServerGroupsByIds,
-  getServerMessage,
-} from "../bot/getServer";
-import {
-  getAvailableLogChannel,
-  postLogToWebhook,
-} from "../bot/sendLogToWebhook";
+import { getServer, getServerGroupsByIds, getServerMessage } from "../bot/getServer";
+import { getAvailableLogChannel, postLogToWebhook } from "../bot/sendLogToWebhook";
 import colours from "../../constants/colours";
 import { fetchChannelById, fetchGuildById } from "../bot/fetchMessage";
 import { TicketChannelManager } from "../bot/TicketChannelManager";
@@ -85,23 +78,14 @@ export async function closeTicket(
   if (repliable) {
     const member = await getGuildMember(client, ticket.server, ticket.owner);
 
-    if (member)
-      updateMemberRoles(
-        client,
-        member,
-        ticket.addRolesOnClose,
-        ticket.removeRolesOnClose
-      );
+    if (member) updateMemberRoles(client, member, ticket.addRolesOnClose, ticket.removeRolesOnClose);
   }
 
   const ticketChannel = await fetchChannelById(client, ticket.channel);
   const server = await getServer(ticket.server);
 
   if (schedule) {
-    const logChannel = getAvailableLogChannel(
-      server.settings.logging,
-      "tickets.close"
-    );
+    const logChannel = getAvailableLogChannel(server.settings.logging, "tickets.close");
     if (logChannel)
       await postLogToWebhook(
         client,
@@ -115,15 +99,11 @@ export async function closeTicket(
             {
               color: parseInt(colours.info, 16),
               title: t(server.preferredLanguage, "TICKET_CLOSE_LOG_TITLE"),
-              description: t(
-                server.preferredLanguage,
-                `TICKET_CLOSE_LOG_BODY`,
-                {
-                  user: `<@${ticket.owner}>`,
-                  id: ticketId,
-                  reason: reason || "No reason provided",
-                }
-              ),
+              description: t(server.preferredLanguage, `TICKET_CLOSE_LOG_BODY`, {
+                user: `<@${ticket.owner}>`,
+                id: ticketId,
+                reason: reason || "No reason provided",
+              }),
             },
           ],
         }
@@ -141,25 +121,14 @@ export async function closeTicket(
           ),
           ...(ticket.closeChannel ? { parent: ticket.closeChannel } : {}),
         })
-        .catch((err) =>
-          logger.warn(`Failed to edit ticket channel on close`, err)
-        );
+        .catch((err) => logger.warn(`Failed to edit ticket channel on close`, err));
     }
     const ms = parseDurationToMs(schedule);
     const formattedDuration = formatDuration(ms);
-    TaskScheduler.scheduleTask(
-      "closeTicket",
-      { ticketId, locale, reason },
-      ms,
-      `CLOSE-${ticketId}`
-    );
+    TaskScheduler.scheduleTask("closeTicket", { ticketId, locale, reason }, ms, `CLOSE-${ticketId}`);
     "editReply" in repliable
-      ? repliable?.editReply(
-          t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
-        )
-      : repliable?.edit(
-          t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration })
-        );
+      ? repliable?.editReply(t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration }))
+      : repliable?.edit(t(locale, "SCHEDULE_TICKET_CLOSE", { duration: formattedDuration }));
 
     if (ticketChannel?.isTextBased())
       (ticketChannel as TextChannel)
@@ -177,70 +146,28 @@ export async function closeTicket(
             ),
           ],
         })
-        .catch((err) =>
-          logger.warn(`Failed to send message to ticket channel on close`, err)
-        );
+        .catch((err) => logger.warn(`Failed to send message to ticket channel on close`, err));
     else if (ticketChannel?.isThread()) {
       await ticketChannel.members
         .remove(ticket.owner)
-        .catch((err) =>
-          logger.warn(`Failed to remove ticket owner on close`, err)
-        );
+        .catch((err) => logger.warn(`Failed to remove ticket owner on close`, err));
     }
     return;
   }
 
+  transcriptService.tag(ticket.server, ticketId, "add", `closedby:${repliable.member.user.id}`);
+
   if (ticket.takeTranscripts) {
-    const writer = new TranscriptWriter(ticketId);
-    writer.setMeta("name", ticketId);
-    const html = await renderTranscriptFromJsonl(
-      writer.getFilePath(),
-      writer.getMeta().users,
-      writer.getMeta().metadata
+    TaskScheduler.scheduleTask(
+      "completeTranscript",
+      {
+        serverId: ticket.server,
+        transcriptId: ticketId,
+        closedAt: new Date(),
+        closedBy: `${repliable.member.user.username} (${repliable.member.user.id})`,
+      },
+      1000 * 60 * 30 // generate 30 mins after close
     );
-
-    const transcriptPath = path.join(
-      process.cwd(),
-      "transcripts",
-      `${ticket.isRaised ? "LOCKED_" : ""}${ticketId}.html`
-    );
-    fs.writeFileSync(transcriptPath, html);
-    writer.deleteTranscript();
-
-    const logChannel = getAvailableLogChannel(
-      server.settings.logging,
-      "tickets.transcripts"
-    );
-    if (logChannel)
-      await postLogToWebhook(
-        client,
-        {
-          channel: logChannel.channel!,
-          enabled: logChannel.enabled,
-          webhook: logChannel.webhook!,
-        },
-        {
-          embeds: [
-            {
-              color: parseInt(colours.info, 16),
-              title: t(
-                server.preferredLanguage,
-                "TICKET_CLOSE_WITH_TRANSCRIPT_LOG_TITLE"
-              ),
-              description: t(
-                server.preferredLanguage,
-                `TICKET_CLOSE_WITH_TRANSCRIPT_LOG_BODY`,
-                {
-                  user: `<@${ticket.owner}>`,
-                  id: ticketId,
-                  reason: reason || "No reason provided",
-                }
-              ),
-            },
-          ],
-          files: [transcriptPath],
-        }
-      );
   }
 
   await new TicketChannelManager().remove(ticket.channel);
@@ -250,9 +177,7 @@ export async function closeTicket(
   if (ticketChannel) {
     await ticketChannel
       .delete("Deleting old ticket channel")
-      .catch((err) =>
-        logger.warn(`Failed to delete ticket channel on close`, err)
-      );
+      .catch((err) => logger.warn(`Failed to delete ticket channel on close`, err));
   }
 
   if (ticket.dmOnClose) {

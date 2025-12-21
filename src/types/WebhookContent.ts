@@ -5,5 +5,5 @@ export type WebhookContent = {
   embeds?: APIEmbed[];
   username?: string;
   avatar_url?: string;
-  files?: string[];
+  files?: any[];
 };

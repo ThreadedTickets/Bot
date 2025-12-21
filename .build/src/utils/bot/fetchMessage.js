@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="17498afe-86a2-5f31-8542-f7df6d668174")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -56,4 +54,3 @@ async function fetchGuildById(client, guildId) {
     }
 }
 //# sourceMappingURL=/src/utils/bot/fetchMessage.js.map
-//# debugId=17498afe-86a2-5f31-8542-f7df6d668174

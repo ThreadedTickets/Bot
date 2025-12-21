@@ -20,6 +20,9 @@ import logger from "./utils/logger";
 import "./instrument";
 import { awaitReply } from "./utils/tickets/await-reply";
 import config from "./config";
+import Service from "./services";
+import TranscriptService from "./services/transcripts";
+import completeTranscript from "./utils/tickets/completeTranscript";
 
 const isProd = process.env["IS_PROD"] === "true";
 
@@ -37,7 +40,7 @@ const discordClient = new Client({
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.GuildMembers,
   ],
-  partials: [Partials.Channel],
+  partials: [Partials.Channel, Partials.Message],
   makeCache: Options.cacheWithLimits({
     ApplicationCommandManager: 0,
     ApplicationEmojiManager: 0,
@@ -84,9 +87,7 @@ const discordClient = new Client({
     },
   },
 });
-export const clusterClient = isProd
-  ? new ClusterClient(discordClient)
-  : discordClient;
+export const clusterClient = isProd ? new ClusterClient(discordClient) : discordClient;
 // @ts-ignore
 export const client = isProd ? clusterClient.client : discordClient;
 
@@ -101,21 +102,19 @@ if (!config.isWhiteLabel && isProd) {
 loadInteractionHandlers();
 loadLanguages();
 export const TaskScheduler = new Scheduler();
+TaskScheduler.registerTaskFunction("closeTicket", (params: { ticketId: string; locale: Locale; reason: string }) => {
+  closeTicket(params.ticketId, params.locale, params.reason);
+});
 TaskScheduler.registerTaskFunction(
-  "closeTicket",
-  (params: { ticketId: string; locale: Locale; reason: string }) => {
-    closeTicket(params.ticketId, params.locale, params.reason);
+  "awaitingReply",
+  (params: { ticketId: string; action: "nothing" | "lock" | "close"; notify: string | null; serverId: string }) => {
+    awaitReply(params.serverId, params.ticketId, params.action, params.notify);
   }
 );
 TaskScheduler.registerTaskFunction(
-  "awaitingReply",
-  (params: {
-    ticketId: string;
-    action: "nothing" | "lock" | "close";
-    notify: string | null;
-    serverId: string;
-  }) => {
-    awaitReply(params.serverId, params.ticketId, params.action, params.notify);
+  "completeTranscript",
+  (params: { serverId: string; transcriptId: string; closedAt: Date; closedBy: string }) => {
+    completeTranscript(params.serverId, params.transcriptId, params.closedAt, params.closedBy);
   }
 );
 TaskScheduler.loadAndProcessBacklog(1000);
@@ -133,14 +132,14 @@ export const guildLeaveQueue = new PQueue({
 });
 export const ticketQueueManager = new AsyncQueueManager();
 export const massCloseManager = new AsyncQueueManager();
+export const transcriptService = new TranscriptService();
 
 export const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 client.login(process.env["DISCORD_TOKEN"]);
 
 process.on("unhandledRejection", (err: Error) =>
-  logger.error("Unhandled Rejection", err)
+  // logger.error("Unhandled Rejection", err)
+  console.log(err)
 );
-process.on("uncaughtException", (err: Error) =>
-  logger.error("Uncaught Exception", err)
-);
+process.on("uncaughtException", (err: Error) => logger.error("Uncaught Exception", err));

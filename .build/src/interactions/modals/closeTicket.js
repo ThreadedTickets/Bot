@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="48d41eac-43b6-5649-8997-3b60ed860ff4")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const lang_1 = require("../../lang");
@@ -23,4 +21,3 @@ const modal = {
 };
 exports.default = modal;
 //# sourceMappingURL=/src/interactions/modals/closeTicket.js.map
-//# debugId=48d41eac-43b6-5649-8997-3b60ed860ff4

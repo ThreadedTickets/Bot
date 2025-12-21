@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="92f45def-b973-581c-ba62-511532094510")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateBasePlaceholderContext = generateBasePlaceholderContext;
 function generateBasePlaceholderContext(options) {
@@ -56,4 +54,3 @@ function generateBasePlaceholderContext(options) {
     return context;
 }
 //# sourceMappingURL=/src/utils/message/placeholders/generateBaseContext.js.map
-//# debugId=92f45def-b973-581c-ba62-511532094510

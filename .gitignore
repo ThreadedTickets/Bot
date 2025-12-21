@@ -5,3 +5,4 @@ transcripts
 package-lock.json
 logs
 *.map
+service-queue

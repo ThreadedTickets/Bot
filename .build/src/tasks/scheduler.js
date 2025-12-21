@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="3f7adb35-9af3-58a5-a141-9d2b42503c7c")}catch(e){}}();
-
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -25,4 +23,3 @@ const startTasks = (client) => {
 };
 exports.startTasks = startTasks;
 //# sourceMappingURL=/src/tasks/scheduler.js.map
-//# debugId=3f7adb35-9af3-58a5-a141-9d2b42503c7c

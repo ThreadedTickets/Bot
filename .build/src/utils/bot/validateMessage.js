@@ -1,6 +1,4 @@
 "use strict";
-!function(){try{var e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof self?self:{},n=(new e.Error).stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="81493d25-184e-5da1-84ea-ac8507cb9487")}catch(e){}}();
-
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateDiscordMessage = validateDiscordMessage;
 function validateDiscordMessage(message) {
@@ -80,4 +78,3 @@ function validateDiscordMessage(message) {
     return errors;
 }
 //# sourceMappingURL=/src/utils/bot/validateMessage.js.map
-//# debugId=81493d25-184e-5da1-84ea-ac8507cb9487

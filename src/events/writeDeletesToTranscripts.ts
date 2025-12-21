@@ -8,19 +8,11 @@ const event: Event<"messageDelete"> = {
     if (!message.guildId) return;
     if (message.flags.has("Ephemeral")) return;
 
-    const ticket = await new TicketChannelManager().getTicket(
-      message.channelId
-    );
+    const ticket = await new TicketChannelManager().getTicket(message.channelId);
     if (!ticket?.takeTranscript) return;
 
-    const writer = transcriptWriterManager.get(
-      ticket.ticketId,
-      ticket.anonymise
-    );
-    message.content = "MESSAGE DELETED";
-    message.embeds = [];
-    message.type = null;
-    writer.editMessage(message.id, message);
+    const writer = transcriptWriterManager.get(ticket.ticketId, ticket.anonymise);
+    writer.deleteMessage(message.id);
   },
 };
 
