@@ -207,14 +207,7 @@ const avjApplicationSchema = {
       maxItems: 50,
       items: {
         type: "object",
-        required: [
-          "question",
-          "type",
-          "message",
-          "minimum",
-          "maximum",
-          "choices",
-        ],
+        required: ["question", "type", "message", "minimum", "maximum", "choices"],
         properties: {
           question: { type: "string", maxLength: 500 },
           type: { type: "string", enum: ["number", "text", "choice"] },
@@ -376,12 +369,7 @@ const ticketTriggerSchema = new mongoose.Schema({
   colour: {
     type: Number,
     default: 1,
-    enum: [
-      ButtonStyle.Danger,
-      ButtonStyle.Primary,
-      ButtonStyle.Secondary,
-      ButtonStyle.Success,
-    ],
+    enum: [ButtonStyle.Danger, ButtonStyle.Primary, ButtonStyle.Secondary, ButtonStyle.Success],
   },
   message: {
     type: String,
@@ -414,6 +402,7 @@ const ticketTriggerSchema = new mongoose.Schema({
   dmOnClose: { type: String, default: null },
   closeOnLeave: { type: Boolean, default: false },
   sendCopyOfFormInTicket: { type: Boolean, default: true },
+  autoTags: { type: [String], default: [] },
   notifyStaff: { type: [String], default: [] }, // Forced to be the group staff for threaded tickets
   channelNameFormat: {
     type: String,
@@ -441,15 +430,16 @@ const ticketTriggerSchemaAjv = {
 
     colour: {
       type: "number",
-      enum: [
-        ButtonStyle.Danger,
-        ButtonStyle.Primary,
-        ButtonStyle.Secondary,
-        ButtonStyle.Success,
-      ],
+      enum: [ButtonStyle.Danger, ButtonStyle.Primary, ButtonStyle.Secondary, ButtonStyle.Success],
     },
 
     message: { type: ["string", "null"] },
+
+    autoTags: {
+      type: "array",
+      maxItems: 3,
+      items: { type: "string" },
+    },
 
     form: {
       type: "array",
@@ -602,11 +592,5 @@ const ticketTriggerSchemaAjv = {
 };
 export const TicketTriggerSchemaValidator = ajv.compile(ticketTriggerSchemaAjv);
 
-export const TicketTriggerSchema = mongoose.model(
-  "Ticket Triggers",
-  ticketTriggerSchema
-);
-export const ApplicationTriggerSchema = mongoose.model(
-  "Application Triggers",
-  applicationTriggerSchema
-);
+export const TicketTriggerSchema = mongoose.model("Ticket Triggers", ticketTriggerSchema);
+export const ApplicationTriggerSchema = mongoose.model("Application Triggers", applicationTriggerSchema);

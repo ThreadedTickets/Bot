@@ -10,49 +10,26 @@ import { t } from "../../../lang";
 import { getServerGroupsByIds, getTicket, getTickets } from "../../../utils/bot/getServer";
 import { onError } from "../../../utils/onError";
 import { getUserPermissions } from "../../../utils/calculateUserPermissions";
+import path from "path";
+import fs from "fs";
 import { formatDate } from "../../../utils/formatters/date";
 import axios from "axios";
 
 const command: AppCommand = {
   type: "slash",
   data: new SlashCommandBuilder()
-    .setName("transcript")
+    .setName("transcript_old")
     .setDescription("Get a ticket transcript")
     .setContexts(InteractionContextType.Guild)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setNameLocalizations({})
     .setDescriptionLocalizations({})
-    .addSubcommand((cmd) =>
-      cmd
-        .setName("tag")
-        .setDescription("Tagging options for the transcript")
-        .addStringOption((opt) =>
-          opt.setName("action").setDescription("Add/remove tag").setRequired(true).setChoices(
-            {
-              name: "add",
-              value: "add",
-            },
-            {
-              name: "remove",
-              value: "remove",
-            }
-          )
-        )
-        .addStringOption((opt) =>
-          opt
-            .setName("tag_name")
-            .setDescription("What do you want the name of this tag to be?")
-            .setMaxLength(32)
-            .setRequired(true)
-            .setAutocomplete(true)
-        )
-        .addStringOption((opt) =>
-          opt
-            .setName("transcript")
-            .setDescription("The transcript/ticket to update")
-            .setRequired(false)
-            .setAutocomplete(true)
-        )
+    .addStringOption((opt) =>
+      opt
+        .setName("ticket")
+        .setDescription("The ticket to view the transcript of, ?t=#,#,# to search by tags")
+        .setRequired(true)
+        .setAutocomplete(true)
     ),
 
   async autocomplete(client, interaction) {

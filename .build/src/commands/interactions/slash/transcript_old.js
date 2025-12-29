@@ -13,22 +13,17 @@ const axios_1 = __importDefault(require("axios"));
 const command = {
     type: "slash",
     data: new discord_js_1.SlashCommandBuilder()
-        .setName("transcript")
+        .setName("transcript_old")
         .setDescription("Get a ticket transcript")
         .setContexts(discord_js_1.InteractionContextType.Guild)
         .setDefaultMemberPermissions(discord_js_1.PermissionFlagsBits.ManageMessages)
         .setNameLocalizations({})
         .setDescriptionLocalizations({})
-        .addSubcommand((cmd) => cmd
-        .setName("tag")
-        .setDescription("Tagging options for the transcript")
-        .addStringOption((opt) => opt.setName("action").setDescription("Add/remove tag").setRequired(true).setChoices({
-        name: "add",
-        value: "add",
-    }, {
-        name: "remove",
-        value: "remove",
-    }))),
+        .addStringOption((opt) => opt
+        .setName("ticket")
+        .setDescription("The ticket to view the transcript of, ?t=#,#,# to search by tags")
+        .setRequired(true)
+        .setAutocomplete(true)),
     async autocomplete(client, interaction) {
         if (!interaction.guildId)
             return;
@@ -106,4 +101,4 @@ const command = {
     },
 };
 exports.default = command;
-//# sourceMappingURL=/src/commands/interactions/slash/transcript.js.map
+//# sourceMappingURL=/src/commands/interactions/slash/transcript_old.js.map

@@ -70,6 +70,8 @@ const schema = new mongoose.Schema(
       default: [],
     },
 
+    tags: { type: [String], default: [] },
+
     addRolesOnOpen: { type: [String], default: [] },
     addRolesOnClose: { type: [String], default: [] },
     removeRolesOnOpen: { type: [String], default: [] },

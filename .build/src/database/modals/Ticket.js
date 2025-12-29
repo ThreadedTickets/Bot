@@ -72,6 +72,7 @@ const schema = new mongoose_1.default.Schema({
         type: [response],
         default: [],
     },
+    tags: { type: [String], default: [] },
     addRolesOnOpen: { type: [String], default: [] },
     addRolesOnClose: { type: [String], default: [] },
     removeRolesOnOpen: { type: [String], default: [] },
